@@ -6,7 +6,7 @@ BUSYWORK is a single-player management game disguised as a corporate kanban boar
 
 Open `index.html` directly in a modern browser. The game is self-contained and makes no network requests.
 
-The public playtest build is available at [stevenglandry.github.io/busywork-llc](https://stevenglandry.github.io/busywork-llc/). GitHub Pages publishes the repository root from `main`, so a successful push updates the live build without a separate generated branch.
+The public playtest build is available at [stevengglandry.github.io/busywork-llc](https://stevengglandry.github.io/busywork-llc/). GitHub Pages publishes the repository root from `main`, so a successful push updates the live build without a separate generated branch.
 
 ## Development
 
