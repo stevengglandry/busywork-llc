@@ -1,5 +1,9 @@
 # BUSYWORK
 
+> Current balance amendment: see `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for the implemented Cash, Morale, Audit, Confidence, sweet-spot, Review-choice, burnout, and failure rules. Where numeric values conflict, the retune plan and `index.html` are authoritative.
+
+> Current technical implementation: the browser build uses seeded arrival bags rather than the legacy deck/discard proposal below. Run construction and migration, Review rulings, audits, burnout, and day rollover are implemented as separate named state-transition helpers. The legacy design sections remain as historical product direction, not a claim about current runtime fields.
+
 ## Implementation-Ready Product and Technical Plan
 
 **Working title:** BUSYWORK  
@@ -406,8 +410,8 @@ The game must never require the player to remember a policy that is not visible 
 **Approve**
 
 - Pays the task’s revenue.
-- Correct approval: confidence +2, audit risk −1.
-- Incorrect approval: immediate cash still pays, audit risk increases by task severity, and an audit liability is recorded.
+- Correct approval: Confidence +2 and Audit Chance −1.
+- Incorrect approval: Confidence-scaled cash still pays, Audit Chance +6, and one severity-bearing liability is recorded.
 
 **Reject**
 
@@ -471,7 +475,7 @@ Use seeded random selection from valid field variants. Every document stores its
 |---|---:|---|
 | Cash | $450 | Failure if end-of-day obligations leave cash below −$100 |
 | Morale | 70 | Failure at 0 |
-| Audit Risk | 5% | Audit check begins at 50%; forced audit at 100% |
+| Audit Chance | 25% | Rolled nightly; inaccurate approval +6, accurate approval −1, training −8 |
 | Executive Confidence | 75 | Failure at 0 |
 | Data | 0 | Used for the automation development and score |
 
@@ -489,27 +493,27 @@ Show the projected end-of-day balance continuously in the header or Cash tooltip
 
 ### 11.3 Audit behavior
 
-When audit risk is at least 50%, make one seeded audit roll at end of day:
+Make one seeded roll against the current Audit Chance every night. A new run starts at 25%.
 
 ```text
-auditChance = (auditRisk - 40) / 100
+findingChance = min(1, liabilities / elapsedDays) * (1 - confidence / 200)
 ```
 
-On audit:
+On a failed audit:
 
-- Each recorded incorrect approval adds a fine based on severity.
-- Confidence loses 2 per confirmed violation.
-- Audit risk resets to 20 plus 3 per unresolved liability.
-- If there are no liabilities, confidence +3 and audit risk resets to 10.
+- Fine is based on total liability severity and a multiplier that rises with prior audit failures and missed deadlines.
+- Confidence and prior escalations reduce severity.
+- Confidence loses `6 + 2 × audit fail count`.
+- The next day adds two active policies and two unpaid Regulatory Response tasks.
+- A third failure or a fine of at least $225 is a Critical Audit Failure.
 
-At 100 audit risk, trigger the audit immediately after the current atomic action completes.
+See `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for the complete formula and balance constants.
 
 ### 11.4 Failure conditions
 
-- Executive Confidence reaches 0: **Employment Terminated**
-- Morale reaches 0: **Company-Wide Walkout**
-- Cash is below −$100 after end-of-day settlement: **Insolvency**
-- Audit fine cannot be paid and liabilities exceed three: **Regulatory Intervention**
+- Confidence reaches 0: **Board Confidence Lost**
+- Cash reaches 0 after end-of-day settlement: **Insolvency**
+- Third audit failure or a single audit fine of at least $225: **Critical Audit Failure**
 
 Pause simulation before showing a failure summary.
 

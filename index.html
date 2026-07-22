@@ -220,6 +220,28 @@
     .outcome-bar i { display: block; height: 100%; width: var(--bar-width, 0%); min-width: var(--bar-min, 0); border-radius: inherit; background: var(--bar-color, var(--accent)); }
     .outcome-row strong { text-align: right; font-variant-numeric: tabular-nums; }
     .chart-empty { padding: 14px 0; color: var(--muted); font-size: 10px; text-align: center; }
+    .company-dashboard { margin: 14px 0; }
+    .company-score { display: grid; grid-template-columns: auto 1fr; gap: 11px; align-items: center; border: 1px solid var(--border); border-left: 4px solid var(--score-color, var(--accent)); border-radius: 7px; background: var(--surface-subtle); padding: 10px 12px; }
+    .company-score-value { min-width: 52px; color: var(--score-color, var(--accent)); font-size: 22px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .company-score-value small { color: var(--muted); font-size: 9px; font-weight: 650; }
+    .company-score-copy strong, .company-score-copy span { display: block; }
+    .company-score-copy strong { font-size: 11px; }
+    .company-score-copy span { margin-top: 3px; color: var(--muted); font-size: 9px; line-height: 1.35; }
+    .company-metrics { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; margin-top: 7px; }
+    .company-metric { min-width: 0; border: 1px solid var(--border); border-top: 3px solid var(--metric-color, var(--accent)); border-radius: 6px; background: var(--surface); padding: 9px 10px; }
+    .company-metric-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+    .company-metric-head span { color: var(--muted); font-size: 8px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .company-metric-head em { color: var(--metric-color, var(--accent)); font-size: 8px; font-style: normal; font-weight: 800; text-transform: uppercase; }
+    .company-metric-value { display: flex; align-items: baseline; gap: 5px; margin-top: 4px; }
+    .company-metric-value strong { font-size: 16px; font-variant-numeric: tabular-nums; }
+    .company-metric-value small { font-size: 9px; font-weight: 750; }
+    .company-metric p { margin: 4px 0 0; color: var(--muted); font-size: 8px; line-height: 1.35; }
+    .tone-good { --metric-color: var(--success); --score-color: var(--success); }
+    .tone-watch { --metric-color: var(--warning); --score-color: var(--warning); }
+    .tone-risk, .tone-critical { --metric-color: var(--danger); --score-color: var(--danger); }
+    .delta-good { color: var(--success); }
+    .delta-bad { color: var(--danger); }
+    .delta-flat { color: var(--muted); }
     .projection { min-width: 190px; display: grid; grid-template-columns: 1fr 96px; align-items: center; gap: 8px; }
     .projection-copy { display: grid; gap: 2px; }
     .projection-copy strong { color: var(--text); font-size: 10px; }
@@ -234,8 +256,15 @@
     .stat-readout { display: grid; gap: 4px; margin-top: 9px; padding: 8px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface-subtle); }
     .stat-row { display: grid; grid-template-columns: 64px 1fr 24px; gap: 5px; align-items: center; font-size: 8px; }
     .pips { color: var(--accent); letter-spacing: 1px; white-space: nowrap; }
-    .employee-popover { display: none; position: absolute; z-index: 8; left: 5px; right: 5px; top: calc(100% + 5px); box-shadow: var(--shadow-raised); }
-    .card.kind-employee:hover .employee-popover, .card.kind-employee:focus .employee-popover { display: grid; }
+    .employee-popover { display: none; position: static; z-index: 8; margin: 8px 8px 10px; border: 1px solid #b9cad6; border-radius: 5px; background: #fff; box-shadow: var(--shadow-raised); }
+    .card.kind-employee:hover .employee-popover, .card.kind-employee:focus .employee-popover, .card.kind-employee:focus-within .employee-popover { display: grid; }
+    .card.kind-employee.sweet-spot { border-color: #57a56f; box-shadow: 0 0 0 2px rgb(69 151 94 / 18%), 0 0 18px rgb(69 151 94 / 24%); animation: sweet-pulse 1.8s ease-in-out infinite; }
+    .card.kind-employee.sweet-spot::after { content: 'SWEET SPOT'; position: absolute; top: -7px; right: 8px; border: 1px solid #4d9464; border-radius: 999px; background: #e7f6eb; color: #28613b; padding: 2px 6px; font-size: 7px; font-weight: 850; letter-spacing: .08em; }
+    .card-kind-label { display: inline-flex; align-items: center; gap: 4px; margin: 0 0 7px; color: var(--kind-color, var(--muted)); font-size: 7px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    .card-kind-label::before { content: ''; width: 7px; height: 7px; border: 2px solid currentColor; border-radius: 2px; background: color-mix(in srgb, currentColor 16%, white); }
+    .kind-task .card-kind-label::before { border-radius: 50%; }
+    .kind-resource .card-kind-label::before { transform: rotate(45deg); }
+    .kind-document .card-kind-label::before { border-radius: 0; }
     .upgrade-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; margin-top: 12px; }
     .upgrade-node { border: 1px solid var(--border); border-radius: 7px; padding: 10px; background: var(--surface-subtle); }
     .upgrade-node.unlocked { border-color: #94b5a0; background: var(--success-soft); }
@@ -277,10 +306,15 @@
     .setting { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
     .setting label { font-size: 11px; font-weight: 650; }
     .toast-region { position: fixed; right: 350px; bottom: 55px; z-index: 900; display: grid; gap: 7px; pointer-events: none; }
-    .toast { width: min(300px, calc(100vw - 28px)); background: #20303d; color: #edf2f5; border-radius: 6px; box-shadow: var(--shadow-raised); padding: 10px 12px; font-size: 11px; animation: toast-in .18s ease both; }
+    .toast { width: min(320px, calc(100vw - 28px)); background: #20303d; color: #edf2f5; border-radius: 6px; box-shadow: var(--shadow-raised); padding: 10px 12px; font-size: 11px; animation: toast-in .18s ease both; }
+    .toast strong, .toast span { display: block; }
+    .toast span { margin-top: 3px; color: #d8e1e7; font-size: 9px; line-height: 1.35; }
+    .toast.bad { border: 2px solid #ff8c84; background: #7b1f24; box-shadow: 0 8px 28px rgb(91 10 17 / 38%); }
+    .toast.security { border: 2px solid #ffb09f; background: #8c2d20; }
 
     /* 04 STATES AND ANIMATION */
     @keyframes toast-in { from { opacity: 0; transform: translateY(6px); } }
+    @keyframes sweet-pulse { 50% { box-shadow: 0 0 0 3px rgb(69 151 94 / 13%), 0 0 24px rgb(69 151 94 / 32%); } }
     body.compact .card-desc { display: none; }
     body.compact .card { border-left-color: #71808d; padding-block: 8px; }
     body.high-contrast { --border: #9aa7b3; --muted: #4a5967; --bg: #e8edf1; }
@@ -313,6 +347,7 @@
       .header-actions .btn:first-child { display: none; }
       .noticebar { align-items: flex-start; flex-direction: column; gap: 3px; }
       .inspector-tools { padding-inline: 16px; }
+      .company-metrics { grid-template-columns: 1fr; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
@@ -394,7 +429,8 @@
     const SAVE_KEY = 'busywork.save.v2';
     const LEGACY_SAVE_KEY = 'busywork.save.v1';
     const META_KEY = 'busywork.meta.v1';
-    const BALANCE = Object.freeze({inboxCapacity:9,arrivalIntervals:[20000,18000,17000,16000,15000],junkShare:.30,phishingThreshold:3,phishingReward:125,policyCounts:[3,4,4,4,5],checkInHeal:20,checkInManagerStress:10,checkInCost:20,maxCashPoints:64,wasteCost:8,firingCost:25});
+    const RUN_SCHEMA_VERSION = 2;
+    const BALANCE = Object.freeze({inboxCapacity:9,arrivalIntervals:[20000,18000,17000,16000,15000],junkShare:.30,phishingThreshold:3,phishingReward:125,policyCounts:[3,4,4,4,5],checkInHeal:20,checkInManagerStress:10,checkInCost:20,maxCashPoints:64,wasteCost:8,firingCost:25,baseAuditChance:25,approveAuditPenalty:6,deadlineConfidencePenalty:3,deadlineSeverityPenalty:.15,correctionStressHit:5,correctionStressMiss:9,rejectMissStress:10,escalateConfidenceCost:4,escalateSeverityRelief:.15,regulatoryBombSize:2});
     const COLUMN_META = {
       inbox: { name: 'Inbox', capacity: BALANCE.inboxCapacity, sub: 'New arrivals · identify, route, or delete' },
       backlog: { name: 'Backlog', capacity: 8, sub: 'Staging · half-rate deadlines' },
@@ -447,6 +483,7 @@
         data_entry_request: { id:'data_entry_request', kind:'task', name:'Data Entry Request', code:'WK', tags:['task','admin'], description:'Transcribe a routine operational dataset.', deadlineMs:100000, reward:35, expiration:{ confidence:-2 } },
         expense_report: { id:'expense_report', kind:'task', name:'Expense Report', code:'WK', tags:['task','finance','reimbursement'], description:'Validate an employee reimbursement claim.', deadlineMs:120000, reward:70, expiration:{ morale:-2 } },
         invoice_request: { id:'invoice_request', kind:'task', name:'Invoice Request', code:'WK', tags:['task','analysis'], description:'Prepare client billing for completed services.', deadlineMs:115000, reward:75, expiration:{ cash:-15 } },
+        regulatory_response: { id:'regulatory_response', kind:'task', name:'Regulatory Response', code:'RG', tags:['task','admin','regulatory'], description:'Mandatory audit remediation. It consumes capacity and pays no revenue.', deadlineMs:70000, reward:0, expiration:{ confidence:-4 } },
         spreadsheet: { id:'spreadsheet', kind:'resource', name:'Spreadsheet', code:'RS', tags:['resource','spreadsheet'], description:'Approved shared workbook. Retained after routine use.' },
         receipt: { id:'receipt', kind:'resource', name:'Receipt', code:'RS', tags:['resource','receipt'], description:'Physical proof of an expense. Consumed during verification.' },
         client_data: { id:'client_data', kind:'resource', name:'Client Data', code:'RS', tags:['resource','client-data'], description:'Restricted client information packet.' },
@@ -471,6 +508,7 @@
         { id:'verify_expense', name:'Verify Expense', priority:120, exact:['accountant','expense_report','receipt'], durationMs:22000, output:'verified_expense', consumes:['expense_report','receipt'], reward:70 },
         { id:'prepare_invoice', name:'Prepare Invoice', priority:110, exact:['junior_analyst','invoice_request','spreadsheet'], durationMs:20000, output:'invoice_document', consumes:['invoice_request'], reward:75 },
         { id:'data_entry', name:'Complete Data Entry', priority:100, exact:['intern','data_entry_request','spreadsheet'], durationMs:18000, output:'completed_data_entry', consumes:['data_entry_request'], reward:35 },
+        { id:'regulatory_response', name:'Prepare Regulatory Response', priority:125, exact:['intern','regulatory_response','spreadsheet'], durationMs:24000, output:'completed_data_entry', consumes:['regulatory_response'], reward:0, regulatory:true, completionStress:8 },
         { id:'cover_expense_analyst', name:'Cover Expense Review', priority:80, exact:['junior_analyst','expense_report','receipt'], durationMs:32000, output:'verified_expense', consumes:['expense_report','receipt'], reward:70, coverage:true, accuracyPenalty:-8, stressMultiplier:1.6, completionStress:12 },
         { id:'cover_expense_intern', name:'Cover Expense Review', priority:70, exact:['intern','expense_report','receipt'], durationMs:40000, output:'verified_expense', consumes:['expense_report','receipt'], reward:70, coverage:true, accuracyPenalty:-14, stressMultiplier:2, completionStress:18 },
         { id:'cover_invoice_accountant', name:'Cover Client Billing', priority:80, exact:['accountant','invoice_request','spreadsheet'], durationMs:29000, output:'invoice_document', consumes:['invoice_request'], reward:75, coverage:true, accuracyPenalty:-6, stressMultiplier:1.45, completionStress:10 },
@@ -508,14 +546,29 @@
     let game = null;
     const defaultSettings = { compactMode:false, reducedMotion:false, highContrast:false, autosave:true };
     const runtime = { lastFrame:0, lastSave:0, lastDynamicRender:0, lastProgressRender:0, lastRhythmRender:0, drag:null, dirty:true, savedRun:null, settings:{...defaultSettings}, meta:{processXp:0,complianceTokens:0,unlockedUpgradeIds:[],discoveredJunkClueIds:[]},testing:false };
+    const DEFAULT_STATISTICS = Object.freeze({tasksCompleted:0,tasksExpired:0,correctRulings:0,incorrectRulings:0,interventions:0,junkDeleted:0,legitimateItemsDeleted:0,employeesFired:0,employeeDeaths:0,phishingRewardsClaimed:0,arrivalsByKind:{},inboxOverflows:0});
+    const freshPhishingState = () => ({correctDeletedToday:0,rewardQueued:false,rewardDelivered:false,rewardClaimed:false,freeCheckInUsed:false});
+    const freshCashTelemetry = (priorClose=450,dailySeries=[]) => ({priorClose,recognizedTaskRevenue:0,currentDayPoints:[],dailySeries:[...dailySeries].slice(-5)});
     function loadMeta(){try{return {...runtime.meta,...JSON.parse(localStorage.getItem(META_KEY)||'{}')}}catch{return {...runtime.meta}}}
     function saveMeta(){if(!runtime.testing)localStorage.setItem(META_KEY,JSON.stringify(runtime.meta));}
-    function migrateRunV1(run){
-      run.schemaVersion=2;run.activePolicyIds=run.activePolicyIds||[];run.recentArrivalTemplateIds=[];run.arrivalBag=[];run.arrivalSequence=0;
-      run.phishing={correctDeletedToday:0,rewardQueued:false,rewardDelivered:false,rewardClaimed:false,freeCheckInUsed:false};
-      run.cashTelemetry={priorClose:run.dayOpeningCash??450,recognizedTaskRevenue:0,currentDayPoints:[],dailySeries:[]};
-      run.statistics={tasksCompleted:0,tasksExpired:0,correctRulings:0,incorrectRulings:0,interventions:0,junkDeleted:0,legitimateItemsDeleted:0,employeesFired:0,phishingRewardsClaimed:0,arrivalsByKind:{},inboxOverflows:0,...run.statistics};
-      Object.values(run.cardsById||{}).filter(c=>c.kind==='employee').forEach(c=>{const base=STAT_BASELINES[c.templateId]||{accuracy:3,speed:3,resilience:3};const hash=[...c.id].reduce((n,ch)=>(n*33+ch.charCodeAt(0))>>>0,run.runSeed>>>0);c.stats=c.stats||{accuracy:Math.max(1,Math.min(6,base.accuracy+((hash%3)-1))),speed:Math.max(1,Math.min(6,base.speed+(((hash>>>3)%3)-1))),resilience:Math.max(1,Math.min(6,base.resilience+(((hash>>>6)%3)-1)))};c.abilityIds=derivedAbilities(c);});
+    function migrateRunState(run){
+      run.schemaVersion=RUN_SCHEMA_VERSION;
+      run.activePolicyIds=run.activePolicyIds||[];
+      run.recentArrivalTemplateIds=run.recentArrivalTemplateIds||[];
+      run.arrivalBag=run.arrivalBag||[];
+      run.arrivalSequence=run.arrivalSequence||0;
+      run.phishing=run.phishing||freshPhishingState();
+      run.cashTelemetry=run.cashTelemetry||freshCashTelemetry(run.dayOpeningCash??run.cash??450);
+      run.dayOpeningState=run.dayOpeningState||{cash:run.dayOpeningCash??run.cash,morale:run.morale,audit:run.auditRisk,confidence:run.executiveConfidence};
+      for(const [key,fallback] of Object.entries({moraleModifier:-30,auditFailCount:0,auditSeverityRelief:0,auditSeverityPenalty:0,auditPolicyPenalty:0,regulatoryTaskBomb:0,sweetSpotCompanyBonus:0}))if(!Number.isFinite(run[key]))run[key]=fallback;
+      run.criticalAuditFailure=Boolean(run.criticalAuditFailure);
+      run.statistics={...DEFAULT_STATISTICS,...run.statistics,arrivalsByKind:{...(run.statistics?.arrivalsByKind||{})}};
+      Object.values(run.cardsById||{}).filter(card=>card.kind==='employee').forEach(card=>{
+        const base=STAT_BASELINES[card.templateId]||{accuracy:3,speed:3,resilience:3};
+        const hash=[...card.id].reduce((value,character)=>(value*33+character.charCodeAt(0))>>>0,run.runSeed>>>0);
+        card.stats=card.stats||{accuracy:Math.max(1,Math.min(6,base.accuracy+((hash%3)-1))),speed:Math.max(1,Math.min(6,base.speed+(((hash>>>3)%3)-1))),resilience:Math.max(1,Math.min(6,base.resilience+(((hash>>>6)%3)-1)))};
+        card.abilityIds=derivedAbilities(card);
+      });
       return run;
     }
     const Store = {
@@ -527,7 +580,7 @@
           const parsed = JSON.parse(raw);
           if (![1,2].includes(parsed.schemaVersion) || !parsed.settings) throw new Error('Unsupported save');
           runtime.settings = { ...defaultSettings, ...parsed.settings };
-          runtime.meta=loadMeta();const run=parsed.activeRun||null;return run&&run.schemaVersion!==2?migrateRunV1(run):run;
+          runtime.meta=loadMeta();const run=parsed.activeRun||null;return run?migrateRunState(run):null;
         } catch (error) {
           const raw = localStorage.getItem(SAVE_KEY);
           if (raw) localStorage.setItem('busywork.save.recovery', raw);
@@ -541,7 +594,7 @@
         const now = performance.now();
         if (!force && now - runtime.lastSave < 20000) return;
         try {
-          localStorage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion:2, settings:runtime.settings, activeRun:game }));saveMeta();
+          localStorage.setItem(SAVE_KEY, JSON.stringify({ schemaVersion:RUN_SCHEMA_VERSION, settings:runtime.settings, activeRun:game }));saveMeta();
           runtime.lastSave = now;
           document.getElementById('saveState').textContent = 'Saved just now';
         } catch { document.getElementById('saveState').textContent = 'Save unavailable'; }
@@ -555,11 +608,6 @@
       t = Math.imul(t ^ t >>> 15, t | 1);
       t ^= t + Math.imul(t ^ t >>> 7, t | 61);
       return ((t ^ t >>> 14) >>> 0) / 4294967296;
-    }
-    function shuffled(items) {
-      const out = [...items];
-      for (let i=out.length-1; i>0; i--) { const j=Math.floor(nextRandom()*(i+1)); [out[i],out[j]]=[out[j],out[i]]; }
-      return out;
     }
     function uid(prefix) { game.sequence++; return `${prefix}_${game.sequence}`; }
     function derivedAbilities(card){return Object.entries(card.stats||{}).filter(([,value])=>EXTREME_ABILITIES.accuracy[value]||EXTREME_ABILITIES.speed[value]||EXTREME_ABILITIES.resilience[value]).map(([stat,value])=>`${stat}_${value}`);}
@@ -578,9 +626,22 @@
       cardIds.forEach(id=>game.cardsById[id].stackId=stack.id);
       return stack;
     }
+    function createInitialRunState(seed){
+      const opening={cash:450,morale:70,audit:BALANCE.baseAuditChance,confidence:75};
+      return {
+        schemaVersion:RUN_SCHEMA_VERSION,mode:'briefing',runId:`run_${seed}`,runSeed:seed,rngState:seed,sequence:0,
+        day:1,dayElapsedMs:0,drawElapsedMs:0,dayOpeningCash:opening.cash,dayOpeningState:{...opening},
+        cash:opening.cash,morale:opening.morale,moraleModifier:-30,auditRisk:opening.audit,executiveConfidence:opening.confidence,
+        auditFailCount:0,auditSeverityRelief:0,auditSeverityPenalty:0,auditPolicyPenalty:0,regulatoryTaskBomb:0,criticalAuditFailure:false,sweetSpotCompanyBonus:0,
+        development:null,daySummaries:[],cardsById:{},columns:{inbox:[],backlog:[],active:[],review:[],done:[]},stacksById:{},jobsById:{},
+        activePolicyIds:[],previousPolicyIds:[],liabilities:[],log:[],history:[],lastHistoryAt:-Infinity,selected:null,
+        arrivalBag:[],arrivalSequence:0,recentArrivalTemplateIds:[],phishing:freshPhishingState(),cashTelemetry:freshCashTelemetry(opening.cash),
+        statistics:{...DEFAULT_STATISTICS,arrivalsByKind:{}}
+      };
+    }
     function newRun(seed=Date.now()>>>0, persist=true) {
       COLUMN_META.inbox.capacity=BALANCE.inboxCapacity+(runtime.meta.unlockedUpgradeIds.includes('mail_shelf')?1:0);
-      game = { schemaVersion:2, mode:'briefing', runId:`run_${seed}`, runSeed:seed, rngState:seed, sequence:0, day:1, dayElapsedMs:0, drawElapsedMs:0, dayOpeningCash:450, cash:450, morale:70, auditRisk:5, executiveConfidence:75, data:0, development:null, daySummaries:[], cardsById:{}, columns:{inbox:[],backlog:[],active:[],review:[],done:[]}, stacksById:{}, jobsById:{}, deck:[], discard:[], activePolicyIds:[],previousPolicyIds:[], liabilities:[], log:[], history:[], lastHistoryAt:-Infinity, selected:null,arrivalBag:[],arrivalSequence:0,recentArrivalTemplateIds:[],phishing:{correctDeletedToday:0,rewardQueued:false,rewardDelivered:false,rewardClaimed:false,freeCheckInUsed:false},cashTelemetry:{priorClose:450,recognizedTaskRevenue:0,currentDayPoints:[],dailySeries:[]},statistics:{tasksCompleted:0,tasksExpired:0,correctRulings:0,incorrectRulings:0,interventions:0,junkDeleted:0,legitimateItemsDeleted:0,employeesFired:0,phishingRewardsClaimed:0,arrivalsByKind:{},inboxOverflows:0} };
+      game=createInitialRunState(seed);
       ['intern','junior_analyst','accountant','manager'].forEach(id=>createStack('backlog',[createCard(id).id]));
       ['data_entry_request','spreadsheet','expense_report','receipt','invoice_request'].forEach(id=>createStack('inbox',[createCard(id).id]));
       game.activePolicyIds=sampleDailyPolicies(1);game.arrivalBag=buildArrivalBag();
@@ -593,21 +654,123 @@
     const tpl = card => Content.cards[card.templateId];
     const cardName = card => card?.meta?.employeeLabel||tpl(card).name;
     const REWORK_TASK_BY_DOCUMENT={verified_expense:'expense_report',invoice_document:'invoice_request',completed_data_entry:'data_entry_request'};
-    function convertDocumentToRework(card){const originalTemplateId=card.templateId,taskTemplateId=REWORK_TASK_BY_DOCUMENT[originalTemplateId];if(!taskTemplateId)return false;card.templateId=taskTemplateId;card.kind='task';card.fields=null;card.tags=null;card.deadlineRemainingMs=Math.max(25000,(card.deadlineRemainingMs||90000)*.6);card.meta={...card.meta,rework:true,sourceDocumentTemplateId:originalTemplateId,revision:(card.meta.revision||0)+1};return true;}
+    const DEFAULT_COPING_BY_ROLE={intern:'boundaries',junior_analyst:'perfectionist',accountant:'pressure',manager:'boundaries'};
+    function convertDocumentToRework(card){
+      const originalTemplateId=card.templateId;
+      const taskTemplateId=card.meta?.regulatory?'regulatory_response':REWORK_TASK_BY_DOCUMENT[originalTemplateId];
+      if(!taskTemplateId)return false;
+      card.templateId=taskTemplateId;
+      card.kind='task';
+      card.fields=null;
+      card.tags=null;
+      card.deadlineRemainingMs=Math.max(25000,(card.deadlineRemainingMs||90000)*.6);
+      card.meta={...card.meta,rework:true,sourceDocumentTemplateId:originalTemplateId,revision:(card.meta.revision||0)+1};
+      return true;
+    }
     function workStyle(card){return card.preferredWorkPct<52?'Prefers frequent breaks':card.preferredWorkPct<70?'Balanced cadence':'Likes staying busy';}
-    function ensureEmployeeTraits(){const defaults={intern:'boundaries',junior_analyst:'perfectionist',accountant:'pressure',manager:'boundaries'};Object.values(game.cardsById).filter(card=>card.kind==='employee').forEach(card=>{const template=tpl(card);if(!Number.isFinite(card.preferredWorkPct))card.preferredWorkPct=template.preferredWork;if(!Number.isFinite(card.rhythm))card.rhythm=72;if(!Number.isFinite(card.workedMsToday))card.workedMsToday=0;if(!Number.isFinite(card.idleMsToday))card.idleMsToday=0;if(!Number.isFinite(card.stress))card.stress=0;if(!card.copingId)card.copingId=defaults[card.templateId]||'boundaries';if(!Number.isFinite(card.stressBand))card.stressBand=card.stress>=burnoutThreshold(card)?3:card.stress>=80?2:card.stress>=50?1:0;if(!Number.isFinite(card.burnedOutUntilDay))card.burnedOutUntilDay=0;if(!Number.isFinite(card.supportedDay))card.supportedDay=0;if(!('conditionId' in card))card.conditionId=null;if(!card.stats){const b=STAT_BASELINES[card.templateId]||{accuracy:3,speed:3,resilience:3};card.stats={...b};}card.abilityIds=derivedAbilities(card);});}
-    function ensureRunState(){if(game.schemaVersion!==2)migrateRunV1(game);ensureHistory();ensureEmployeeTraits();Object.values(game.cardsById).filter(card=>card.kind==='document'&&!['review','done'].includes(locationOf(card.id)?.columnId)).forEach(convertDocumentToRework);if(!Array.isArray(game.daySummaries))game.daySummaries=[];if(!Number.isFinite(game.dayOpeningCash))game.dayOpeningCash=game.cash;if(!('development' in game))game.development=null;if(!game.arrivalBag)game.arrivalBag=buildArrivalBag();if(!game.activePolicyIds?.length)game.activePolicyIds=sampleDailyPolicies(game.day);}
+    function ensureEmployeeTraits(){
+      for(const card of Object.values(game.cardsById).filter(card=>card.kind==='employee')){
+        const template=tpl(card);
+        if(!Number.isFinite(card.preferredWorkPct))card.preferredWorkPct=template.preferredWork;
+        if(!Number.isFinite(card.rhythm))card.rhythm=72;
+        if(!Number.isFinite(card.workedMsToday))card.workedMsToday=0;
+        if(!Number.isFinite(card.idleMsToday))card.idleMsToday=0;
+        if(!Number.isFinite(card.stress))card.stress=0;
+        if(!card.copingId)card.copingId=DEFAULT_COPING_BY_ROLE[card.templateId]||'boundaries';
+        if(!Number.isFinite(card.stressBand))card.stressBand=card.stress>=burnoutThreshold(card)?3:card.stress>=80?2:card.stress>=50?1:0;
+        if(!Number.isFinite(card.burnedOutUntilDay))card.burnedOutUntilDay=0;
+        if(!Number.isFinite(card.supportedDay))card.supportedDay=0;
+        if(!('conditionId' in card))card.conditionId=null;
+        if(!card.stats)card.stats={...(STAT_BASELINES[card.templateId]||{accuracy:3,speed:3,resilience:3})};
+        card.abilityIds=derivedAbilities(card);
+      }
+    }
+    function ensureRunState(){
+      migrateRunState(game);
+      ensureHistory();
+      ensureEmployeeTraits();
+      Object.values(game.cardsById).filter(card=>card.kind==='document'&&!['review','done'].includes(locationOf(card.id)?.columnId)).forEach(convertDocumentToRework);
+      if(!Array.isArray(game.daySummaries))game.daySummaries=[];
+      if(!Number.isFinite(game.dayOpeningCash))game.dayOpeningCash=game.cash;
+      if(!game.dayOpeningState)game.dayOpeningState={cash:game.dayOpeningCash,morale:game.morale,audit:game.auditRisk,confidence:game.executiveConfidence};
+      if(!('development' in game))game.development=null;
+      if(!game.arrivalBag.length)game.arrivalBag=buildArrivalBag();
+      if(!game.activePolicyIds.length)game.activePolicyIds=sampleDailyPolicies(game.day);
+      recalculateMorale();
+    }
     function workShare(card){const total=card.workedMsToday+card.idleMsToday;return total?Math.round((card.workedMsToday/total)*100):0;}
+    function sweetSpotWidth(){return Math.min(20,8+Math.round(game.executiveConfidence/25)+(game.sweetSpotCompanyBonus||0));}
+    function sweetSpotDistance(card){return Math.abs(workShare(card)-card.preferredWorkPct);}
+    function workerInSweetSpot(card){return card.workedMsToday+card.idleMsToday>=10000&&sweetSpotDistance(card)<=sweetSpotWidth();}
+    function sweetSpotContribution(card){if(card.workedMsToday+card.idleMsToday<10000)return 0;return Math.max(0,Math.round((1-sweetSpotDistance(card)/Math.max(1,sweetSpotWidth()))*10));}
+    function average(values,fallback=0){return values.length?values.reduce((sum,value)=>sum+value,0)/values.length:fallback;}
+    function recalculateMorale(){
+      const employees=Object.values(game.cardsById||{}).filter(card=>card.kind==='employee');
+      const averageStress=average(employees.map(card=>card.stress||0),100);
+      const sweetBenefit=average(employees.map(sweetSpotContribution));
+      game.morale=Math.max(0,Math.min(100,Math.round(100-averageStress+sweetBenefit+(game.moraleModifier||0))));
+      return game.morale;
+    }
+    function adjustMorale(amount){game.moraleModifier=(game.moraleModifier||0)+amount;return recalculateMorale();}
+    function confidencePayoutMultiplier(){return .8+(game.executiveConfidence/100)*.4;}
+    function recognizedPayout(card){return Math.max(0,Math.round((card.meta.reward||0)*confidencePayoutMultiplier()));}
     function employeeAvailable(card){return card.kind==='employee'&&(!card.burnedOutUntilDay||game.day>card.burnedOutUntilDay);}
     function burnoutThreshold(card){return card?.stats?.resilience===1?90:100;}
     function stressState(card){return !employeeAvailable(card)?'On leave':card.stress>=burnoutThreshold(card)?'Burnout':card.stress>=80?'Fractured':card.stress>=50?'Strained':'Steady';}
-    function burnOutEmployee(card){if(card.burnedOutUntilDay>=game.day+1)return;card.stress=100;card.stressBand=3;card.burnedOutUntilDay=game.day+1;card.conditionId=null;if(card.lockedByJobId)cancelJob(card.lockedByJobId);const loc=locationOf(card.id);if(loc&&loc.columnId!=='backlog'){removeCardFromLocation(card.id);delete card.meta.reviewingDocumentId;createStack('backlog',[card.id]);}game.morale-=6;game.executiveConfidence-=8;clampMeters();log(`${cardName(card)} burned out and will miss Day ${game.day+1}.`);toast(`${cardName(card)} burned out · morale −6 · confidence −8.`);recordSnapshot(true);markDirty();}
+    function routeEmployeeToBacklog(card){
+      const location=locationOf(card.id);
+      if(!location||location.columnId==='backlog')return;
+      removeCardFromLocation(card.id);
+      delete card.meta.reviewingDocumentId;
+      createStack('backlog',[card.id]);
+    }
+    function removeEmployeeFromRun(card){
+      removeCardFromLocation(card.id);
+      delete game.cardsById[card.id];
+      card.burnedOutUntilDay=Infinity;
+    }
+    function resolveBurnoutOutcome(card,roll){
+      const name=cardName(card);
+      if(roll<.5){
+        const stats=['accuracy','speed','resilience'];
+        const stat=stats[Math.floor(nextRandom()*stats.length)];
+        card.stats[stat]=Math.min(6,card.stats[stat]+1);
+        return `${name} is on leave tomorrow. Their ${stat} permanently increased.`;
+      }
+      if(roll<.72){
+        game.sweetSpotCompanyBonus=Math.min(6,(game.sweetSpotCompanyBonus||0)+2);
+        return `${name} is on leave tomorrow. The company learned from the incident: every sweet spot widened by 2 points.`;
+      }
+      removeEmployeeFromRun(card);
+      if(roll<.93)return `${name} quit. Payroll falls, but capacity is permanently lost.`;
+      game.statistics.employeeDeaths++;
+      adjustMorale(-12);
+      return `${name} died after the overload. The workforce suffers a severe morale shock.`;
+    }
+    function burnOutEmployee(card){
+      if(card.burnedOutUntilDay>=game.day+1)return;
+      const name=cardName(card);
+      card.stress=100;
+      card.stressBand=3;
+      card.burnedOutUntilDay=game.day+1;
+      card.conditionId=null;
+      if(card.lockedByJobId)cancelJob(card.lockedByJobId);
+      routeEmployeeToBacklog(card);
+      adjustMorale(-6);
+      game.executiveConfidence-=8;
+      const consequence=resolveBurnoutOutcome(card,runtime.testing?0:nextRandom());
+      clampMeters();
+      log(`${name} burned out. ${consequence}`);
+      badEvent('OVERLOAD BURNOUT',`${name} crossed their stress limit.`,`${consequence} Confidence −8; morale −6.`);
+      recordSnapshot(true);
+      markDirty();
+    }
     function setEmployeeStress(card,amount,reason='pressure'){
       if(!card||card.kind!=='employee'||!amount)return;const previous=card.stress;const resilience=card.stats?.resilience||3;const scaled=amount>0?amount*stressMultiplier(card):amount*(runtime.meta.unlockedUpgradeIds.includes('better_benefits')?1.1:1);card.stress=Math.max(0,Math.min(100,card.stress+scaled));const threshold=burnoutThreshold(card);const band=card.stress>=threshold?3:card.stress>=80?2:card.stress>=50?1:0;
       if(band>=1&&card.stressBand<1){log(`${cardName(card)} became strained by ${reason}.`);toast(`${cardName(card)} is strained.`);}
       if(band>=2&&card.stressBand<2&&!card.conditionId){const adverse=['tunnel','reckless','withdrawn'];card.conditionId=nextRandom()<.25?'clutch':adverse[Math.floor(nextRandom()*adverse.length)];const condition=STRESS_CONDITIONS[card.conditionId];log(`${cardName(card)} developed ${condition.name}.`);toast(`${cardName(card)}: ${condition.name} · ${condition.text}`);}
       if(band===0&&card.stressBand>0&&card.conditionId){log(`${cardName(card)} stabilized after recovering below 50 stress.`);card.conditionId=null;}
-      card.stressBand=band;if(card.stress>=threshold&&previous<threshold)burnOutEmployee(card);
+      card.stressBand=band;if(card.stress>=threshold&&previous<threshold)burnOutEmployee(card);recalculateMorale();
     }
     const stackTop = stack => game.cardsById[stack.cardIds[stack.cardIds.length-1]];
     function locationOf(cardId) {
@@ -645,7 +808,7 @@
     function assignmentRecipe(task,employee) {
       return Content.recipes.find(recipe=>recipe.exact.includes(task.templateId)&&recipe.exact.includes(employee.templateId))||null;
     }
-    function accuracyChance(employee,recipe,context={}){const value=employee.stats?.accuracy||3;if(value===6)return 100;let chance=74+value*4+(recipe.accuracyPenalty||0)+(employee.copingId==='perfectionist'?3:0)+(employee.rhythm>=78?2:employee.rhythm<45?-5:0)-(employee.stress>=80?12:employee.stress>=50?5:0);if(value===2)chance-=8;if(value===1)chance-=16;return Math.max(35,Math.min(99,Math.round(chance)));}
+    function accuracyChance(employee,recipe,context={}){const value=employee.stats?.accuracy||3;if(value===6)return 100;let chance=74+value*4+(recipe.accuracyPenalty||0)+(employee.copingId==='perfectionist'?3:0)+(employee.rhythm>=78?2:employee.rhythm<45?-5:0)+(workerInSweetSpot(employee)?8:0)-(employee.stress>=80?12:employee.stress>=50?5:0);if(value===2)chance-=8;if(value===1)chance-=16;return Math.max(35,Math.min(99,Math.round(chance)));}
     function speedMultiplier(employee){const value=employee.stats?.speed||3;return [0,.6,.8,1,1.1,1.2,1.35][value];}
     function stressMultiplier(employee){const value=employee.stats?.resilience||3;return value===6?.5:value===2?1.35:value===1?1.75:1;}
     function comboImpact(stack,recipe=candidateRecipe(stack.cardIds)) {
@@ -654,7 +817,7 @@
       if(!employee)return null;
       const seconds=Math.ceil(1/processingRate(stack,recipe)/1000);
       const accuracy=accuracyChance(employee,recipe);
-      return {seconds,accuracy,reward:recipe.reward,speed:speedMultiplier(employee),recipe};
+      return {seconds,accuracy,reward:Math.round(recipe.reward*confidencePayoutMultiplier()),speed:speedMultiplier(employee),recipe};
     }
     function payroll() { return Object.values(game.cardsById).filter(c=>c.kind==='employee').reduce((sum,c)=>sum+(tpl(c).salary||0),0); }
     function dayRemaining() { return Math.max(0,300000-game.dayElapsedMs); }
@@ -679,7 +842,7 @@
       const speed=Math.max(.35,employees.reduce((n,c)=>{let value=(tpl(c).speed||0)*speedMultiplier(c);if(c.copingId==='pressure'&&c.stress>=50&&c.stress<80)value*=1.1;value*=({clutch:1.1,tunnel:.85,reckless:1.2,withdrawn:.7}[c.conditionId]||1);return n+value;},0));
       const stress=employees.length?employees.reduce((n,c)=>n+c.stress,0)/employees.length:0;
       const stressMult=stress>=80?1.3:stress>=50?1.1:1;
-      const moraleMult=game.morale>=70?1.05:game.morale<20?.75:game.morale<40?.9:1;const rhythmMult=employees.length?employees.reduce((n,c)=>n+(c.rhythm>=78?1.05:c.rhythm<45?.9:1),0)/employees.length:1;const developmentMult=game.development==='standups'?1.1:game.development==='lean'?1.2:1;
+      const moraleMult=game.morale>=80?1.1:game.morale>=65?1.05:game.morale<20?.7:game.morale<40?.85:1;const rhythmMult=employees.length?employees.reduce((n,c)=>n+(workerInSweetSpot(c)?1.15:c.rhythm>=78?1.05:c.rhythm<45?.9:1),0)/employees.length:1;const developmentMult=game.development==='standups'?1.1:game.development==='lean'?1.2:1;
       return Math.min(3,Math.max(.35,speed*moraleMult*rhythmMult*developmentMult/stressMult))/recipe.durationMs;
     }
     function updateEmployeeRhythms(delta){
@@ -692,7 +855,7 @@
     }
     function isApprovable(card) { return evaluateDocument(card).every(f=>f.passed); }
     function deterministicShuffle(items,seed){let state=seed>>>0;const rand=()=>{let t=state+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296};const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[out[i],out[j]]=[out[j],out[i]];}return out;}
-    function sampleDailyPolicies(day=game.day){const count=BALANCE.policyCounts[Math.max(0,Math.min(4,day-1))];const eligible=deterministicShuffle(Object.values(Content.policies).filter(p=>(p.minDay||1)<=day),(game.runSeed+day*7919)>>>0);const chosen=[],groups=new Set();const families=['reimbursement','billing','routine'];for(const family of families){const candidate=eligible.find(p=>p.family===family&&(!p.exclusionGroup||!groups.has(p.exclusionGroup)));if(candidate&&chosen.length<count){chosen.push(candidate);if(candidate.exclusionGroup)groups.add(candidate.exclusionGroup);}}for(const p of eligible){if(chosen.length>=count)break;if(chosen.includes(p)||(p.exclusionGroup&&groups.has(p.exclusionGroup)))continue;chosen.push(p);if(p.exclusionGroup)groups.add(p.exclusionGroup);}return chosen.map(p=>p.id);}
+    function sampleDailyPolicies(day=game.day){const count=Math.min(Object.keys(Content.policies).length,BALANCE.policyCounts[Math.max(0,Math.min(4,day-1))]+(game.auditPolicyPenalty||0));const eligible=deterministicShuffle(Object.values(Content.policies).filter(p=>(p.minDay||1)<=day),(game.runSeed+day*7919)>>>0);const chosen=[],groups=new Set();const families=['reimbursement','billing','routine'];for(const family of families){const candidate=eligible.find(p=>p.family===family&&(!p.exclusionGroup||!groups.has(p.exclusionGroup)));if(candidate&&chosen.length<count){chosen.push(candidate);if(candidate.exclusionGroup)groups.add(candidate.exclusionGroup);}}for(const p of eligible){if(chosen.length>=count)break;if(chosen.includes(p)||(p.exclusionGroup&&groups.has(p.exclusionGroup)))continue;chosen.push(p);if(p.exclusionGroup)groups.add(p.exclusionGroup);}return chosen.map(p=>p.id);}
     function buildArrivalBag(){const junk=deterministicShuffle(JUNK_TEMPLATE_IDS,(game.runSeed+game.day*101)>>>0).slice(0,3);const normal=deterministicShuffle([...ORDINARY_ARRIVALS,...ORDINARY_ARRIVALS].slice(0,7),(game.runSeed+game.day*211)>>>0);return deterministicShuffle([...junk,...normal],(game.runSeed+game.day*307)>>>0);}
     function nextArrivalTemplate(){if(!game.arrivalBag?.length)game.arrivalBag=nextRandom()<BALANCE.junkShare?[JUNK_TEMPLATE_IDS[Math.floor(nextRandom()*JUNK_TEMPLATE_IDS.length)]]:[ORDINARY_ARRIVALS[Math.floor(nextRandom()*ORDINARY_ARRIVALS.length)]];return game.arrivalBag.shift();}
     function phishingThreshold(){return runtime.meta.unlockedUpgradeIds.includes('security_liaison')?2:BALANCE.phishingThreshold;}
@@ -701,17 +864,18 @@
     function projectedClose(){return game.cashTelemetry.priorClose+game.cashTelemetry.recognizedTaskRevenue-payroll()-operatingUpkeep();}
     function deleteCard(cardId){
       const card=game.cardsById[cardId];if(!card)return false;if(card.lockedByJobId){toast('Locked workflow cards cannot be deleted. Cancel the workflow first.');return false;}const t=tpl(card);removeCardFromLocation(cardId);
-      if(card.kind==='distraction'&&card.distractionType==='junk'){game.statistics.junkDeleted++;game.phishing.correctDeletedToday++;for(const clue of card.clueIds||[])if(!runtime.meta.discoveredJunkClueIds.includes(clue))runtime.meta.discoveredJunkClueIds.push(clue);log(`${cardName(card)} shredded as junk.`);toast(`Junk shredded · ${game.phishing.correctDeletedToday}/${phishingThreshold()} toward today’s security test.`);if(game.phishing.correctDeletedToday>=phishingThreshold()&&!game.phishing.rewardDelivered&&!game.phishing.rewardClaimed)game.phishing.rewardQueued=true;}
+      if(card.kind==='distraction'&&card.distractionType==='junk'){game.statistics.junkDeleted++;game.phishing.correctDeletedToday++;for(const clue of card.clueIds||[])if(!runtime.meta.discoveredJunkClueIds.includes(clue))runtime.meta.discoveredJunkClueIds.push(clue);log(`${cardName(card)} shredded as junk.`);toast(`Junk shredded · ${game.phishing.correctDeletedToday}/${phishingThreshold()} toward today’s security test.`);if(game.phishing.correctDeletedToday>=phishingThreshold()&&!game.phishing.rewardDelivered&&!game.phishing.rewardClaimed){game.phishing.rewardQueued=true;toast('The security-awareness threshold was met.',{tone:'security',title:'PHISHING TEST PASSED',consequence:'BUSYWORK-IT placed a reward notice in the Inbox; delete it to claim the stipend.'});}}
       else if(card.kind==='distraction'&&card.distractionType==='phishingReward'){game.cash+=BALANCE.phishingReward;game.statistics.phishingRewardsClaimed++;game.phishing.rewardClaimed=true;game.phishing.rewardDelivered=false;runtime.meta.complianceTokens++;log(`Security test reward claimed: $${BALANCE.phishingReward} and one Compliance Token.`);toast(`Phishing test passed · +$${BALANCE.phishingReward} · +1 Compliance Token.`);}
-      else if(card.kind==='employee'){game.statistics.employeesFired++;game.statistics.legitimateItemsDeleted++;game.cash-=BALANCE.firingCost;game.morale-=card.templateId==='manager'?12:8;game.executiveConfidence-=card.templateId==='manager'?10:4;log(`${cardName(card)} was fired through DELETE.`);toast(`${cardName(card)} fired · severance −$${BALANCE.firingCost}.`);}
+      else if(card.kind==='employee'){game.statistics.employeesFired++;game.statistics.legitimateItemsDeleted++;game.cash-=BALANCE.firingCost;adjustMorale(-(card.templateId==='manager'?12:8));game.executiveConfidence-=card.templateId==='manager'?10:4;log(`${cardName(card)} was fired through DELETE.`);badEvent('EMPLOYEE TERMINATED',`${cardName(card)} was fired through DELETE.`,`Severance −$${BALANCE.firingCost}; morale and confidence fell.`);}
       else {game.statistics.legitimateItemsDeleted++;if(card.kind==='task'||card.kind==='document'){applyExpiration(t);game.statistics.tasksExpired++;toast(`${cardName(card)} deleted · expiration consequences applied.`);}else{game.cash-=BALANCE.wasteCost;toast(`${cardName(card)} destroyed · waste −$${BALANCE.wasteCost}.`);}log(`${cardName(card)} deliberately deleted.`);}
-      delete game.cardsById[cardId];if(game.selected?.id===cardId)game.selected=null;if(game.phishing.rewardQueued)deliverPhishingReward();clampMeters();assertGameState();recordSnapshot(true);Store.save(true);markDirty();return true;
+      delete game.cardsById[cardId];if(game.selected?.id===cardId)game.selected=null;if(game.phishing.rewardQueued)deliverPhishingReward();recalculateMorale();clampMeters();assertGameState();recordSnapshot(true);Store.save(true);markDirty();return true;
     }
 
     // 05 COMMANDS / STATE TRANSITIONS
     function clampMeters() { game.morale=Math.max(0,Math.min(100,game.morale)); game.auditRisk=Math.max(0,Math.min(100,game.auditRisk)); game.executiveConfidence=Math.max(0,Math.min(100,game.executiveConfidence)); }
     function log(message) { if (!game) return; game.log.unshift({at:formatTime(dayRemaining()),message}); game.log=game.log.slice(0,80); }
-    function toast(message) { const node=document.createElement('div'); node.className='toast'; node.textContent=message; document.getElementById('toasts').append(node); setTimeout(()=>node.remove(),3200); document.getElementById('liveRegion').textContent=message; }
+    function toast(message,options={}) { const node=document.createElement('div');node.className=`toast ${options.tone||''}`;node.innerHTML=options.title?`<strong>${esc(options.title)}</strong><span>${esc(message)}${options.consequence?`<br>${esc(options.consequence)}`:''}</span>`:esc(message);document.getElementById('toasts').append(node);setTimeout(()=>node.remove(),options.tone?5200:3200);document.getElementById('liveRegion').textContent=[options.title,message,options.consequence].filter(Boolean).join('. '); }
+    function badEvent(title,description,consequence){toast(description,{tone:'bad',title,consequence});}
     function removeCardFromLocation(cardId) {
       const loc=locationOf(cardId); if(!loc)return;
       if(loc.stackId){ const stack=game.stacksById[loc.stackId]; const index=stack.cardIds.indexOf(cardId); stack.cardIds.splice(index,1); game.cardsById[cardId].stackId=null; if(!stack.cardIds.length){ game.columns[loc.columnId]=game.columns[loc.columnId].filter(id=>id!==stack.id); delete game.stacksById[stack.id]; } }
@@ -798,6 +962,7 @@
     }
     function generateDocument(recipe,producer) {
       const card=createCard(recipe.output,{ deadlineRemainingMs:90000 }); const template=tpl(card); card.tags=[...template.tags]; card.meta={reward:recipe.reward,producerId:producer?.id||null,recipeId:recipe.id,producerStress:producer?.stress||0,coverage:Boolean(recipe.coverage)};
+      if(recipe.regulatory)card.meta.regulatory=true;
       if(recipe.output==='verified_expense'){
         const amount=Math.round((90+nextRandom()*430)*100)/100; card.fields={ amount, receiptAttached:true, managerSigned:nextRandom()>.42, clientCode:nextRandom()<.16?'C-882':'C-'+(100+Math.floor(nextRandom()*700)) };
       } else if(recipe.output==='invoice_document') card.fields={ amount:750+Math.floor(nextRandom()*3500), clientCode:nextRandom()<.12?'C-882':'C-'+(100+Math.floor(nextRandom()*700)), terms:'Net 30', authorized:true };
@@ -817,65 +982,238 @@
       const documentCard=generateDocument(recipe,producer); game.columns.review.push(documentCard.id); game.statistics.tasksCompleted++;
       game.selected={type:'card',id:documentCard.id}; log(`${recipe.name} completed. Document routed to Review; ${cardName(producer)} remained in In Progress.`); toast(`Work complete · ${cardName(producer)} is still in In Progress. Move them to Backlog manually.`); recordSnapshot(true); assertGameState(); Store.save(true); markDirty();
     }
-    function ruleDocument(cardId,action) {
-      const card=game.cardsById[cardId]; if(!card||!game.columns.review.includes(cardId))return;
-      const approvable=isApprovable(card); const findings=evaluateDocument(card); let correct=false;
-      if(action==='approve'){ correct=approvable; game.cash+=card.meta.reward;recordTaskRevenuePoint(card.id,card.meta.reward); if(correct){game.executiveConfidence+=2;game.auditRisk-=1;}else{ const severity=findings.filter(f=>!f.passed).reduce((n,f)=>n+f.policy.severity,0); game.auditRisk+=severity;game.liabilities.push({documentId:card.id,severity}); } }
-      if(action==='reject'){ correct=!approvable; if(correct){game.executiveConfidence+=1;game.cash+=10;}else{game.morale-=2;game.executiveConfidence-=2;} }
-      if(action==='correct'){
-        if(card.fields.managerSigned===false&&card.fields.amount>300){toast('A missing manager signature requires the Manager worker or escalation.');return;}
-        if(card.fields.clientCode==='C-882'){toast('Client suspension cannot be corrected. Reject or escalate this document.');return;}
-        game.cash-=10; const producer=game.cardsById[card.meta.producerId]; if(producer)setEmployeeStress(producer,producer.copingId==='perfectionist'?8:6,'correction request');
-        const documentName=tpl(card).name;game.columns.review=game.columns.review.filter(id=>id!==cardId);card.stackId=null;convertDocumentToRework(card);createStack('backlog',[cardId]);game.selected={type:'card',id:cardId};log(`${documentName} returned as ${tpl(card).name} rework.`);toast(`Correction opened as ${tpl(card).name} · assign a worker and reprocess.`);clampMeters();resumeBlockedJobs();recordSnapshot(true);assertGameState();Store.save(true);markDirty();return;
+    function addLiability(card,severity,source){game.liabilities.push({documentId:card.id,severity:Math.max(1,severity),day:game.day,source});}
+    function approveDocument(card,producer,approvable,findings){
+      const payout=recognizedPayout(card);
+      game.cash+=payout;
+      recordTaskRevenuePoint(card.id,payout);
+      if(approvable){
+        game.executiveConfidence+=2;
+        game.auditRisk=Math.max(0,game.auditRisk-1);
+        if(producer)setEmployeeStress(producer,producer.copingId==='pleaser'?-8:-4,'accurate approval');
+        return true;
       }
-      if(action==='escalate'){ correct=true; game.cash-=25; game.cash+=Math.floor(card.meta.reward*.25); game.executiveConfidence-=1; }
+      const severity=findings.filter(finding=>!finding.passed).reduce((sum,finding)=>sum+finding.policy.severity,0);
+      game.auditRisk+=BALANCE.approveAuditPenalty;
+      addLiability(card,severity,'approved inaccurate work');
+      if(producer)setEmployeeStress(producer,producer.copingId==='pleaser'?12:8,'inaccurate work passed');
+      adjustMorale(-1);
+      badEvent('INACCURATE WORK PASSED',`${tpl(card).name} was approved despite a policy violation.`,`Cash +$${payout}, but +1 liability and audit chance +${BALANCE.approveAuditPenalty}%.`);
+      return false;
+    }
+    function rejectDocument(card,producer,approvable){
+      if(!approvable)return true;
+      addLiability(card,4,'accurate work wrongly rejected');
+      game.executiveConfidence-=2;
+      if(producer)setEmployeeStress(producer,BALANCE.rejectMissStress,'good work rejected');
+      const workerConsequence=producer?`; ${cardName(producer)} stress +${BALANCE.rejectMissStress}`:'';
+      badEvent('VALID WORK DESTROYED',`${tpl(card).name} was accurate but rejected.`,`+1 liability; Confidence −2${workerConsequence}.`);
+      return false;
+    }
+    function correctionBlockedReason(card){
+      if(card.fields.managerSigned===false&&card.fields.amount>300)return 'A missing manager signature requires the Manager worker or escalation.';
+      if(card.fields.clientCode==='C-882')return 'Client suspension cannot be corrected. Reject or escalate this document.';
+      return null;
+    }
+    function requestDocumentCorrection(card,producer,approvable){
+      const blockedReason=correctionBlockedReason(card);
+      if(blockedReason){toast(blockedReason);return false;}
+      const correct=!approvable;
+      const stress=correct?BALANCE.correctionStressHit:BALANCE.correctionStressMiss;
+      if(producer)setEmployeeStress(producer,stress,correct?'correction request':'unnecessary correction');
       game.statistics[correct?'correctRulings':'incorrectRulings']++;
-      const producer=game.cardsById[card.meta.producerId];if(producer){if(correct)setEmployeeStress(producer,producer.copingId==='pleaser'?-8:-4,'policy-aligned ruling');else{setEmployeeStress(producer,producer.copingId==='pleaser'?12:8,'incorrect ruling');game.morale-=1;}}
-      game.columns.review=game.columns.review.filter(id=>id!==cardId); game.columns.done.push(cardId); card.meta.ruling=action; card.meta.correct=correct; game.selected={type:'card',id:cardId};
-      card.deadlineRemainingMs=null;const rulingVerb={approve:'approved',reject:'rejected',escalate:'escalated'}[action]||action;
-      log(`${tpl(card).name} ${rulingVerb}. Ruling ${correct?'aligned with':'conflicted with'} active policy.`); toast(`${correct?'Policy-aligned':'Policy conflict'} · ruling recorded.`); clampMeters(); resumeBlockedJobs(); recordSnapshot(true); assertGameState(); Store.save(true); markDirty();
+      if(!correct)badEvent('UNNECESSARY CORRECTION',`${tpl(card).name} was already accurate.`,`The task returns with a shorter deadline${producer?`; ${cardName(producer)} stress +${stress}`:''}.`);
+      const documentName=tpl(card).name;
+      game.columns.review=game.columns.review.filter(id=>id!==card.id);
+      card.stackId=null;
+      convertDocumentToRework(card);
+      createStack('backlog',[card.id]);
+      game.selected={type:'card',id:card.id};
+      log(`${documentName} returned as ${tpl(card).name} rework.`);
+      toast(`Correction opened as ${tpl(card).name} · assign a worker and reprocess.`);
+      clampMeters();resumeBlockedJobs();recordSnapshot(true);assertGameState();Store.save(true);markDirty();
+      return true;
+    }
+    function escalateDocument(card){
+      game.executiveConfidence-=BALANCE.escalateConfidenceCost;
+      game.auditSeverityRelief=Math.min(.6,game.auditSeverityRelief+BALANCE.escalateSeverityRelief);
+      badEvent('WORK ESCALATED',`${tpl(card).name} was moved out of your queue.`,`Confidence −${BALANCE.escalateConfidenceCost}; future audit severity −${Math.round(BALANCE.escalateSeverityRelief*100)}%.`);
+    }
+    function finalizeDocumentRuling(card,action,correct){
+      game.statistics[correct?'correctRulings':'incorrectRulings']++;
+      game.columns.review=game.columns.review.filter(id=>id!==card.id);
+      game.columns.done.push(card.id);
+      card.meta.ruling=action;
+      card.meta.correct=correct;
+      card.deadlineRemainingMs=null;
+      game.selected={type:'card',id:card.id};
+      const rulingVerb={approve:'approved',reject:'rejected',escalate:'escalated'}[action];
+      log(`${tpl(card).name} ${rulingVerb}. Ruling ${correct?'aligned with':'conflicted with'} active policy.`);
+      toast(`${action==='escalate'?'Escalated':correct?'Policy-aligned':'Policy conflict'} · ruling recorded.`);
+      clampMeters();resumeBlockedJobs();recordSnapshot(true);assertGameState();Store.save(true);markDirty();
+    }
+    function ruleDocument(cardId,action) {
+      const card=game.cardsById[cardId];
+      if(!card||!game.columns.review.includes(cardId)||!['approve','reject','correct','escalate'].includes(action))return false;
+      const approvable=isApprovable(card);
+      const producer=game.cardsById[card.meta.producerId];
+      if(action==='correct')return requestDocumentCorrection(card,producer,approvable);
+      const correct=action==='approve'?approveDocument(card,producer,approvable,evaluateDocument(card)):action==='reject'?rejectDocument(card,producer,approvable):true;
+      if(action==='escalate')escalateDocument(card);
+      finalizeDocumentRuling(card,action,correct);
+      return true;
     }
     function resumeBlockedJobs(){Object.values(game.jobsById).filter(j=>j.status==='blockedReview').slice(0,Math.max(0,5-reviewDocumentCount())).forEach(j=>{j.status='processing';completeJob(j);});}
     function drawCard(){const templateId=nextArrivalTemplate();if(game.columns.inbox.length>=COLUMN_META.inbox.capacity){const oldest=game.columns.inbox[0];const card=stackTop(game.stacksById[oldest]);expireCard(card.id);game.statistics.inboxOverflows++;toast('Inbox overflow displaced the oldest item.');}const card=createCard(templateId);createStack('inbox',[card.id]);game.arrivalSequence++;game.recentArrivalTemplateIds.push(templateId);game.recentArrivalTemplateIds=game.recentArrivalTemplateIds.slice(-12);const kind=card.kind==='distraction'?card.distractionType:card.kind;game.statistics.arrivalsByKind[kind]=(game.statistics.arrivalsByKind[kind]||0)+1;log(`${Content.cards[templateId].name} arrived in Inbox.`);markDirty();Store.save(true);return card; }
-    function expireCard(cardId){const card=game.cardsById[cardId],t=tpl(card);removeCardFromLocation(cardId);applyExpiration(t);delete game.cardsById[cardId];if(card.kind==='task'||card.kind==='document'){game.statistics.tasksExpired++;log(`${t.name} exceeded its recommended visibility window.`);}else log(`${t.name} was displaced by inbox overflow.`);clampMeters();recordSnapshot(true);}
+    function expireCard(cardId){const card=game.cardsById[cardId],t=tpl(card);removeCardFromLocation(cardId);applyExpiration(t);delete game.cardsById[cardId];if(card.kind==='task'||card.kind==='document'){game.statistics.tasksExpired++;game.executiveConfidence-=BALANCE.deadlineConfidencePenalty;game.auditSeverityPenalty+=BALANCE.deadlineSeverityPenalty;log(`${t.name} missed its deadline.`);badEvent('DEADLINE MISSED',`${t.name} ran out of time.`,`Confidence −${BALANCE.deadlineConfidencePenalty}; future audit severity +${Math.round(BALANCE.deadlineSeverityPenalty*100)}%.`);}else log(`${t.name} was displaced by inbox overflow.`);clampMeters();recordSnapshot(true);}
     function togglePause(){ if(game.mode==='playing')game.mode='paused';else if(game.mode==='paused')game.mode='playing';runtime.lastFrame=performance.now();markDirty(); }
     function operatingUpkeep(){return 35+(game.development==='wellness'?15:0);}
+    function companySnapshot(){return {cash:Math.round(game.cash),morale:Math.round(game.morale),audit:Math.round(game.auditRisk),confidence:Math.round(game.executiveConfidence)};}
+    function companyScore(snapshot=companySnapshot()){
+      const clamp=value=>Math.max(0,Math.min(100,value));
+      const cash=clamp((snapshot.cash+100)/5),morale=clamp(snapshot.morale),safety=clamp(100-snapshot.audit),confidence=clamp(snapshot.confidence);
+      return Math.round((cash*.30)+(morale*.25)+(safety*.25)+(confidence*.20));
+    }
+    function scoreBand(score){return score>=75?{label:'Strong',tone:'good',text:'You have room to invest without immediate survival pressure.'}:score>=55?{label:'Stable',tone:'good',text:'The company is viable, but one weak metric can still change the quarter.'}:score>=35?{label:'At risk',tone:'watch',text:'Use the next decision to protect the weakest company metric.'}:{label:'Critical',tone:'critical',text:'A failure threshold is close. Stabilization should outrank growth.'};}
+    function metricBand(key,value){
+      if(key==='cash'){const runway=value-payroll()-operatingUpkeep();return runway<0?{label:'Deficit',tone:'critical',note:`Next payroll + upkeep leaves $${runway}. Avoid discretionary spending.`}:runway<100?{label:'Thin',tone:'watch',note:`Next payroll + upkeep leaves only $${runway}.`}:{label:'Funded',tone:'good',note:`Next payroll + upkeep leaves $${runway} for operating choices.`};}
+      if(key==='morale')return value<20?{label:'Crisis',tone:'critical',note:'Severe workforce stress is imposing a 30% productivity penalty.'}:value<40?{label:'Fragile',tone:'risk',note:'Productivity is −15% while morale remains below 40.'}:value<65?{label:'Steady',tone:'watch',note:'Morale is derived from average stress, sweet-spot time, and event modifiers.'}:value<80?{label:'Healthy',tone:'good',note:'Morale is providing a +5% productivity bonus.'}:{label:'Strong',tone:'good',note:'Morale is providing a +10% productivity bonus.'};
+      if(key==='audit')return value>=70?{label:'Severe',tone:'critical',note:`There is a ${value}% nightly audit chance; repeated failures multiply severity.`}:value>=45?{label:'Exposed',tone:'risk',note:`There is a ${value}% nightly audit chance. Liabilities determine finding odds.`}:value>=25?{label:'Baseline',tone:'watch',note:`There is a ${value}% nightly audit chance. Training can reduce it.`}:{label:'Reduced',tone:'good',note:`There is a ${value}% nightly audit chance after mitigation.`};
+      return value<15?{label:'Termination risk',tone:'critical',note:'Employment terminates at 0 confidence.'}:value<40?{label:'Vulnerable',tone:'risk',note:'Quarterly promotion requires at least 40 confidence.'}:value<70?{label:'Stable',tone:'watch',note:'Above the 40-point quarterly requirement; mistakes can still erode it.'}:{label:'Strong',tone:'good',note:'Confidence is comfortably above the quarterly requirement.'};
+    }
+    function companyDashboardHtml(snapshot=companySnapshot(),baseline=null,heading='Company standing'){
+      const score=companyScore(snapshot),band=scoreBand(score),labels={cash:'Cash',morale:'Morale',audit:'Audit risk',confidence:'Confidence'},values={cash:`$${snapshot.cash}`,morale:`${snapshot.morale}`,audit:`${snapshot.audit}%`,confidence:`${snapshot.confidence}`};
+      const cards=Object.keys(labels).map(key=>{const metric=metricBand(key,snapshot[key]),difference=baseline?Math.round(snapshot[key]-baseline[key]):null,goodDirection=key==='audit'?-1:1,deltaClass=difference===0?'delta-flat':difference*goodDirection>0?'delta-good':'delta-bad',deltaValue=difference==null?'':key==='cash'?`${difference>0?'+':difference<0?'-':''}$${Math.abs(difference)}`:`${difference>0?'+':''}${difference}${key==='audit'?' pts':''}`,delta=difference==null?'':`<small class="${deltaClass}">${deltaValue}</small>`;return `<div class="company-metric tone-${metric.tone}"><div class="company-metric-head"><span>${labels[key]}</span><em>${metric.label}</em></div><div class="company-metric-value"><strong>${values[key]}</strong>${delta}</div><p>${metric.note}</p></div>`;}).join('');
+      return `<section class="company-dashboard" aria-label="${heading}"><div class="company-score tone-${band.tone}"><div class="company-score-value">${score}<small>/100</small></div><div class="company-score-copy"><strong>${heading} · ${band.label}</strong><span>${band.text}</span></div></div><div class="company-metrics">${cards}</div></section>`;
+    }
     function dailyDrawInterval(){return BALANCE.arrivalIntervals[Math.max(0,Math.min(4,game.day-1))];}
-    function runFailure(){if(game.executiveConfidence<=0)return 'Employment Terminated';if(game.morale<=0)return 'Company-Wide Walkout';if(game.cash< -100)return 'Insolvency';if(game.liabilities.length>3&&game.cash<0)return 'Regulatory Intervention';return null;}
+    function runFailure(){if(game.criticalAuditFailure)return 'Critical Audit Failure';if(game.executiveConfidence<=0)return 'Board Confidence Lost';if(game.cash<=0)return 'Insolvency';return null;}
+    function auditFindingChance(){
+      const errorRate=Math.min(1,game.liabilities.length/Math.max(1,game.day));
+      const confidenceProtection=game.executiveConfidence/200;
+      return Math.max(0,errorRate*(1-confidenceProtection));
+    }
+    function auditSeverityMultiplier(){return Math.max(.5,1+(game.auditFailCount-1)*.5+game.auditSeverityPenalty-game.auditSeverityRelief-(game.executiveConfidence/250));}
+    function applyFailedAudit(){
+      game.auditFailCount++;
+      const multiplier=auditSeverityMultiplier();
+      const severityTotal=game.liabilities.reduce((sum,item)=>sum+(item.severity||5),0);
+      const fine=Math.max(15,Math.round(severityTotal*3*multiplier));
+      const confidencePenalty=6+game.auditFailCount*2;
+      const findings=game.liabilities.length;
+      game.cash-=fine;
+      game.executiveConfidence-=confidencePenalty;
+      game.auditPolicyPenalty=2;
+      game.regulatoryTaskBomb+=BALANCE.regulatoryBombSize;
+      game.auditRisk=Math.min(100,BALANCE.baseAuditChance+game.auditFailCount*8);
+      game.liabilities=[];
+      game.auditSeverityPenalty=Math.max(0,game.auditSeverityPenalty-.1);
+      game.criticalAuditFailure=game.auditFailCount>=3||fine>=225;
+      const consequence=`Fine −$${fine}; Confidence −${confidencePenalty}; +2 active policies; ${BALANCE.regulatoryBombSize} unpaid regulatory tasks tomorrow.${game.criticalAuditFailure?' Critical failure ends the run.':''}`;
+      log(`Audit failure ${game.auditFailCount}: ${findings} finding${findings===1?'':'s'}, severity ×${multiplier.toFixed(2)}.`);
+      badEvent(game.criticalAuditFailure?'CRITICAL AUDIT FAILURE':'AUDIT FAILED',`${findings} liability finding${findings===1?' was':'s were'} confirmed at severity ×${multiplier.toFixed(2)}.`,consequence);
+      return `FAILED · ${findings} finding${findings===1?'':'s'} · severity ×${multiplier.toFixed(2)} · −$${fine}.`;
+    }
     function settleAudit(){
-      if(game.auditRisk<50)return null;const chance=(game.auditRisk-40)/100;if(nextRandom()>=chance)return `Audit roll cleared (${Math.round(chance*100)}% exposure).`;
-      const violations=game.liabilities.length,fine=game.liabilities.reduce((sum,item)=>sum+(item.severity||5)*4,0);game.cash-=fine;game.executiveConfidence-=violations*2;if(violations){game.auditRisk=20+(violations*3);log(`Audit confirmed ${violations} violation${violations===1?'':'s'} and assessed $${fine}.`);return `Audit confirmed ${violations} violation${violations===1?'':'s'} · −$${fine}.`;}game.executiveConfidence+=3;game.auditRisk=10;return 'Audit found no violations · confidence +3.';
+      const auditChance=Math.max(0,Math.min(100,game.auditRisk))/100;
+      if(nextRandom()>=auditChance)return `No audit tonight (${Math.round(auditChance*100)}% chance).`;
+      const findingChance=auditFindingChance();
+      if(!game.liabilities.length||nextRandom()>=findingChance){
+        game.executiveConfidence+=2;
+        game.auditRisk=BALANCE.baseAuditChance;
+        log('Night audit found no reportable issues.');
+        return `Audit cleared · ${Math.round(findingChance*100)}% finding chance · confidence +2.`;
+      }
+      return applyFailedAudit();
     }
     function addOpeningCard(templateId){if(game.columns.inbox.length>=COLUMN_META.inbox.capacity){const oldest=game.columns.inbox[0],card=stackTop(game.stacksById[oldest]);expireCard(card.id);}createStack('inbox',[createCard(templateId).id]);}
-    function prepareNextDay(){
-      game.columns.done.forEach(id=>delete game.cardsById[id]);game.columns.done=[];game.day++;game.dayElapsedMs=0;game.drawElapsedMs=0;game.lastHistoryAt=-Infinity;game.dailyInternIntervention=false;game.previousPolicyIds=[...game.activePolicyIds];game.activePolicyIds=sampleDailyPolicies(game.day);game.arrivalBag=buildArrivalBag();game.arrivalSequence=0;game.phishing={correctDeletedToday:0,rewardQueued:false,rewardDelivered:false,rewardClaimed:false,freeCheckInUsed:false};game.cashTelemetry={priorClose:game.cash,recognizedTaskRevenue:0,currentDayPoints:[],dailySeries:(game.cashTelemetry.dailySeries||[]).slice(-5)};Object.values(game.jobsById).forEach(job=>{job.interventionChain=0;job.lastInterventionAtMs=0;});runtime.lastRhythmRender=0;runtime.lastProgressRender=0;
-      const employees=Object.values(game.cardsById).filter(card=>card.kind==='employee');employees.forEach(card=>{const recovery=10+Math.round((100-card.preferredWorkPct)*.08)+(game.development==='wellness'?8:0);if(card.burnedOutUntilDay&&game.day>card.burnedOutUntilDay){card.burnedOutUntilDay=0;card.conditionId=null;card.stress=Math.min(65,card.stress);card.stressBand=card.stress>=50?1:0;log(`${tpl(card).name} returned from burnout leave.`);}else setEmployeeStress(card,-(card.burnedOutUntilDay>=game.day?recovery*.5:recovery),'overnight recovery');card.workedMsToday=0;card.idleMsToday=0;card.rhythm=Math.min(100,card.rhythm+8);if(game.development==='standups'&&employeeAvailable(card))setEmployeeStress(card,4,'mandatory standup');});if(game.development==='lean')game.morale=Math.max(0,game.morale-3);
-      const openings={2:['expense_report','receipt'],3:['invoice_request','spreadsheet'],4:['data_entry_request','spreadsheet'],5:['expense_report','receipt']}[game.day]||[];openings.forEach(addOpeningCard);game.dayOpeningCash=game.cash;game.mode='briefing';game.selected=null;recordSnapshot(true);log(`Day ${game.day} briefing issued.`);clampMeters();Store.save(true);renderDayBriefing();markDirty();
+    function resetForNewDay(){
+      game.columns.done.forEach(id=>delete game.cardsById[id]);
+      game.columns.done=[];
+      game.day++;
+      game.dayElapsedMs=0;
+      game.drawElapsedMs=0;
+      game.lastHistoryAt=-Infinity;
+      game.dailyInternIntervention=false;
+      game.previousPolicyIds=[...game.activePolicyIds];
+      game.activePolicyIds=sampleDailyPolicies(game.day);
+      game.auditPolicyPenalty=0;
+      game.arrivalBag=buildArrivalBag();
+      game.arrivalSequence=0;
+      game.phishing=freshPhishingState();
+      game.cashTelemetry=freshCashTelemetry(game.cash,game.cashTelemetry.dailySeries||[]);
+      Object.values(game.jobsById).forEach(job=>{job.interventionChain=0;job.lastInterventionAtMs=0;});
+      runtime.lastRhythmRender=0;
+      runtime.lastProgressRender=0;
     }
-    function renderDayBriefing(){const [title,text]=DAY_BRIEFINGS[game.day],added=game.activePolicyIds.filter(id=>!game.previousPolicyIds.includes(id)),removed=game.previousPolicyIds.filter(id=>!game.activePolicyIds.includes(id));document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">Day ${game.day} briefing</div><h2>${esc(title)}</h2><p>${esc(text)}</p><div class="brief"><strong>Opening cash:</strong> $${game.cash}<br><strong>Projected payroll:</strong> $${payroll()}/day<br><strong>Inbox:</strong> ${game.columns.inbox.length} / ${COLUMN_META.inbox.capacity} stacks<br><strong>Policies active:</strong> ${game.activePolicyIds.length}<br><strong>Added:</strong> ${added.map(id=>esc(Content.policies[id].title)).join(', ')||'None'}<br><strong>Removed:</strong> ${removed.map(id=>esc(Content.policies[id].title)).join(', ')||'None'}</div>${View.policiesHtml()}<div class="modal-actions"><button class="btn primary" id="beginNextDayBtn">Begin Day ${game.day}</button></div>`;}
-    function chooseOvernight(action){if(game.mode!=='dayEnd')return;if(action==='pizza'){game.cash-=35;game.morale+=8;Object.values(game.cardsById).filter(c=>c.kind==='employee').forEach(c=>setEmployeeStress(c,-5,'pizza party'));log('Overnight action: pizza party.');}if(action==='training'){game.cash-=25;game.auditRisk-=8;log('Overnight action: compliance training.');}if(action==='quiet'){Object.values(game.cardsById).filter(c=>c.kind==='employee').forEach(c=>setEmployeeStress(c,-8,'quiet recovery'));game.executiveConfidence-=1;log('Overnight action: quiet recovery.');}clampMeters();prepareNextDay();}
+    function recoverEmployeeOvernight(card){
+      const recovery=10+Math.round((100-card.preferredWorkPct)*.08)+(game.development==='wellness'?8:0);
+      if(card.burnedOutUntilDay&&game.day>card.burnedOutUntilDay){
+        card.burnedOutUntilDay=0;
+        card.conditionId=null;
+        card.stress=Math.min(65,card.stress);
+        card.stressBand=card.stress>=50?1:0;
+        log(`${tpl(card).name} returned from burnout leave.`);
+      }else setEmployeeStress(card,-(card.burnedOutUntilDay>=game.day?recovery*.5:recovery),'overnight recovery');
+      card.workedMsToday=0;
+      card.idleMsToday=0;
+      card.rhythm=Math.min(100,card.rhythm+8);
+      if(game.development==='standups'&&employeeAvailable(card))setEmployeeStress(card,4,'mandatory standup');
+    }
+    function addMorningWork(){
+      const scheduled={2:['expense_report','receipt'],3:['invoice_request','spreadsheet'],4:['data_entry_request','spreadsheet'],5:['expense_report','receipt']}[game.day]||[];
+      scheduled.forEach(addOpeningCard);
+      while(game.regulatoryTaskBomb>0){addOpeningCard('regulatory_response');game.regulatoryTaskBomb--;}
+    }
+    function prepareNextDay(){
+      resetForNewDay();
+      Object.values(game.cardsById).filter(card=>card.kind==='employee').forEach(recoverEmployeeOvernight);
+      if(game.development==='lean')adjustMorale(-3);
+      addMorningWork();
+      game.dayOpeningCash=game.cash;
+      game.dayOpeningState=companySnapshot();
+      game.mode='briefing';
+      game.selected=null;
+      recordSnapshot(true);
+      log(`Day ${game.day} briefing issued.`);
+      clampMeters();Store.save(true);renderDayBriefing();markDirty();
+    }
+    function resetDecisionDialogScroll(){const dialog=document.getElementById('dayEndDialog');dialog.scrollTop=0;requestAnimationFrame(()=>dialog.scrollTop=0);}
+    function renderDayBriefing(){const [title,text]=DAY_BRIEFINGS[game.day],added=game.activePolicyIds.filter(id=>!game.previousPolicyIds.includes(id)),removed=game.previousPolicyIds.filter(id=>!game.activePolicyIds.includes(id)),priorClose=game.daySummaries.at(-1)?.closingState||null;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">Day ${game.day} briefing</div><h2>${esc(title)}</h2><p>${esc(text)}</p>${companyDashboardHtml(companySnapshot(),priorClose,'Opening company position')}<div class="brief"><strong>Projected payroll:</strong> $${payroll()}/day<br><strong>Operating upkeep:</strong> $${operatingUpkeep()}/day<br><strong>Inbox:</strong> ${game.columns.inbox.length} / ${COLUMN_META.inbox.capacity} stacks<br><strong>Policies active:</strong> ${game.activePolicyIds.length}<br><strong>Added:</strong> ${added.map(id=>esc(Content.policies[id].title)).join(', ')||'None'}<br><strong>Removed:</strong> ${removed.map(id=>esc(Content.policies[id].title)).join(', ')||'None'}</div>${View.policiesHtml()}<div class="modal-actions"><button class="btn primary" id="beginNextDayBtn">Begin Day ${game.day}</button></div>`;resetDecisionDialogScroll();}
+    function chooseOvernight(action){
+      if(game.mode!=='dayEnd'||game.day===3||!['pizza','training','quiet'].includes(action))return false;
+      const employees=Object.values(game.cardsById).filter(card=>card.kind==='employee');
+      if(action==='pizza'){
+        game.cash-=35;adjustMorale(8);employees.forEach(card=>setEmployeeStress(card,-5,'pizza party'));log('Overnight action: pizza party.');
+      }else if(action==='training'){
+        game.cash-=25;game.auditRisk-=8;log('Overnight action: compliance training.');
+      }else{
+        employees.forEach(card=>setEmployeeStress(card,-8,'quiet recovery'));game.executiveConfidence-=1;log('Overnight action: quiet recovery.');
+      }
+      clampMeters();prepareNextDay();return true;
+    }
     function hireEmployee(templateId){
-      const option=templateId==='manager'?{cost:90,title:'Acting Manager',pitch:'Restores approval and check-in authority.'}:HIRING_OPTIONS[templateId];if(game.mode!=='dayEnd'||!option)return false;
+      const option=templateId==='manager'?{cost:90,title:'Acting Manager',pitch:'Restores approval and check-in authority.'}:HIRING_OPTIONS[templateId];if(game.mode!=='dayEnd'||game.day===3||!option)return false;
       const employeeCount=Object.values(game.cardsById).filter(c=>c.kind==='employee').length;if(employeeCount>=8){toast('The regional roster is capped at eight employees.');return false;}
       if(game.columns.backlog.length>=COLUMN_META.backlog.capacity){toast('Clear a Backlog slot before hiring.');return false;}
       if(game.cash<option.cost){toast(`${option.title} recruitment requires $${option.cost}.`);return false;}
       if(templateId==='manager'&&Object.values(game.cardsById).some(c=>c.templateId==='manager'))return false;const roleNumber=Object.values(game.cardsById).filter(c=>c.templateId===templateId).length+1;game.cash-=option.cost;const employee=createCard(templateId,{meta:{employeeLabel:templateId==='manager'?'Acting Manager':`${Content.cards[templateId].name} ${roleNumber}`,hiredDay:game.day}});createStack('backlog',[employee.id]);
       log(`Hired ${cardName(employee)} for $${option.cost}; payroll increased by $${tpl(employee).salary}/day.`);toast(`${cardName(employee)} hired · joins tomorrow · payroll +$${tpl(employee).salary}/day.`);prepareNextDay();return true;
     }
-    function chooseDevelopment(action){if(game.mode!=='dayEnd'||game.day!==3)return;game.development=action;log(`Company development selected: ${{standups:'Mandatory Standups',lean:'Lean Operations',wellness:'Wellness Initiative'}[action]}.`);prepareNextDay();}
+    function chooseDevelopment(action){const names={standups:'Mandatory Standups',lean:'Lean Operations',wellness:'Wellness Initiative'};if(game.mode!=='dayEnd'||game.day!==3||!names[action])return false;game.development=action;log(`Company development selected: ${names[action]}.`);prepareNextDay();return true;}
     function renderDayEnd(summary){
       const employeeCount=Object.values(game.cardsById).filter(c=>c.kind==='employee').length,hasManager=Object.values(game.cardsById).some(c=>c.templateId==='manager'),rosterFull=employeeCount>=8||game.columns.backlog.length>=COLUMN_META.backlog.capacity,options={...HIRING_OPTIONS,...(!hasManager?{manager:{cost:90,title:'Acting Manager',pitch:'Restores approval and check-in authority.'}}:{})};const hiring=`<div class="section" style="margin-top:14px"><h3>Recruit overnight</h3><p>Hiring replaces tonight’s operating action. Recruitment is paid now; salary joins every future payroll.</p><div class="ruling-grid">${Object.entries(options).map(([templateId,option])=>{const template=Content.cards[templateId],disabled=rosterFull||game.cash<option.cost,stats=STAT_BASELINES[templateId];return `<button class="btn" data-hire="${templateId}" ${disabled?'disabled':''}><strong>${option.title} · $${option.cost}</strong><br><small>${option.pitch}<br>${stats.accuracy}/${stats.speed}/${stats.resilience} base pips · $${template.salary}/day</small></button>`;}).join('')}</div>${rosterFull?'<p>Hiring unavailable: clear Backlog space or remain below eight employees.</p>':''}</div>`;
       const choice=game.day===3?`<p>Choose the operating model for Days 4–5.</p><div class="ruling-grid"><button class="btn" data-development="standups"><strong>Mandatory Standups</strong><br><small>+10% speed · +4 morning stress</small></button><button class="btn" data-development="lean"><strong>Lean Operations</strong><br><small>+20% speed · −3 morning morale</small></button><button class="btn" data-development="wellness"><strong>Wellness Initiative</strong><br><small>+8 recovery · +$15 upkeep</small></button></div><p>Recruiting is unavailable during strategic planning night.</p>`:`<p>Choose tonight’s operating action.</p><div class="ruling-grid"><button class="btn" data-overnight="pizza"><strong>Pizza Party</strong><br><small>−$35 · morale +8 · extra recovery</small></button><button class="btn" data-overnight="training"><strong>Compliance Training</strong><br><small>−$25 · audit risk −8</small></button><button class="btn" data-overnight="quiet"><strong>Quiet Recovery</strong><br><small>Free · stress −8 · confidence −1</small></button></div>${hiring}`;
-      const points=summary.cashPoints?.length?summary.cashPoints:[{projected:summary.priorClose-summary.payroll-summary.upkeep},{projected:summary.finalProjection}],values=points.map(p=>p.projected),min=Math.min(...values,summary.closingCash)-20,max=Math.max(...values,summary.closingCash)+20;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">End of Day ${summary.day}</div><h2>Operating close</h2><p>Payroll and operating upkeep have been settled.</p>${View.lineChartSvg(points.map((p,i)=>({...p,actual:i===points.length-1?summary.closingCash:null})),[{key:'projected',cls:'projected',label:'Projected close'},{key:'actual',cls:'actual',label:'Actual close'}],min,max,'Task-revenue projection','Projection events and actual daily close.',v=>`$${Math.round(v)}`)}<div class="brief"><strong>Opening cash:</strong> $${summary.openingCash}<br><strong>Recognized task revenue:</strong> +$${summary.recognizedTaskRevenue}<br><strong>Discretionary / other:</strong> ${summary.discretionary>=0?'+':''}$${summary.discretionary}<br><strong>Payroll:</strong> −$${summary.payroll}<br><strong>Operations:</strong> −$${summary.upkeep}<br><strong>Closing cash:</strong> $${summary.closingCash}<br><strong>Resolved today:</strong> ${summary.resolved}${summary.audit?`<br><strong>Audit:</strong> ${esc(summary.audit)}`:''}</div>${choice}`;
+      const points=summary.cashPoints?.length?summary.cashPoints:[{projected:summary.priorClose-summary.payroll-summary.upkeep},{projected:summary.finalProjection}],values=points.map(p=>p.projected),min=Math.min(...values,summary.closingCash)-20,max=Math.max(...values,summary.closingCash)+20,closingState=summary.closingState||companySnapshot(),openingState=summary.openingState||{cash:summary.openingCash,morale:closingState.morale,audit:closingState.audit,confidence:closingState.confidence},discretionaryCash=`${summary.discretionary<0?'-':''}$${Math.abs(summary.discretionary)}`;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">End of Day ${summary.day}</div><h2>Operating close</h2><p>Payroll and operating upkeep have been settled.</p>${companyDashboardHtml(closingState,openingState,'Closing company position')}${View.lineChartSvg(points.map((p,i)=>({...p,actual:i===points.length-1?summary.closingCash:null})),[{key:'projected',cls:'projected',label:'Projected close'},{key:'actual',cls:'actual',label:'Actual close'}],min,max,'Task-revenue projection','Projection events and actual daily close.',v=>`$${Math.round(v)}`)}<div class="brief"><strong>Opening cash:</strong> $${summary.openingCash}<br><strong>Recognized task revenue:</strong> +$${summary.recognizedTaskRevenue}<br><strong>Discretionary / other:</strong> ${summary.discretionary>=0?'+':''}${discretionaryCash}<br><strong>Payroll:</strong> −$${summary.payroll}<br><strong>Operations:</strong> −$${summary.upkeep}<br><strong>Closing cash:</strong> $${summary.closingCash}<br><strong>Resolved today:</strong> ${summary.resolved}${summary.audit?`<br><strong>Audit:</strong> ${esc(summary.audit)}`:''}</div>${choice}`;resetDecisionDialogScroll();
     }
     function renderRunEnd(reason=null){
       game.mode='runEnd';const correct=game.statistics.correctRulings,violations=game.liabilities.length,promoted=!reason&&game.executiveConfidence>=40&&game.cash>=300&&correct>=12&&violations<=3;const title=reason|| (promoted?'Quarterly Promotion':'Performance Improvement Plan');const xp=Math.max(0,5+Math.floor(correct/3)-game.statistics.incorrectRulings-Math.floor(game.statistics.tasksExpired/2));if(!game.metaAwarded){runtime.meta.processXp+=xp;game.metaAwarded=true;saveMeta();}
-      const quarter=game.daySummaries.map(s=>({day:s.day,elapsedMs:300000,opening:s.openingCash,projected:s.finalProjection,actual:s.closingCash})),qValues=quarter.flatMap(p=>[p.opening,p.projected,p.actual]).filter(Number.isFinite),qMin=Math.min(...qValues,game.cash)-30,qMax=Math.max(...qValues,game.cash)+30;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">Quarterly review</div><h2>${esc(title)}</h2><p>${promoted?'The committee has determined that your administrative output qualifies as leadership.':reason?'The quarter ended before review requirements were met.':'The company survives, but the committee requires measurable improvement next quarter.'}</p>${quarter.length?View.lineChartSvg(quarter,[{key:'opening',cls:'prior',label:'Opening cash'},{key:'projected',cls:'projected',label:'Final projection'},{key:'actual',cls:'actual',label:'Actual close'}],qMin,qMax,'Five-day cash performance','Opening cash, final task-revenue projection, and actual close by day.',v=>`$${Math.round(v)}`):''}<div class="chart-legend"><span style="--legend-color:var(--muted)">Opening</span><span style="--legend-color:var(--success)">Projection</span><span style="--legend-color:var(--purple)">Actual</span></div><div class="brief"><strong>Cash:</strong> $${game.cash}<br><strong>Correct rulings:</strong> ${correct}<br><strong>Incorrect rulings:</strong> ${game.statistics.incorrectRulings}<br><strong>Tasks completed:</strong> ${game.statistics.tasksCompleted}<br><strong>Tasks expired:</strong> ${game.statistics.tasksExpired}<br><strong>Security rewards:</strong> ${game.statistics.phishingRewardsClaimed} · <strong>Employees fired:</strong> ${game.statistics.employeesFired}<br><strong>Legitimate deletions:</strong> ${game.statistics.legitimateItemsDeleted}<br><strong>Morale / confidence:</strong> ${Math.round(game.morale)} / ${Math.round(game.executiveConfidence)}<br><strong>Open violations:</strong> ${violations}<br><strong>Process XP earned:</strong> ${xp}<br><strong>Available:</strong> ${runtime.meta.processXp} XP · ${runtime.meta.complianceTokens} Compliance Tokens</div><h3>Process maturity</h3><div class="upgrade-grid">${Object.entries(UPGRADES).map(([id,u])=>upgradeNodeHtml(id,u)).join('')}</div><div class="modal-actions"><button class="btn primary" id="summaryNewRunBtn">Start a new quarter</button></div>`;Store.save(true);markDirty();
+      const quarter=game.daySummaries.map(s=>({day:s.day,elapsedMs:300000,opening:s.openingCash,projected:s.finalProjection,actual:s.closingCash})),qValues=quarter.flatMap(p=>[p.opening,p.projected,p.actual]).filter(Number.isFinite),qMin=Math.min(...qValues,game.cash)-30,qMax=Math.max(...qValues,game.cash)+30;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">Quarterly review</div><h2>${esc(title)}</h2><p>${promoted?'The committee has determined that your administrative output qualifies as leadership.':reason?'The quarter ended before review requirements were met.':'The company survives, but the committee requires measurable improvement next quarter.'}</p>${companyDashboardHtml(companySnapshot(),game.daySummaries.at(-1)?.openingState||null,'Quarterly company position')}${quarter.length?View.lineChartSvg(quarter,[{key:'opening',cls:'prior',label:'Opening cash'},{key:'projected',cls:'projected',label:'Final projection'},{key:'actual',cls:'actual',label:'Actual close'}],qMin,qMax,'Five-day cash performance','Opening cash, final task-revenue projection, and actual close by day.',v=>`$${Math.round(v)}`):''}<div class="chart-legend"><span style="--legend-color:var(--muted)">Opening</span><span style="--legend-color:var(--success)">Projection</span><span style="--legend-color:var(--purple)">Actual</span></div><div class="brief"><strong>Cash:</strong> $${game.cash}<br><strong>Correct rulings:</strong> ${correct}<br><strong>Incorrect rulings:</strong> ${game.statistics.incorrectRulings}<br><strong>Tasks completed:</strong> ${game.statistics.tasksCompleted}<br><strong>Tasks expired:</strong> ${game.statistics.tasksExpired}<br><strong>Security rewards:</strong> ${game.statistics.phishingRewardsClaimed} · <strong>Employees fired:</strong> ${game.statistics.employeesFired}<br><strong>Legitimate deletions:</strong> ${game.statistics.legitimateItemsDeleted}<br><strong>Morale / confidence:</strong> ${Math.round(game.morale)} / ${Math.round(game.executiveConfidence)}<br><strong>Open violations:</strong> ${violations}<br><strong>Process XP earned:</strong> ${xp}<br><strong>Available:</strong> ${runtime.meta.processXp} XP · ${runtime.meta.complianceTokens} Compliance Tokens</div><h3>Process maturity</h3><div class="upgrade-grid">${Object.entries(UPGRADES).map(([id,u])=>upgradeNodeHtml(id,u)).join('')}</div><div class="modal-actions"><button class="btn primary" id="summaryNewRunBtn">Start a new quarter</button></div>`;resetDecisionDialogScroll();Store.save(true);markDirty();
     }
     function upgradeNodeHtml(id,u){const unlocked=runtime.meta.unlockedUpgradeIds.includes(id),requiresMet=!u.requires||runtime.meta.unlockedUpgradeIds.includes(u.requires),affordable=runtime.meta.processXp>=(u.costXp||0)&&runtime.meta.complianceTokens>=(u.costTokens||0);return `<div class="upgrade-node ${unlocked?'unlocked':''}"><strong>${esc(u.branch)} · ${esc(u.name)}</strong><span>${esc(u.text)}</span><button class="btn small" data-upgrade="${id}" ${unlocked||!requiresMet||!affordable?'disabled':''}>${unlocked?'Unlocked':!requiresMet?'Requires prior node':`Unlock · ${u.costXp||0} XP${u.costTokens?` + ${u.costTokens} token${u.costTokens===1?'':'s'}`:''}`}</button></div>`;}
     function buyUpgrade(id){const u=UPGRADES[id];if(!u||runtime.meta.unlockedUpgradeIds.includes(id)||(u.requires&&!runtime.meta.unlockedUpgradeIds.includes(u.requires))||runtime.meta.processXp<(u.costXp||0)||runtime.meta.complianceTokens<(u.costTokens||0))return false;runtime.meta.processXp-=u.costXp||0;runtime.meta.complianceTokens-=u.costTokens||0;runtime.meta.unlockedUpgradeIds.push(id);if(id==='mail_shelf')COLUMN_META.inbox.capacity=BALANCE.inboxCapacity+1;saveMeta();renderRunEnd(runFailure());return true;}
     function endDay(){
-      if(game.mode==='dayEnd'||game.mode==='runEnd')return;game.mode='dayEnd';game.dayElapsedMs=300000;const dayPayroll=payroll(),upkeep=operatingUpkeep(),openingCash=game.dayOpeningCash,preCloseCash=game.cash,telemetry=game.cashTelemetry;game.cash-=dayPayroll+upkeep;const audit=settleAudit();clampMeters();const discretionary=preCloseCash-openingCash-telemetry.recognizedTaskRevenue;const summary={day:game.day,openingCash,priorClose:telemetry.priorClose,recognizedTaskRevenue:telemetry.recognizedTaskRevenue,discretionary,payroll:dayPayroll,upkeep,finalProjection:projectedClose(),cashPoints:[...telemetry.currentDayPoints],closingCash:game.cash,resolved:game.columns.done.length,audit};game.daySummaries.push(summary);telemetry.dailySeries.push(summary);telemetry.dailySeries=telemetry.dailySeries.slice(-5);recordSnapshot(true);log(`Day ${game.day} closed at $${game.cash}.`);Store.save(true);const dialog=document.getElementById('dayEndDialog');if(!dialog.open)dialog.showModal();const failure=runFailure();if(failure){renderRunEnd(failure);return;}if(game.day>=5){renderRunEnd();return;}renderDayEnd(summary);markDirty();
+      if(game.mode==='dayEnd'||game.mode==='runEnd')return;game.mode='dayEnd';game.dayElapsedMs=300000;const dayPayroll=payroll(),upkeep=operatingUpkeep(),openingCash=game.dayOpeningCash,openingState=game.dayOpeningState||{cash:openingCash,morale:game.morale,audit:game.auditRisk,confidence:game.executiveConfidence},preCloseCash=game.cash,telemetry=game.cashTelemetry;game.cash-=dayPayroll+upkeep;const audit=settleAudit();clampMeters();const discretionary=preCloseCash-openingCash-telemetry.recognizedTaskRevenue,closingState=companySnapshot();const summary={day:game.day,openingCash,openingState,closingState,companyScore:companyScore(closingState),priorClose:telemetry.priorClose,recognizedTaskRevenue:telemetry.recognizedTaskRevenue,discretionary,payroll:dayPayroll,upkeep,finalProjection:projectedClose(),cashPoints:[...telemetry.currentDayPoints],closingCash:game.cash,resolved:game.columns.done.length,audit};game.daySummaries.push(summary);telemetry.dailySeries.push(summary);telemetry.dailySeries=telemetry.dailySeries.slice(-5);recordSnapshot(true);log(`Day ${game.day} closed at $${game.cash}.`);Store.save(true);const dialog=document.getElementById('dayEndDialog');if(!dialog.open)dialog.showModal();const failure=runFailure();if(failure){renderRunEnd(failure);return;}if(game.day>=5){renderRunEnd();return;}renderDayEnd(summary);markDirty();
     }
     function markDirty(){runtime.dirty=true;}
 
@@ -927,7 +1265,7 @@
     const View = {
       crewReadoutHtml(card){const condition=card.conditionId?STRESS_CONDITIONS[card.conditionId]:null,state=stressState(card),stateClass=state==='Fractured'||state==='On leave'?'danger':state==='Strained'?'warning':'';return `<div class="crew-readout">${card.templateId==='manager'?'<span class="crew-tag warning">Approval authority</span>':''}<span class="crew-tag">${esc(COPING_TRAITS[card.copingId].name)}</span>${state!=='Steady'?`<span class="crew-tag ${stateClass}">${esc(state)}</span>`:''}${condition?`<span class="crew-tag ${condition.positive?'positive':'danger'}">${esc(condition.name)}</span>`:''}</div>`;},
       statReadoutHtml(card,popover=false){const rows=[['accuracy','Accuracy'],['speed','Speed'],['resilience','Resilience']],abilities=rows.map(([stat])=>EXTREME_ABILITIES[stat][card.stats?.[stat]||3]).filter(Boolean);return `<div class="stat-readout ${popover?'employee-popover':''}">${rows.map(([stat,label])=>{const value=card.stats?.[stat]||3;return `<div class="stat-row"><span>${label}</span><span class="pips" aria-hidden="true">${'●'.repeat(value)}${'○'.repeat(6-value)}</span><strong>${value}/6</strong></div>`}).join('')}${abilities.map(a=>`<div class="stat-row" style="grid-template-columns:1fr"><strong>${esc(a[0])}</strong><span>${esc(a[1])}</span></div>`).join('')}</div>`;},
-      workloadGaugeHtml(card){const actual=workShare(card),target=card.preferredWorkPct,stress=Math.round(card.stress),delta=actual-target,state=!employeeAvailable(card)?'On leave':delta< -10?'Underloaded':delta>10?'Overloaded':'Balanced',markerColor=state==='On leave'?'var(--faint)':state==='Underloaded'?'var(--accent)':state==='Overloaded'?'var(--danger)':'var(--success)',comfortStart=Math.max(0,target-10),comfortEnd=Math.min(100,target+10);return `<div class="worker-load" role="img" aria-label="${esc(cardName(card))} is ${state.toLowerCase()}: ${actual}% work against a ${target}% target, with ${stress}% stress"><div class="worker-load-head">${state} · ${stress}% stress</div><div class="worker-load-track" style="--actual:${Math.max(2,Math.min(98,actual))}%;--target:${target}%;--comfort-start:${comfortStart}%;--comfort-width:${comfortEnd-comfortStart}%;--marker-color:${markerColor}"><i class="worker-load-comfort"></i><i class="worker-load-target"></i><i class="worker-load-marker"></i></div><div class="worker-load-scale"><span>Underload</span><strong>Target ${target}%</strong><span>Overload</span></div></div>`;},
+      workloadGaugeHtml(card){const actual=workShare(card),target=card.preferredWorkPct,stress=Math.round(card.stress),width=sweetSpotWidth(),inSweet=workerInSweetSpot(card),delta=actual-target,state=!employeeAvailable(card)?'On leave':inSweet?'Sweet spot':delta< -width?'Underloaded':delta>width?'Overloaded':'Settling',markerColor=state==='On leave'?'var(--faint)':state==='Underloaded'?'var(--accent)':state==='Overloaded'?'var(--danger)':'var(--success)',comfortStart=Math.max(0,target-width),comfortEnd=Math.min(100,target+width);return `<div class="worker-load" role="img" aria-label="${esc(cardName(card))} is ${state.toLowerCase()}: ${actual}% work against a ${target}% target, with ${stress}% stress"><div class="worker-load-head">${state} · ${stress}% stress${inSweet?' · +15% speed / +8 accuracy':''}</div><div class="worker-load-track" style="--actual:${Math.max(2,Math.min(98,actual))}%;--target:${target}%;--comfort-start:${comfortStart}%;--comfort-width:${comfortEnd-comfortStart}%;--marker-color:${markerColor}"><i class="worker-load-comfort"></i><i class="worker-load-target"></i><i class="worker-load-marker"></i></div><div class="worker-load-scale"><span>Underload</span><strong>Sweet ±${width}%</strong><span>Overload</span></div></div>`;},
       render(){this.applySettings();this.renderHeader();this.renderBoard();this.renderInspector();document.getElementById('pausedCover').classList.toggle('visible',game.mode==='paused');document.getElementById('pauseBtn').textContent=game.mode==='paused'?'Resume':'Pause';},
       updateDynamics(now){
         if(runtime.drag||now-runtime.lastDynamicRender<250)return;runtime.lastDynamicRender=now;this.renderHeader();
@@ -967,7 +1305,7 @@
         const cards=stack.cardIds.map(id=>game.cardsById[id]),employee=cards.find(c=>c.kind==='employee'),task=cards.find(c=>c.kind==='task'),resources=cards.filter(c=>c.kind==='resource');
         const job=stack.activeJobId?game.jobsById[stack.activeJobId]:null;const recipe=job?Content.recipes.find(r=>r.id===job.recipeId):candidateRecipe(stack.cardIds)||assignmentRecipe(task,employee);
         const required=recipe?recipe.exact.filter(id=>Content.cards[id].kind==='resource'):[];const present=resources.map(c=>c.templateId);const missing=required.filter(id=>!present.includes(id));const extras=recipe?present.filter(id=>!recipe.exact.includes(id)):present;const impact=recipe&&!extras.length?comboImpact(stack,recipe):null;
-        const node=document.createElement('article');node.className=`card workflow-card kind-employee state-${stressState(employee).toLowerCase().replaceAll(' ','-')} ${stack.cardIds.includes(game.selected?.id)?'selected':''} ${job?'locked':''}`;node.dataset.cardId=task.id;node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',`${cardName(task)} assigned to ${cardName(employee)}`);
+        const node=document.createElement('article');node.className=`card workflow-card kind-employee state-${stressState(employee).toLowerCase().replaceAll(' ','-')} ${workerInSweetSpot(employee)?'sweet-spot':''} ${stack.cardIds.includes(game.selected?.id)?'selected':''} ${job?'locked':''}`;node.dataset.cardId=task.id;node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',`${cardName(task)} assigned to ${cardName(employee)}`);
         const resourceChips=[...resources.map(card=>`<span class="resource-chip drag-source" data-stack-card-id="${card.id}" aria-label="Drag ${esc(tpl(card).name)} out of this assignment">${esc(tpl(card).name)}</span>`),...missing.map(id=>`<span class="resource-chip missing">+ ${esc(Content.cards[id].name)} needed</span>`)].join('');
         node.innerHTML=`<div class="workflow-assignment"><span class="workflow-avatar">${esc(tpl(employee).code)}</span><span class="workflow-who"><small>Assigned to</small><strong>${esc(cardName(employee))}</strong><em>${esc(workStyle(employee))} · rhythm ${Math.round(employee.rhythm)}%</em></span><span class="fit-badge">${!employeeAvailable(employee)?'On leave':recipe?.coverage?'Covering':job?'Working':extras.length?'Mismatch':missing.length?'Qualified':'Ready'}</span></div>${this.crewReadoutHtml(employee)}${this.workloadGaugeHtml(employee)}<div class="workflow-task"><small>Task</small><strong>${esc(cardName(task))}</strong><div class="workflow-resources">${resourceChips||'<span class="resource-chip missing">Resource required</span>'}</div></div>${impact?`<div class="workflow-impact"><div class="impact-stat"><span>Expected time</span><strong>~${impact.seconds}s</strong></div><div class="impact-stat"><span>Accuracy</span><strong>${impact.accuracy}%</strong></div><div class="impact-stat"><span>Payout</span><strong>$${impact.reward}</strong></div></div>`:''}${recipe?.coverage?`<div class="coverage-note">Covering outside job description · ${Math.round(((recipe.stressMultiplier||1)-1)*100)}% more work stress · ${Math.abs(recipe.accuracyPenalty||0)} accuracy penalty · +${recipe.completionStress} completion stress</div>`:''}`;
         if(job)node.insertAdjacentHTML('beforeend',`<div class="progress" data-intervene="${job.id}" title="Managerial Intervention: adds progress and employee stress"><i style="--progress:${job.progress*100}%"></i></div><div class="job-note"><span>Processing · click bar to intervene</span><span>${Math.floor(job.progress*100)}%</span></div>`);
@@ -975,10 +1313,10 @@
         return node;
       },
       cardNode(card,stack){
-        const t=tpl(card),displayKind=card.kind==='distraction'?card.disguiseKind:card.kind,node=document.createElement('article');node.className=`card kind-${displayKind} ${card.templateId==='manager'?'role-manager':''} ${card.kind==='employee'?`state-${stressState(card).toLowerCase().replaceAll(' ','-')}`:''} ${game.selected?.id===card.id?'selected':''} ${card.lockedByJobId?'locked':''}`;node.dataset.cardId=card.id;node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',`${cardName(card)}, ${displayKind}${card.kind==='employee'?`, ${stressState(card)}`:''}`);const job=stack?.activeJobId?game.jobsById[stack.activeJobId]:null;const recipe=job?Content.recipes.find(r=>r.id===job.recipeId):null;
+        const t=tpl(card),displayKind=card.kind==='distraction'?card.disguiseKind:card.kind,node=document.createElement('article');node.className=`card kind-${displayKind} ${card.templateId==='manager'?'role-manager':''} ${card.kind==='employee'?`state-${stressState(card).toLowerCase().replaceAll(' ','-')} ${workerInSweetSpot(card)?'sweet-spot':''}`:''} ${game.selected?.id===card.id?'selected':''} ${card.lockedByJobId?'locked':''}`;node.dataset.cardId=card.id;node.tabIndex=0;node.setAttribute('role','button');node.setAttribute('aria-label',`${cardName(card)}, ${displayKind}${card.kind==='employee'?`, ${stressState(card)}`:''}`);const job=stack?.activeJobId?game.jobsById[stack.activeJobId]:null;const recipe=job?Content.recipes.find(r=>r.id===job.recipeId):null;
         const deadline=card.deadlineRemainingMs!=null?`<span class="deadline ${card.deadlineRemainingMs<30000?'soon':''}" data-deadline-card="${card.id}">${formatTime(card.deadlineRemainingMs)}</span>`:'';
         const stress=card.kind==='employee'?this.workloadGaugeHtml(card):'';const depth=stack?.cardIds.length>1?`<span class="badge">${stack.cardIds.length} cards</span>`:'';
-        const registryClue=card.kind==='distraction'&&runtime.meta.unlockedUpgradeIds.includes('known_senders')&&card.clueIds.some(id=>runtime.meta.discoveredJunkClueIds.includes(id))?' · registry mismatch':'';const source=t.source?`<span>${esc(t.source+registryClue)}</span>`:`<span>${displayKind.toUpperCase()}</span>`;node.innerHTML=`<div class="card-top"><span class="card-code">${t.code}</span><span class="card-title">${esc(cardName(card))}</span>${depth}</div><p class="card-desc">${esc(t.description)}</p>${card.kind==='employee'?this.crewReadoutHtml(card):''}<div class="card-meta">${stress||source}${deadline}</div>${card.kind==='employee'?this.statReadoutHtml(card,true):''}`;
+        const registryClue=card.kind==='distraction'&&runtime.meta.unlockedUpgradeIds.includes('known_senders')&&card.clueIds.some(id=>runtime.meta.discoveredJunkClueIds.includes(id))?' · registry mismatch':'';const source=t.source?`<span>${esc(t.source+registryClue)}</span>`:`<span>${displayKind.toUpperCase()}</span>`;node.innerHTML=`<div class="card-kind-label">${esc(displayKind)}</div><div class="card-top"><span class="card-code">${t.code}</span><span class="card-title">${esc(cardName(card))}</span>${depth}</div><p class="card-desc">${esc(t.description)}</p>${card.kind==='employee'?this.crewReadoutHtml(card):''}<div class="card-meta">${stress||source}${deadline}</div>${card.kind==='employee'?this.statReadoutHtml(card,true):''}`;
         if(job)node.insertAdjacentHTML('beforeend',`<div class="progress" data-intervene="${job.id}" title="Managerial Intervention"><i style="--progress:${job.progress*100}%"></i></div><div class="job-note"><span>${recipe.name}</span><span>${Math.floor(job.progress*100)}%</span></div>`);
         else if(card.templateId==='manager'&&locationOf(card.id)?.columnId==='review')node.insertAdjacentHTML('beforeend',`<div class="blocked-note">Approval complete · move to Backlog to recover stress.</div>`);
         else if(stack?.columnId==='active')node.insertAdjacentHTML('beforeend',`<div class="blocked-note">${card.kind==='employee'?'Awaiting reassignment · move to Backlog to recover stress.':esc(recipeHint(stack.cardIds))}</div>`);
@@ -1010,7 +1348,7 @@
         const findings=evaluateDocument(card);const fields=Object.entries(card.fields).map(([k,v])=>`<div class="field"><span>${esc(k.replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toUpperCase()))}</span><strong>${typeof v==='boolean'?(v?'Yes':'No'):esc(v)}</strong></div>`).join('');
         const needsManager=card.fields.managerSigned===false&&card.fields.amount>300,manager=Object.values(game.cardsById).find(c=>c.templateId==='manager'),managerLoc=manager?locationOf(manager.id):null,managerReady=needsManager&&employeeAvailable(manager)&&managerLoc?.columnId==='backlog';
         const managerSection=needsManager?`<div class="section"><div class="next-step"><strong>Manager approval required</strong><span>Financial Authorization 4.2 blocks approval. Drag the Manager onto this document, or call him from Backlog.</span></div><button class="btn ${managerReady?'primary':''}" data-manager-approve="${card.id}" ${managerReady?'':'disabled'}>${!employeeAvailable(manager)?'Manager is on leave':managerLoc?.columnId!=='backlog'?'Return Manager to Backlog first':'Call Manager into Review'}<br><small>Manager stress +38 · remains visible in Review</small></button></div>`:'';
-        return `<div class="next-step"><strong>Next step: issue a ruling</strong><span>Compare every document field below with the applicable policies. Then approve, reject, request a correction, or escalate.</span></div><div class="section"><div class="document"><div class="document-head"><strong>${esc(tpl(card).name)}</strong><span>CONTROL ID ${card.id.toUpperCase()}</span></div>${fields}</div></div><div class="section"><h3>Applicable policies</h3>${findings.length?findings.map(f=>`<div class="policy"><strong>${f.policy.title}</strong><span>${f.policy.text}</span></div>`).join(''):'<p>No special restrictions apply. Approval is permitted unless the document itself shows an anomaly.</p>'}</div>${managerSection}<div class="section"><h3>Choose the outcome</h3><div class="ruling-grid"><button class="btn primary" data-rule="approve" data-card="${card.id}">Approve<br><small>Recognize $${card.meta.reward}</small></button><button class="btn" data-rule="reject" data-card="${card.id}">Reject<br><small>No task revenue</small></button><button class="btn" data-rule="correct" data-card="${card.id}">Request correction<br><small>$10 · returns as rework task</small></button><button class="btn" data-rule="escalate" data-card="${card.id}">Escalate<br><small>Costs $25</small></button></div><p style="margin-top:10px">Rulings are final. Incorrect approval still pays now, but creates audit exposure.</p></div>`;
+        return `<div class="next-step"><strong>Next step: issue a ruling</strong><span>Compare every document field below with the applicable policies. Then approve, reject, request a correction, or escalate.</span></div><div class="section"><div class="document"><div class="document-head"><strong>${esc(tpl(card).name)}</strong><span>CONTROL ID ${card.id.toUpperCase()}</span></div>${fields}</div></div><div class="section"><h3>Applicable policies</h3>${findings.length?findings.map(f=>`<div class="policy"><strong>${f.policy.title}</strong><span>${f.policy.text}</span></div>`).join(''):'<p>No special restrictions apply. Approval is permitted unless the document itself shows an anomaly.</p>'}</div>${managerSection}<div class="section"><h3>Choose the outcome</h3><div class="ruling-grid"><button class="btn primary" data-rule="approve" data-card="${card.id}">Approve<br><small>Recognize $${recognizedPayout(card)} at current confidence</small></button><button class="btn" data-rule="reject" data-card="${card.id}">Reject<br><small>Correct only for policy-violating work</small></button><button class="btn" data-rule="correct" data-card="${card.id}">Request correction<br><small>Shorter deadline · worker stress</small></button><button class="btn" data-rule="escalate" data-card="${card.id}">Escalate<br><small>Confidence −${BALANCE.escalateConfidenceCost} · audit severity relief</small></button></div><p style="margin-top:10px">Incorrect approval pays now but creates a liability. Incorrect rejection also creates a liability.</p></div>`;
       },
       lineChartSvg(points,series,minValue,maxValue,title,description,format=value=>String(Math.round(value))){
         const width=260,height=112,left=29,right=8,top=10,bottom=20,plotWidth=width-left-right,plotHeight=height-top-bottom;
@@ -1079,19 +1417,27 @@
         test('Missing input explains requirement',()=>{newRun(8,false);const ids=['intern','data_entry_request'].map(x=>createCard(x).id);if(!recipeHint(ids).includes('Spreadsheet'))throw Error('Missing resource not named');});
         test('Policy pass and fail',()=>{const p=Content.policies.expense_manager_signature;if(!p.test({fields:{amount:100,managerSigned:false}})||p.test({fields:{amount:400,managerSigned:false}}))throw Error('Policy result incorrect');});
         test('Run history captures state',()=>{newRun(10,false);game.cash=500;game.dayElapsedMs=16000;recordSnapshot(false);if(game.history.length<2||game.history.at(-1).cash!==500)throw Error('Progress snapshot missing');});
+        test('Company score reflects decision-critical risk',()=>{const healthy=companyScore({cash:500,morale:80,audit:5,confidence:80}),atRisk=companyScore({cash:25,morale:30,audit:65,confidence:25});if(healthy<=atRisk||healthy<75||atRisk>=55)throw Error('Company score bands are not meaningful');});
+        test('Company dashboard explains all four decision metrics',()=>{newRun(54,false);const html=companyDashboardHtml({cash:50,morale:35,audit:55,confidence:30},{cash:100,morale:50,audit:20,confidence:50}).toLowerCase();if(!['cash','morale','audit risk','confidence','next payroll','nightly audit','quarterly promotion'].every(text=>html.includes(text)))throw Error('Decision context missing');});
         test('Worker rhythms vary by run',()=>{newRun(11,false);const preferences=Object.values(game.cardsById).filter(c=>c.kind==='employee'&&c.templateId!=='manager').map(c=>c.preferredWorkPct),manager=Object.values(game.cardsById).find(c=>c.templateId==='manager');if(new Set(preferences).size<2||preferences.some(value=>value<30||value>90)||manager.preferredWorkPct>18)throw Error('Worker preferences not varied');});
         test('Stress break assigns a crew condition',()=>{newRun(14,false);const employee=Object.values(game.cardsById).find(c=>c.kind==='employee');employee.stress=79;employee.stressBand=1;setEmployeeStress(employee,1,'test pressure');if(!employee.conditionId||employee.stressBand!==2)throw Error('Stress condition missing');});
         test('Burnout enforces next-day leave',()=>{newRun(15,false);const employee=Object.values(game.cardsById).find(c=>c.kind==='employee');employee.stress=99;employee.stressBand=2;setEmployeeStress(employee,1,'test pressure');if(employeeAvailable(employee)||employee.burnedOutUntilDay!==2)throw Error('Burnout leave missing');prepareNextDay();if(employeeAvailable(employee))throw Error('Employee returned too early');prepareNextDay();if(!employeeAvailable(employee))throw Error('Employee did not return');assertGameState();});
         test('Manager check-in is limited daily',()=>{newRun(16,false);const employee=Object.values(game.cardsById).find(c=>c.kind==='employee'&&c.templateId!=='manager'),manager=Object.values(game.cardsById).find(c=>c.templateId==='manager');employee.stress=60;employee.stressBand=1;if(!supportEmployee(employee.id)||game.cash!==430||employee.stress!==40||Math.round(manager.stress)!==10||supportEmployee(employee.id))throw Error('Check-in action incorrect');});
         test('Manager remains visible through approval',()=>{newRun(17,false);const manager=Object.values(game.cardsById).find(c=>c.templateId==='manager'),documentCard=createCard('verified_expense',{fields:{amount:450,receiptAttached:true,managerSigned:false,clientCode:'C-321'},meta:{reward:70}});game.columns.review.push(documentCard.id);if(!managerApproveDocument(documentCard.id)||!documentCard.fields.managerSigned||locationOf(manager.id)?.columnId!=='review'||reviewDocumentCount()!==1||manager.stress<38)throw Error('Manager approval flow incorrect');if(!moveCard(manager.id,'backlog')||locationOf(manager.id)?.columnId!=='backlog'||manager.meta.reviewingDocumentId)throw Error('Manager release failed');assertGameState();});
         test('Hiring trades cash for future capacity',()=>{newRun(19,false);game.mode='dayEnd';const startingPayroll=payroll();if(!hireEmployee('intern'))throw Error('Hire failed');const hire=Object.values(game.cardsById).find(c=>c.meta?.employeeLabel==='Intern 2');if(!hire||game.cash!==390||game.day!==2||payroll()!==startingPayroll+15||locationOf(hire.id)?.columnId!=='backlog')throw Error('Hiring economics incorrect');assertGameState();});
+        test('Strategic planning night rejects ordinary overnight actions',()=>{newRun(60,false);game.day=3;game.mode='dayEnd';const cash=game.cash;if(chooseOvernight('training')||hireEmployee('intern')||game.cash!==cash||!chooseDevelopment('wellness')||game.development!=='wellness'||game.day!==4)throw Error('Day 3 action gate failed');});
         test('Specialists cost more to recruit',()=>{if(!(HIRING_OPTIONS.intern.cost<HIRING_OPTIONS.junior_analyst.cost&&HIRING_OPTIONS.junior_analyst.cost<HIRING_OPTIONS.accountant.cost))throw Error('Hiring costs are not specialized');});
         test('Coverage forecasts real penalties',()=>{newRun(20,false);const invoice=Object.values(game.cardsById).find(c=>c.templateId==='invoice_request'),intern=Object.values(game.cardsById).find(c=>c.templateId==='intern'),analyst=Object.values(game.cardsById).find(c=>c.templateId==='junior_analyst'),specialist=assignmentRecipe(invoice,analyst),cover=assignmentRecipe(invoice,intern),specialistImpact=comboImpact({cardIds:[analyst.id,invoice.id]},specialist),coverImpact=comboImpact({cardIds:[intern.id,invoice.id]},cover);if(!cover?.coverage||coverImpact.seconds<=specialistImpact.seconds||coverImpact.accuracy>=specialistImpact.accuracy||cover.stressMultiplier<=1||cover.completionStress<=4)throw Error('Coverage penalty missing');});
         test('Coverage produces the correct document',()=>{newRun(21,false);const employee=Object.values(game.cardsById).find(c=>c.templateId==='junior_analyst'),recipe=Content.recipes.find(r=>r.id==='cover_expense_analyst'),documentCard=generateDocument(recipe,employee);game.columns.review.push(documentCard.id);if(documentCard.templateId!=='verified_expense'||!Number.isFinite(documentCard.fields.amount)||documentCard.fields.receiptAttached!==true)throw Error('Coverage output incorrect');assertGameState();});
-        test('Correction returns a document as assignable rework',()=>{newRun(22,false);const producer=Object.values(game.cardsById).find(c=>c.templateId==='intern'),documentCard=createCard('completed_data_entry',{deadlineRemainingMs:90000,fields:{records:72,variance:'Review sample mismatch',source:'Operations Intake'},meta:{reward:35,producerId:producer.id,recipeId:'data_entry'}});game.columns.review.push(documentCard.id);ruleDocument(documentCard.id,'correct');const loc=locationOf(documentCard.id);if(documentCard.kind!=='task'||documentCard.templateId!=='data_entry_request'||loc?.columnId!=='backlog'||!assignmentRecipe(documentCard,producer)||game.cash!==440||documentCard.deadlineRemainingMs!==54000)throw Error('Correction did not create assignable rework');assertGameState();});
+        test('Correction returns a document as assignable rework',()=>{newRun(22,false);const producer=Object.values(game.cardsById).find(c=>c.templateId==='intern'),documentCard=createCard('completed_data_entry',{deadlineRemainingMs:90000,fields:{records:72,variance:'Review sample mismatch',source:'Operations Intake'},meta:{reward:35,producerId:producer.id,recipeId:'data_entry'}});game.columns.review.push(documentCard.id);ruleDocument(documentCard.id,'correct');const loc=locationOf(documentCard.id);if(documentCard.kind!=='task'||documentCard.templateId!=='data_entry_request'||loc?.columnId!=='backlog'||!assignmentRecipe(documentCard,producer)||game.cash!==450||documentCard.deadlineRemainingMs!==54000)throw Error('Correction did not create assignable rework');assertGameState();});
+        test('Regulatory correction remains unpaid regulatory work',()=>{newRun(58,false);game.activePolicyIds=['data_no_variance'];const producer=Object.values(game.cardsById).find(c=>c.templateId==='intern'),documentCard=createCard('completed_data_entry',{deadlineRemainingMs:90000,fields:{records:72,variance:'Review sample mismatch',source:'Operations Intake'},meta:{reward:0,producerId:producer.id,recipeId:'regulatory_response',regulatory:true}});game.columns.review.push(documentCard.id);if(!ruleDocument(documentCard.id,'correct')||documentCard.templateId!=='regulatory_response'||documentCard.meta.reward!==0||assignmentRecipe(documentCard,producer)?.id!=='regulatory_response')throw Error('Regulatory rework changed identity or payout');});
+        test('Unknown ruling action is ignored',()=>{newRun(59,false);const documentCard=createCard('completed_data_entry',{fields:{records:72,variance:'No material variance',source:'Operations Intake'},meta:{reward:35}});game.columns.review.push(documentCard.id);if(ruleDocument(documentCard.id,'archive')!==false||!game.columns.review.includes(documentCard.id))throw Error('Unknown ruling mutated state');});
+        test('Confidence scales recognized payout and sweet spot',()=>{newRun(55,false);const card=createCard('completed_data_entry',{meta:{reward:100}}),worker=Object.values(game.cardsById).find(c=>c.kind==='employee');game.executiveConfidence=0;const low=recognizedPayout(card),narrow=sweetSpotWidth();game.executiveConfidence=100;const high=recognizedPayout(card),wide=sweetSpotWidth();if(low!==80||high!==120||wide<=narrow)throw Error('Confidence modifiers incorrect');worker.workedMsToday=50000;worker.idleMsToday=50000;worker.preferredWorkPct=50;if(!workerInSweetSpot(worker))throw Error('Sweet spot not detected');});
+        test('Morale derives from stress and sweet-spot contribution',()=>{newRun(56,false);const workers=Object.values(game.cardsById).filter(c=>c.kind==='employee');workers.forEach(c=>{c.stress=40;c.workedMsToday=50000;c.idleMsToday=50000;c.preferredWorkPct=50;});game.moraleModifier=0;recalculateMorale();if(game.morale!==70)throw Error(`Derived morale was ${game.morale}`);});
+        test('Audit failure creates policy and regulatory task penalties',()=>{newRun(57,false);game.auditRisk=100;game.executiveConfidence=0;game.liabilities=[{severity:5}];const result=settleAudit();if(!result.startsWith('FAILED')||game.auditFailCount!==1||game.auditPolicyPenalty!==2||game.regulatoryTaskBomb!==2)throw Error('Audit penalties missing');game.mode='dayEnd';prepareNextDay();if(Object.values(game.cardsById).filter(c=>c.templateId==='regulatory_response').length!==2||game.activePolicyIds.length<BALANCE.policyCounts[1]+2)throw Error('Audit task bomb missing');});
         test('Completed worker remains in progress',()=>{newRun(18,false);const employee=Object.values(game.cardsById).find(c=>c.templateId==='intern'),task=Object.values(game.cardsById).find(c=>c.templateId==='data_entry_request'),resource=Object.values(game.cardsById).find(c=>c.templateId==='spreadsheet');[employee,task,resource].forEach(c=>removeCardFromLocation(c.id));const stack=createStack('active',[employee.id,task.id,resource.id]);maybeStartJob(stack.id);completeJob(game.jobsById[stack.activeJobId]);const loc=locationOf(employee.id);if(loc?.columnId!=='active'||game.stacksById[loc.stackId]?.activeJobId||!game.columns.review.length)throw Error('Completed worker was automatically released');assertGameState();});
         test('Incorrect resource can leave assignment',()=>{newRun(12,false);const employee=Object.values(game.cardsById).find(c=>c.templateId==='intern'),task=Object.values(game.cardsById).find(c=>c.templateId==='data_entry_request'),resource=Object.values(game.cardsById).find(c=>c.templateId==='receipt');removeCardFromLocation(employee.id);removeCardFromLocation(task.id);removeCardFromLocation(resource.id);const stack=createStack('active',[employee.id,task.id,resource.id]);if(stack.activeJobId||canMove(resource.id,'backlog'))throw Error('Resource cannot be detached');assertGameState();});
-        test('Day rollover prepares the next briefing',()=>{newRun(13,false);game.mode='dayEnd';prepareNextDay();if(game.day!==2||game.dayElapsedMs!==0||game.mode!=='briefing'||game.columns.inbox.length!==7)throw Error('Day 2 not prepared');assertGameState();});
+        test('Day rollover prepares the next briefing',()=>{newRun(13,false);game.mode='dayEnd';prepareNextDay();if(game.day!==2||game.dayElapsedMs!==0||game.mode!=='briefing'||game.columns.inbox.length!==7||game.dayOpeningState.cash!==game.cash||game.dayOpeningState.morale!==Math.round(game.morale))throw Error('Day 2 not prepared');assertGameState();});
         test('Seeded weighted arrivals repeat exactly',()=>{newRun(31,false);const a=Array.from({length:10},nextArrivalTemplate);newRun(31,false);const b=Array.from({length:10},nextArrivalTemplate);if(a.join('|')!==b.join('|'))throw Error('Arrival sequence differs');});
         test('Every junk template has a registered clue',()=>{if(JUNK_TEMPLATE_IDS.some(id=>!Content.cards[id].clueIds?.length))throw Error('Clueless junk template');});
         test('Junk renders as a normal disguise',()=>{newRun(32,false);const card=createCard('junk_receipt_typo'),node=View.cardNode(card,null);if(!node.classList.contains('kind-resource')||/junk/i.test(node.textContent))throw Error('Disguise leaked');});
@@ -1115,7 +1461,7 @@
         test('Cash telemetry appends and caps at 64',()=>{newRun(50,false);for(let i=0;i<70;i++)recordTaskRevenuePoint(`doc_${i}`,1);if(game.cashTelemetry.currentDayPoints.length!==64||game.cashTelemetry.recognizedTaskRevenue!==64)throw Error('Telemetry cap failed');});
         test('Non-task cash changes do not add projection points',()=>{newRun(51,false);const count=game.cashTelemetry.currentDayPoints.length;game.cash-=20;if(game.cashTelemetry.currentDayPoints.length!==count)throw Error('Discretionary cash sampled');});
         test('Chart recording does not dirty the board',()=>{newRun(52,false);runtime.dirty=false;recordTaskRevenuePoint('doc',10);if(runtime.dirty)throw Error('Chart marked board dirty');});
-        test('Version one migration preserves ownership',()=>{newRun(53,false);const old=JSON.parse(JSON.stringify(game));old.schemaVersion=1;delete old.phishing;delete old.cashTelemetry;Object.values(old.cardsById).forEach(c=>delete c.stats);migrateRunV1(old);assertGameState(old);if(Object.values(old.cardsById).filter(c=>c.kind==='employee').some(c=>!c.stats))throw Error('Stats not migrated');});
+        test('Version one migration preserves ownership',()=>{newRun(53,false);const old=JSON.parse(JSON.stringify(game));old.schemaVersion=1;delete old.phishing;delete old.cashTelemetry;Object.values(old.cardsById).forEach(c=>delete c.stats);migrateRunState(old);assertGameState(old);if(Object.values(old.cardsById).filter(c=>c.kind==='employee').some(c=>!c.stats))throw Error('Stats not migrated');});
         test('State invariants',()=>{newRun(9,false);assertGameState();});game=prior;runtime.meta=priorMeta;runtime.testing=false;markDirty();console.table(tests);return {passed:tests.filter(t=>t.pass).length,failed:tests.filter(t=>!t.pass).length,tests};},
       newRun, endDay, prepareNextDay, assertGameState, findRecipe, evaluateDocument
     };
