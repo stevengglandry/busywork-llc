@@ -4,6 +4,8 @@
 
 > Current technical implementation: the browser build uses seeded arrival bags rather than the legacy deck/discard proposal below. Run construction and migration, Review rulings, audits, burnout, and day rollover are implemented as separate named state-transition helpers. The legacy design sections remain as historical product direction, not a claim about current runtime fields.
 
+> Current content amendment: the shipped catalog contains 30 card templates, 16 recipes, and 30 policies. It includes three corporate-jargon work requests, per-instance payouts from 20% Low Fee through 5× Windfall, assignable task-disguised junk, unsafe resource auto-pull decoys, uncapped homogeneous resource stacks, overflow Audit/Confidence penalties, and a one-time first-workflow sparkle guide. See `BUSYWORK_CARD_CATALOG.md` for exact templates and `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for consequences and balance values.
+
 ## Implementation-Ready Product and Technical Plan
 
 **Working title:** BUSYWORK  

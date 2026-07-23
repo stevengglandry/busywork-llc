@@ -2,11 +2,26 @@
 
 ## Implementation-Ready Plan
 
-Status: proposed implementation plan; no gameplay code is changed by this document.
+Status: implemented and subsequently expanded in `index.html`. The original sections remain as the design record; the shipped deltas below are authoritative where they differ.
 
 Target: the dependency-free, single-file `index.html` browser game.
 
 This expansion adds a mail-triage pressure loop, makes the Manager the source of employee support, expands daily policy variety, exposes deeper worker stats, and turns the existing run charts into a lightweight progression dashboard. The work should preserve the current drag/stack/process/review loop and the five-minute day.
+
+### Current shipped extensions
+
+- The active policy pool contains 30 policies, including ten later corporate controls for payout floors/increments, Net 45 terms, record normalization, Revenue Operations sourcing, stress ceilings, and specialist-only output.
+- Ordinary arrivals include three additional work requests: Stakeholder Alignment Memo, Revenue Enablement Packet, and Spend Governance Calibration. Together they add six recipes and reuse Spreadsheet, Client Data, and Receipt.
+- Positive-revenue task instances roll a visible contract quote: 5% at 5×, 8% at 2×, 25% at 20%, and the remaining 62% at 0.75×, 0.9×, or 1×. The quote survives production and correction.
+- **Pull next item** lets the player advance the seeded arrival queue while the Inbox has space. Automatic overflow instead adds 5 Audit Chance, removes 3 Confidence, and applies the displaced card's normal consequence.
+- Resource shortcuts deliberately prioritize a matching disguised junk card. Task-disguised junk can start a bogus job that produces no document or revenue and adds 6 worker stress.
+- Ordinary junk has two deterministic visual fault families: chromatic/scanline registration errors and offset/clipped printing errors.
+- Deleting a legitimate resource costs $8 and creates one severity-3 liability. The trash target now includes a trash-can icon.
+- Matching multi-card stacks can merge as whole stacks; resource stacks have no size cap.
+- A new run uses a one-time sparkle guide for the opening Data Entry Request, Spreadsheet, Intern, and corresponding Begin/Assign/Add actions.
+- Daily Cash close uses bars connected by a line. Quarterly legends are above and right-aligned, with full `Day x` endpoint labels.
+
+For exact card fields, recipes, payouts, consumption, and junk mappings, see `BUSYWORK_CARD_CATALOG.md`. For current economic consequences and acceptance criteria, see `BUSYWORK_MECHANICS_RETUNE_PLAN.md`.
 
 ---
 

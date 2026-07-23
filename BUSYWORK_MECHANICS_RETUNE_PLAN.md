@@ -18,7 +18,8 @@ Status: implemented in `index.html` on 2026-07-22. This document is the balance 
 Cash is cash on hand. During the day it changes through recognized task income and discretionary actions. At close, payroll and operating expenses are deducted. Night activities and hiring also spend Cash.
 
 - Starting Cash: `$450`.
-- Approving work recognizes `base reward × (0.8 + 0.4 × Confidence / 100)`, rounded to a whole dollar.
+- Each positive-revenue task instance rolls a visible contract rate: 5% Windfall at `5×` its task-type base reward, 8% Premium at `2×`, 25% Low Fee at `0.2×`, and 62% ordinary work split across `0.75×`, `0.9×`, and `1×`. The expected multiplier remains approximately `1×`, so variance changes priorities without broadly inflating the economy.
+- Approving work recognizes `quoted contract payout × (0.8 + 0.4 × Confidence / 100)`, rounded to a whole dollar. The quoted payout follows the task through processing, Review, and any requested rework.
 - Regulatory Response work pays `$0`.
 - Death condition: Cash at or below `$0` after the operating close.
 
@@ -44,9 +45,10 @@ Morale is not a direct run-ending condition. Its danger is slower throughput, mo
 
 ### Audit Chance
 
-- A run starts at `25%` Audit Chance.
+- A run starts at `50%` Audit Chance.
 - The audit roll happens every night.
 - An inaccurate approval adds `6` points.
+- Every automatic Inbox overflow adds `5` Audit Chance and removes `3` Confidence, in addition to consequences from the displaced card.
 - Accurate approvals remove `1` point; Compliance Training removes `8`.
 - When an audit occurs, its chance to find something is:
 
@@ -90,6 +92,49 @@ Rulings remain final except Request correction, which creates a new assignable r
 
 Regulatory Response corrections remain Regulatory Response tasks and retain their `$0` reward. They never convert into paid Data Entry work.
 
+## Active policy pool
+
+Each day samples a deterministic, conflict-free subset from 30 policies: three on Day 1, four on Days 2–4, and five on Day 5 before failed-audit additions.
+
+| Policy | Requirement | First day | Conflict group |
+| --- | --- | ---: | --- |
+| Financial Authorization 4.2 | Expenses over $300 require a Manager signature. | 1 | — |
+| Evidence Standard 2.1 | Reimbursements require an attached Receipt. | 1 | — |
+| Client Suspension Notice | Client C-882 may not be released. | 1 | — |
+| Billing Cap A | Invoices may not exceed $2,500. | 1 | Invoice cap |
+| Billing Cap B | Invoices may not exceed $3,500. | 2 | Invoice cap |
+| Standard Terms | Invoices require Net 30 terms. | 1 | Terms |
+| Accelerated Terms | Invoices require Net 15 terms. | 3 | Terms |
+| Release Authority | Invoices must be authorized. | 1 | — |
+| Source Registry | Routine data must originate from Operations Intake. | 1 | Data source |
+| Variance Control | Routine data must show no material variance. | 1 | — |
+| Minimum Batch | Routine output requires at least 60 records. | 1 | Record count |
+| Maximum Batch | Routine output may not exceed 110 records. | 2 | Record count |
+| Control Parity | Document control IDs must end in an even digit. | 3 | — |
+| Expense Ceiling | Reimbursements may not exceed $450. | 1 | Expense cap |
+| Tight Expense Ceiling | Reimbursements may not exceed $350. | 4 | Expense cap |
+| Preferred Client Day | Only client C-321 may be released. | 4 | Client rule |
+| Client Hold | Client C-555 may not be released. | 2 | Client rule |
+| Fatigue Review | Output produced above 75 stress requires correction. | 3 | Fatigue limit |
+| Role Boundary Review | Coverage work requires a Manager signature. | 3 | — |
+| Whole-Dollar Filing | Financial amounts must use whole dollars. | 2 | — |
+| Materiality Threshold | Reimbursements must be at least $125. | 2 | — |
+| Spend Harmonization Grid | Reimbursements must use $25 increments. | 3 | — |
+| Revenue Materiality Floor | Invoices must be at least $1,000. | 2 | — |
+| Commercial Packaging Standard | Invoices must use $100 increments. | 3 | — |
+| Strategic Liquidity Window | Invoices require Net 45 terms. | 4 | Terms |
+| Enterprise Batch Floor | Routine outputs require at least 75 records. | 3 | Record count |
+| Five-Point Normalization | Routine record totals must use increments of five. | 2 | — |
+| Revenue Operations Mandate | Routine data must originate from Revenue Operations. | 4 | Data source |
+| Cognitive Load Ceiling | Output produced above 60 stress requires correction. | 4 | Fatigue limit |
+| Core-Competency Utilization | Coverage-produced output is noncompliant. | 3 | — |
+
+Mutually exclusive caps, terms, sources, record ranges, client rules, and fatigue limits share exclusion groups, so no daily sample demands contradictory values.
+
+## Expanded work request pool
+
+Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue Enablement Packet (Client Data), and Spend Governance Calibration (Receipt). Each has a specialist and one slower, less accurate coverage recipe. They reuse the three existing Review document schemas, and completed documents record the originating request so correction returns the same task type rather than a generic legacy task.
+
 ## Liabilities and audits
 
 Liabilities are created by:
@@ -123,12 +168,40 @@ Crossing a worker's burnout threshold always applies Confidence -8 and Morale mo
 
 The deterministic embedded test mode forces the leave/stat-growth branch so logic tests remain stable.
 
+## Pacing and player agency
+
+Automatic Inbox arrivals remain on the day-scaled schedule, but the current countdown is always visible in the action bar. While the clock is running and the Inbox has capacity, the player may use **Pull next item** to deliver the next seeded arrival immediately. Pulling an item resets the automatic-arrival clock; a full Inbox disables the action instead of silently displacing existing work. This makes waiting optional without changing the arrival order or removing capacity and deadline pressure.
+
+Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. It runs for the normal workflow duration and accepts interventions, but completion produces no document or revenue, adds `6` employee stress, and leaves the employee in In Progress. This makes missed junk clues consume both player attention and workforce capacity rather than remaining inert clutter.
+
+### Card stacking and deletion
+
+- Dragging any card in a homogeneous multi-card stack onto another homogeneous stack of the same template merges the complete source stack, rather than moving only the clicked card.
+- Resource stacks have no merge-size limit. Other matching stacks retain the five-card limit.
+- Active jobs and locked workflow stacks cannot merge. Invalid stack combinations fall back to the normal single-card move rules.
+- Staged resource chips can be dragged back out of an assignment. The board always rerenders from state after a drop, preventing a rejected resource from remaining visually over an employee card.
+- The board trash target includes a trash-can icon and has an equivalent Inspector action.
+- Deleting ordinary junk safely increments phishing-test progress. Deleting a valid resource costs `$8` and creates one severity-3 liability. Deleting a task or Review document applies its expiration consequence; firing an employee costs `$25` plus Morale and Confidence.
+
+### First-workflow guidance
+
+A newly created run records the exact opening Data Entry Request, Spreadsheet, and Intern instances as its guided workflow. Those three cards receive a sparkly aura, followed by the matching **Assign Intern** and **Add Spreadsheet and begin** actions in the Inspector. The opening **Begin workday** button uses the same cue. The existing unsafe shortcut behavior is preserved: a matching junk decoy can still be pulled first, while the legitimate Spreadsheet keeps its aura until real work begins. The guide permanently retires when any first legitimate workflow starts, or when one of its recorded cards is deleted or expires. Migrated runs without guide state do not gain the tutorial retroactively.
+
+### Charts and labels
+
+- Daily opening and closing Cash is presented as two bars connected by a line, making the size and direction of the daily change explicit.
+- Quarterly Opening, Projection, and Actual series use a legend above the chart, right-aligned with the plot.
+- Timeline endpoints use full labels such as `Day 1 00:00`, never the abbreviated `D1` form.
+- Task-revenue telemetry changes only for recognized task payouts. It remains capped at 64 points per day and 320 persisted quarterly points.
+
 ## Feedback and visual language
 
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
 - Employee hover/focus consistently exposes the stat popover; selected employees also show the same data in the Inspector and Staff roster.
 - Every visible card has a text type label plus a type-specific shape: employee square, task circle, resource diamond, document square. Distractions retain their disguise type so the mechanic is not spoiled.
+- Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
+- Only a new run's recorded opening workflow receives the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
 
 ## Implementation order
 
@@ -150,7 +223,7 @@ The single-file build keeps the runtime dependency-free but separates high-risk 
 - New-day preparation separates daily resets, employee recovery, and scheduled/regulatory arrivals.
 - Legacy unused deck, discard, generic data state, and shuffle helpers were removed from the active runtime. Seeded arrival bags remain the authoritative draw model.
 
-The embedded browser suite covers save migration, state invariants, ruling outcomes, Confidence modifiers, derived Morale, audit penalties, and the zero-revenue regulatory correction loop.
+The embedded browser suite covers save migration, state invariants, ruling outcomes, task-contract payout tiers and persistence, Confidence modifiers, derived Morale, audit penalties, and the zero-revenue regulatory correction loop.
 
 ## Deployment
 
@@ -158,13 +231,20 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 
 ## Acceptance criteria
 
-- A new run displays 25% Audit Chance and cannot survive an operating close at 0 Cash.
+- A new run displays 50% Audit Chance and cannot survive an operating close at 0 Cash.
 - Confidence changes the displayed approval payout and sweet-spot width.
+- Task cards visibly distinguish 5× Windfall, 2× Premium, and 20% Low Fee contracts; the quoted amount survives processing and correction.
+- The three new ordinary task types use existing resources and document schemas, preserve their identity through correction, and expose both specialist and coverage routes.
+- Matching multi-card resource stacks merge without a size cap, while locked work remains immovable.
+- Deleting a valid resource deducts $8 and creates exactly one liability.
 - A worker held in the sweet spot receives both speed and accuracy bonuses and visible flair.
 - Incorrect approval and incorrect rejection each add exactly one liability.
 - Correction never pays or charges Cash and always returns a shortened-deadline task.
 - Escalation pays no task revenue, costs 4 Confidence, and reduces audit severity by 15%.
 - Every night rolls the current Audit Chance; findings use liabilities per elapsed day and Confidence protection.
+- An automatic Inbox overflow displays its consequences, adds 5 Audit Chance, and removes 3 Confidence.
+- A task-disguised junk workflow consumes time and adds 6 worker stress but creates no Review document or revenue.
+- Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
 - Cash at 0, Confidence at 0, or Critical Audit Failure ends the run.
 - Bad events and the phishing threshold display a high-attention popup containing both description and consequence.
