@@ -2,9 +2,9 @@
 
 BUSYWORK is a single-player management game disguised as a corporate kanban board. Assign work to employees, assemble the required resources, inspect completed documents, and decide which policies the company can afford to follow.
 
-The current build contains 30 card templates, 16 production recipes, and a deterministic pool of 30 active policies. Work requests roll visible contract values from 20% Low Fee cards through rare 5× Windfalls. Disguised junk can contaminate resource shortcuts or consume an employee's time as bogus work, while Inbox overflow, legitimate deletion, missed deadlines, and Review rulings all feed the Audit and Confidence economy.
+The current build contains 30 card templates, 46 standard and juiced production recipes, and a deterministic pool of 30 active policies. Work requests roll visible contract values from 20% Low Fee cards through rare 5× Windfalls, while rare juiced variants require two resources for a larger payout. Disguised junk can start a normal-looking workflow and produce a guaranteed-invalid Source Integrity Failure in Review. Inbox overflow, legitimate deletion, missed deadlines, and Review rulings all feed the Audit and Confidence economy.
 
-New runs visually guide only the first valid Data Entry workflow. After that, the player can pull arrivals early, merge matching multi-card stacks, triage junk through the trash target, and manage the five-day quarter without further tutorial highlighting.
+New runs visually guide only the first valid Data Entry workflow. After that, the player can pull arrivals early, merge matching multi-card stacks, triage junk through the trash target, and manage the five-day quarter without further tutorial highlighting. Every successful daily close grants one bankable Process Point before overnight planning; a randomized specialization tree lets the player fill three-pip rows that improve lane capacity, security, throughput, payouts, recovery, or audit control for the rest of the run.
 
 ## Play
 
@@ -21,6 +21,6 @@ The public playtest build is available at [stevengglandry.github.io/busywork-llc
 - Current browser build: `index.html`
 - Logic checks: open the browser console and run `BusyworkTests.runAll()`
 
-Before publishing, run the embedded suite and playtest the first-workflow guide, stack merging, junk routing, Review rulings, audit rollover, regulatory rework, saved-run migration, chart labels, keyboard focus, and desktop/narrow layouts through a local HTTP server.
+Before publishing, run the embedded suite and playtest the first-workflow guide, stack merging, junk-contaminated Review output, the Process Maturity reward tree, Review rulings, audit rollover, regulatory rework, saved-run migration, chart labels, keyboard focus, and desktop/narrow layouts through a local HTTP server.
 
 No package installation or build command is required.

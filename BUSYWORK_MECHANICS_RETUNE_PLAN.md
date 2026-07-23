@@ -19,7 +19,8 @@ Cash is cash on hand. During the day it changes through recognized task income a
 
 - Starting Cash: `$450`.
 - Each positive-revenue task instance rolls a visible contract rate: 5% Windfall at `5×` its task-type base reward, 8% Premium at `2×`, 25% Low Fee at `0.2×`, and 62% ordinary work split across `0.75×`, `0.9×`, and `1×`. The expected multiplier remains approximately `1×`, so variance changes priorities without broadly inflating the economy.
-- Approving work recognizes `quoted contract payout × (0.8 + 0.4 × Confidence / 100)`, rounded to a whole dollar. The quoted payout follows the task through processing, Review, and any requested rework.
+- Eligible arrivals have an independent 8% chance to receive Juiced scope. Juiced cards multiply the rolled quote by `1.75×`, require a task-specific second resource, consume that added input, and use a recipe lasting `1.35×` the standard duration. The opening tutorial remains standard; audit-generated Regulatory Response arrivals use the same rare roll.
+- Approving work recognizes `quoted contract payout × (0.8 + 0.4 × Confidence / 100) × Process Revenue Assurance`, rounded to a whole dollar. Revenue Assurance ranges from `1.00×` to `1.15×`; the quoted payout follows the task through processing, Review, and any requested rework.
 - Regulatory Response work pays `$0`.
 - Death condition: Cash at or below `$0` after the operating close.
 
@@ -48,7 +49,7 @@ Morale is not a direct run-ending condition. Its danger is slower throughput, mo
 - A run starts at `50%` Audit Chance.
 - The audit roll happens every night.
 - An inaccurate approval adds `6` points.
-- Every automatic Inbox overflow adds `5` Audit Chance and removes `3` Confidence, in addition to consequences from the displaced card.
+- Every automatic Inbox overflow adds `15` Audit Chance and removes `6` Confidence, in addition to consequences from the displaced card.
 - Accurate approvals remove `1` point; Compliance Training removes `8`.
 - When an audit occurs, its chance to find something is:
 
@@ -83,9 +84,9 @@ Confidence widens the comfort zone. A burnout learning outcome can permanently w
 
 | Choice | Hit | Miss |
 | --- | --- | --- |
-| Approve | Accurate work pays Confidence-scaled revenue, Confidence +2, Audit Chance -1 | Revenue still pays, but +1 liability, Audit Chance +6, producer stress, Morale modifier -1 |
-| Request correction | Inaccurate work returns to Backlog as rework with a 40% shorter deadline; producer stress +5 | Accurate work is unnecessarily reworked; producer stress +9 and a red consequence popup |
-| Reject | Inaccurate/unsalvageable work is destroyed with no reward or additional consequence | Accurate work is destroyed; +1 liability, Confidence -2, producer stress +10 |
+| Approve | Accurate work pays Confidence-scaled revenue, Confidence +2, Audit Chance -1 | Revenue still pays, but +1 liability, Audit Chance +15, producer stress, Morale modifier -1 |
+| Request correction | Inaccurate work returns to Backlog as rework with a 40% shorter deadline; producer stress +7 | Accurate work is unnecessarily reworked; producer stress +14, Audit Chance +8, and a red consequence popup |
+| Reject | Inaccurate/unsalvageable work is destroyed with no reward or additional consequence | Accurate work is destroyed; +1 liability, Audit Chance +15, Confidence -2, producer stress +16 |
 | Escalate | Work moves to Done regardless of accuracy | Confidence -4 and future audit severity -15%, with no task revenue |
 
 Rulings remain final except Request correction, which creates a new assignable rework task.
@@ -133,7 +134,7 @@ Mutually exclusive caps, terms, sources, record ranges, client rules, and fatigu
 
 ## Expanded work request pool
 
-Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue Enablement Packet (Client Data), and Spend Governance Calibration (Receipt). Each has a specialist and one slower, less accurate coverage recipe. They reuse the three existing Review document schemas, and completed documents record the originating request so correction returns the same task type rather than a generic legacy task.
+Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue Enablement Packet (Client Data), and Spend Governance Calibration (Receipt). Each has a specialist and one ordinary cross-role coverage recipe. Every valid task also has an emergency Manager recipe at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress. Every one of those 23 worker/task combinations has a juiced counterpart requiring two resources and 35% more base time. They reuse the three existing Review document schemas, and completed documents record the originating request and scope so correction returns the same task type and standard/juiced requirement rather than generic legacy work.
 
 ## Liabilities and audits
 
@@ -141,8 +142,9 @@ Liabilities are created by:
 
 - Approving inaccurate work.
 - Rejecting accurate work.
+- Deleting a legitimate resource.
 
-Deadline misses do not create a liability, but apply Confidence -3 and add 15% to future audit severity.
+Each liability immediately adds 15 points to Audit Chance. Deadline misses and deliberate task/document deletion do not create a liability, but add 12 Audit Chance, apply Confidence -6, and add 30% to future audit severity. Inbox overflow adds 15 Audit Chance and removes 6 Confidence; a task displaced by overflow also receives the deadline penalties. Firing an employee adds 12 Audit Chance, completing junk-disguised work adds 10, and requesting an unnecessary correction adds 8.
 
 When an audit finds liabilities:
 
@@ -172,7 +174,28 @@ The deterministic embedded test mode forces the leave/stat-growth branch so logi
 
 Automatic Inbox arrivals remain on the day-scaled schedule, but the current countdown is always visible in the action bar. While the clock is running and the Inbox has capacity, the player may use **Pull next item** to deliver the next seeded arrival immediately. Pulling an item resets the automatic-arrival clock; a full Inbox disables the action instead of silently displacing existing work. This makes waiting optional without changing the arrival order or removing capacity and deadline pressure.
 
-Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. It runs for the normal workflow duration and accepts interventions, but completion produces no document or revenue, adds `6` employee stress, and leaves the employee in In Progress. This makes missed junk clues consume both player attention and workforce capacity rather than remaining inert clutter.
+Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. Matching resource-disguised junk is deliberately prioritized by the Inspector shortcut and also starts work. Both forms run for the normal workflow duration, accept interventions, and produce a document in Review with a guaranteed Source Integrity Failure. Completion adds `10` employee stress and `10` Audit Chance and leaves the employee in In Progress. Fake tasks carry no collectible value; legitimate tasks contaminated by a junk resource retain their quote, so approving the invalid output creates the same immediate-revenue-versus-liability trap as other bad work.
+
+## Daily process maturity specialization
+
+Every successful operating close enters a bonus award stage before overnight activity. Day 5 also grants its award before the quarterly review. The stage grants exactly one Process Point per day; save migration initializes the run tree safely, and reopening a saved reward stage cannot duplicate the daily point.
+
+The stage displays four seeded random specialization rows from the non-maxed pool. A player may spend available points to fill the next pip from left to right or bank points for a later day. Each row has three ranks, benefits apply immediately, and all ranks last for the remainder of the current five-day run.
+
+| Specialization | Pip 1 | Pip 2 | Pip 3 |
+| --- | --- | --- | --- |
+| Elastic Intake | Inbox capacity +1 | +2 | +3 |
+| Backlog Architecture | Backlog capacity +1 | +2 | +3 |
+| Parallel Processing | In Progress capacity +1 | +2 | +3 |
+| Review Throughput | Review capacity +1 | +2 | +3 |
+| Security Awareness | phishing threshold -1 | security reward +$75 | correct junk deletion lowers Audit Chance by 2 |
+| Managed Intake Cadence | automatic arrivals +2 seconds | +4 seconds | +6 seconds |
+| Revenue Assurance | approved payouts +5% | +10% | +15% |
+| Restorative Controls | overnight recovery +3 | +6 | +9 |
+| Audit Dampening | nightly Audit Chance -5 points | -10 points | -15 points |
+| Correction Buffer | correction stress -2 | -4 | -6 |
+
+Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security Awareness also stacks with Security Liaison but never lowers the phishing threshold below one deletion.
 
 ### Card stacking and deletion
 
@@ -237,6 +260,7 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - A new run displays 50% Audit Chance and cannot survive an operating close at 0 Cash.
 - Confidence changes the displayed approval payout and sweet-spot width.
 - Task cards visibly distinguish 5× Windfall, 2× Premium, and 20% Low Fee contracts; the quoted amount survives processing and correction.
+- Juiced task cards are visibly distinct, require exactly two task-specific resources, pay 1.75× their rolled quote, last 35% longer, spawn rarely, and retain their scope through correction.
 - The three new ordinary task types use existing resources and document schemas, preserve their identity through correction, and expose both specialist and coverage routes.
 - Matching multi-card resource stacks merge without a size cap, while locked work remains immovable.
 - Deleting a valid resource deducts $8 and creates exactly one liability.
@@ -245,8 +269,9 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Correction never pays or charges Cash and always returns a shortened-deadline task.
 - Escalation pays no task revenue, costs 4 Confidence, and reduces audit severity by 15%.
 - Every night rolls the current Audit Chance; findings use liabilities per elapsed day and Confidence protection.
-- An automatic Inbox overflow displays its consequences, adds 5 Audit Chance, and removes 3 Confidence.
-- A task-disguised junk workflow consumes time and adds 6 worker stress but creates no Review document or revenue.
+- An automatic Inbox overflow displays its consequences, adds 15 Audit Chance, and removes 6 Confidence.
+- Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 10 Audit Chance and creates an unapprovable Source Integrity Failure document in Review.
+- Every successful daily close grants one non-duplicating Process Point before overnight planning; the randomized specialization tree fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
 - Cash at 0, Confidence at 0, or Critical Audit Failure ends the run.

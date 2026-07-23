@@ -16,7 +16,7 @@ This file catalogs card **templates**. Runtime card instances receive unique IDs
 | Phishing reward distractions | 1 |
 | **Total** | **30** |
 
-The game also defines 16 task workflows: seven specialist recipes and nine cross-role coverage recipes.
+The game defines 46 task workflows: 23 standard-scope recipes (seven specialist, nine ordinary cross-role coverage, and seven emergency Manager coverage) plus a juiced counterpart for every recipe.
 
 ---
 
@@ -86,9 +86,10 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Preferred workload | 10%, with a 5% minimum |
 | Replacement hiring cost | $90 |
 | Specialist task | None |
+| Emergency coverage | Every valid task at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress |
 | Special functions | Signs qualifying Review documents; conducts private employee check-ins while both cards are in Backlog |
 
-The Manager is not a normal task worker and appears in no production recipe.
+The Manager is an intentionally terrible emergency task worker. The assignment forecast labels this as Emergency cover and exposes the severe accuracy, time, and stress costs before the player commits.
 
 ---
 
@@ -96,9 +97,11 @@ The Manager is not a normal task worker and appears in no production recipe.
 
 Task cards are work requests. A valid In Progress stack combines one task, a compatible employee, and its required resource.
 
-Every task or document deadline miss now also applies Confidence −3 and +15% future audit severity, in addition to any template-specific expiration effect listed below.
+Every task or document deadline miss now also adds 12 Audit Chance, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a task or document applies the same global penalty.
 
 Each positive-revenue task instance receives a contract rate when created. Windfall cards (5%) pay exactly 5× the task type's base reward and use a gold treatment; Premium cards (8%) pay 2×; Low Fee cards (25%) pay 20% and use a muted treatment; the remaining 62% pay 0.75×, 0.9×, or 1×. This keeps the long-run expected multiplier near 1× while making individual requests much more consequential. The card and Inspector show the quote before assignment. Confidence scales the quoted value only when the completed document is approved, and correction preserves the original quote. Task-disguised junk receives the same convincing visual/value roll but still pays nothing when exposed.
+
+Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multiplies the already-rolled quote by 1.75×, takes 35% longer, requires a second resource, consumes that added resource, and survives production and correction. The guaranteed opening tutorial remains standard scope; audit-generated Regulatory Response arrivals use the same rare roll as ordinary tasks.
 
 | Task type | Base | Low Fee (20%) | Premium (2×) | Windfall (5×) |
 |---|---:|---:|---:|---:|
@@ -109,6 +112,18 @@ Each positive-revenue task instance receives a contract rate when created. Windf
 | Revenue Enablement Packet | $85 | $17 | $170 | $425 |
 | Spend Governance Calibration | $65 | $13 | $130 | $325 |
 | Regulatory Response | $0 fixed | $0 | $0 | $0 |
+
+### Juiced Scope Requirements
+
+| Task type | Standard resource | Added juiced resource | Standard-rate juiced quote |
+|---|---|---|---:|
+| Data Entry Request | Spreadsheet | Client Data | $61 |
+| Expense Report | Receipt | Spreadsheet | $123 |
+| Invoice Request | Spreadsheet | Client Data | $131 |
+| Stakeholder Alignment Memo | Spreadsheet | Client Data | $79 |
+| Revenue Enablement Packet | Client Data | Spreadsheet | $149 |
+| Spend Governance Calibration | Receipt | Spreadsheet | $114 |
+| Regulatory Response | Spreadsheet | Receipt | $0 |
 
 ### Data Entry Request
 
@@ -271,7 +286,7 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Used by | Revenue Enablement Packet |
 | Consumption | Consumed when the workflow completes |
 
-Deleting any legitimate resource through the board trash target or Inspector costs `$8` and creates one severity-3 liability with the source `legitimate resource destroyed`. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
+Deleting any legitimate resource through the board trash target or Inspector costs `$8`, creates one severity-3 liability with the source `legitimate resource destroyed`, and immediately adds 15 Audit Chance. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
 
 ---
 
@@ -321,11 +336,11 @@ Document correctness is determined by the active daily policies, not by the temp
 
 ## Junk Distraction Cards
 
-Junk uses `kind: distraction` internally but imitates a normal task or resource card. Deleting ordinary junk advances the daily phishing-test counter. Every junk template consistently receives one of two subtle visual defects: chromatic text misregistration with a scanline tear, or an offset code block with a clipped edge artifact. These defects are clues rather than explicit labels; legitimate cards and the BUSYWORK-IT reward notice remain clean.
+Junk uses `kind: distraction` internally but imitates a normal task or resource card. Deleting ordinary junk advances the daily phishing-test counter. Every junk template consistently receives one of two noticeable visual defects: chromatic text misregistration with a traveling scanline tear, or an offset code block with a moving clipped-edge artifact. A staggered wiggle cycles through the kind label, title, description, and footer instead of moving the whole card together. These defects are clues rather than explicit labels; legitimate cards and the BUSYWORK-IT reward notice remain clean.
 
-The Inspector's **Add [resource] and begin** shortcut is intentionally unsafe: when a resource-disguised junk card imitates the requested input, the shortcut selects that decoy before legitimate stock. The decoy enters the assignment but cannot start its workflow, forcing the player to inspect and remove the staged input. Manual dragging remains an explicit safe choice.
+The Inspector's **Add [resource] and begin** shortcut is intentionally unsafe: when a resource-disguised junk card imitates the requested input, the shortcut selects that decoy before legitimate stock. The matching decoy starts a normal-looking contaminated workflow. Manual dragging and close visual inspection remain the explicit safe choices.
 
-Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. The player can assign it and start a normal-looking progress job. On completion it reveals itself as junk, produces no Review document or revenue, adds `6` worker stress, and leaves the worker waiting in In Progress. Resources committed to the bogus request return to Backlog.
+Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `10` Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Junk inputs are consumed; legitimate reusable inputs return to Backlog according to the normal recipe.
 
 ### Task Disguises
 
@@ -364,38 +379,45 @@ The `К` in the `WК` code is Cyrillic, not the normal Latin `K`.
 | Disguise | Task |
 | Card code | `WK` |
 | Display name | BUSYWORK-IT Security Test Result |
-| Description | Delete this notice to claim the approved security-awareness stipend. |
+| Description | You passed BUSYWORK-IT's phishing test. Thank you for participating. Endorsement #XXXXX (the runtime card substitutes a stable five-digit number) |
 | Source | BUSYWORK-IT |
 | Clue ID | `reward-instruction` |
 | Trigger | The daily junk-deletion threshold |
 | Effect on arrival | Occupies the Inbox slot freed by the triggering deletion |
 | Reward condition | Reward is granted only when this card is deleted |
-| Reward | $125 and 1 persistent Compliance Token |
+| Reward | $125 and 1 persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200 for the current run |
 
 ---
 
 ## Task Workflow Matrix
 
-Durations are base recipe durations before employee Speed, stress, morale, rhythm, coping traits, conditions, or company-development modifiers.
+The matrix below lists the 23 standard-scope recipes. Every row also has a juiced counterpart using the task-specific added resource above, 1.35× the listed duration, the same worker-fit penalties, and the task card's 1.75× juiced quote. Durations are base recipe durations before employee Speed, stress, morale, rhythm, coping traits, conditions, or company-development modifiers.
 
 | Task | Worker | Fit | Resource | Base duration | Accuracy penalty | Work-stress multiplier | Completion stress | Output | Typical payout |
 |---|---|---|---|---:|---:|---:|---:|---|---:|
 | Data Entry Request | Intern | Specialist | Spreadsheet | 18s | 0 | 1.00× | +4 default | Completed Data Entry | $35 |
 | Data Entry Request | Junior Analyst | Coverage | Spreadsheet | 25s | −5 | 1.35× | +8 | Completed Data Entry | $35 |
 | Data Entry Request | Accountant | Coverage | Spreadsheet | 26s | −4 | 1.30× | +8 | Completed Data Entry | $35 |
+| Data Entry Request | Manager | Emergency cover | Spreadsheet | 41s | −70 | 3.20× | +30 | Completed Data Entry | $35 |
 | Regulatory Response | Intern | Specialist | Spreadsheet | 24s | 0 | 1.00× | +8 | Completed Data Entry | $0 |
+| Regulatory Response | Manager | Emergency cover | Spreadsheet | 54s | −70 | 3.20× | +30 | Completed Data Entry | $0 |
 | Expense Report | Accountant | Specialist | Receipt | 22s | 0 | 1.00× | +4 default | Verified Expense | $70 |
 | Expense Report | Junior Analyst | Coverage | Receipt | 32s | −8 | 1.60× | +12 | Verified Expense | $70 |
 | Expense Report | Intern | Coverage | Receipt | 40s | −14 | 2.00× | +18 | Verified Expense | $70 |
+| Expense Report | Manager | Emergency cover | Receipt | 50s | −70 | 3.20× | +30 | Verified Expense | $70 |
 | Invoice Request | Junior Analyst | Specialist | Spreadsheet | 20s | 0 | 1.00× | +4 default | Invoice Document | $75 |
 | Invoice Request | Accountant | Coverage | Spreadsheet | 29s | −6 | 1.45× | +10 | Invoice Document | $75 |
 | Invoice Request | Intern | Coverage | Spreadsheet | 36s | −12 | 1.80× | +15 | Invoice Document | $75 |
+| Invoice Request | Manager | Emergency cover | Spreadsheet | 45s | −70 | 3.20× | +30 | Invoice Document | $75 |
 | Stakeholder Alignment Memo | Intern | Specialist | Spreadsheet | 22s | 0 | 1.00× | +4 default | Completed Data Entry | $45 |
 | Stakeholder Alignment Memo | Junior Analyst | Coverage | Spreadsheet | 30s | −6 | 1.40× | +9 | Completed Data Entry | $45 |
+| Stakeholder Alignment Memo | Manager | Emergency cover | Spreadsheet | 50s | −70 | 3.20× | +30 | Completed Data Entry | $45 |
 | Revenue Enablement Packet | Junior Analyst | Specialist | Client Data | 24s | 0 | 1.00× | +4 default | Invoice Document | $85 |
 | Revenue Enablement Packet | Accountant | Coverage | Client Data | 33s | −8 | 1.50× | +11 | Invoice Document | $85 |
+| Revenue Enablement Packet | Manager | Emergency cover | Client Data | 54s | −70 | 3.20× | +30 | Invoice Document | $85 |
 | Spend Governance Calibration | Accountant | Specialist | Receipt | 25s | 0 | 1.00× | +4 default | Verified Expense | $65 |
 | Spend Governance Calibration | Intern | Coverage | Receipt | 38s | −12 | 1.80× | +15 | Verified Expense | $65 |
+| Spend Governance Calibration | Manager | Emergency cover | Receipt | 56s | −70 | 3.20× | +30 | Verified Expense | $65 |
 
 ### Workflow Consumption
 
@@ -452,7 +474,7 @@ Ordinary arrivals can additionally create Spreadsheet, Client Data, Data Entry R
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.
 - Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, and derived abilities.
 - Task instances may become rework tasks and retain revision metadata.
-- Positive-revenue task instances retain their payout tier, multiplier, and quoted contract amount through production and rework.
+- Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
 - Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels.
