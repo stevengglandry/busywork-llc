@@ -199,7 +199,10 @@ A newly created run records the exact opening Data Entry Request, Spreadsheet, a
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
 - Employee hover/focus consistently exposes the stat popover; selected employees also show the same data in the Inspector and Staff roster.
+- Standalone employee cards keep their coping/status tags beside the worker name and compress workload state, stress percentage, target band, and current marker into a mini gauge beside the EMPLOYEE header. Full gauges remain available in workflows, the Inspector, and Staff roster.
 - Every visible card has a text type label plus a type-specific shape: employee square, task circle, resource diamond, document square. Distractions retain their disguise type so the mechanic is not spoiled.
+- The currently selected card or workflow uses a three-pixel black dashed frame, offset isolation halo, and slight lift so Inspector context remains obvious over every card type and status treatment.
+- Selecting a worker, task, or resource gives recipe-compatible cards and incomplete workflows a subtle green outline. The cue is computed from actual recipe pairs, including disguised junk identities; Manager/document approval and Backlog check-in pairs use their special action rules.
 - Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
 - Only a new run's recorded opening workflow receives the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
 
