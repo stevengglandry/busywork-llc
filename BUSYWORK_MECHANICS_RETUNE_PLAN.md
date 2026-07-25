@@ -19,7 +19,7 @@ Cash is cash on hand. During the day it changes through recognized task income a
 
 - Starting Cash: `$450`.
 - Each positive-revenue task instance rolls a visible contract rate: 5% Windfall at `5×` its task-type base reward, 8% Premium at `2×`, 25% Low Fee at `0.2×`, and 62% ordinary work split across `0.75×`, `0.9×`, and `1×`. The expected multiplier remains approximately `1×`, so variance changes priorities without broadly inflating the economy.
-- Eligible arrivals have an independent 8% chance to receive Juiced scope. Juiced cards multiply the rolled quote by `1.75×`, require a task-specific second resource, consume that added input, and use a recipe lasting `1.35×` the standard duration. The opening tutorial remains standard; audit-generated Regulatory Response arrivals use the same rare roll.
+- Eligible arrivals have an independent 8% chance to receive Juiced scope. Juiced cards multiply the rolled quote by `1.75×`, require a task-specific second resource, consume both inputs, and use a recipe lasting `1.35×` the standard duration. Every completed workflow consumes every supplied resource; correction requires fresh inputs. The opening tutorial remains standard; audit-generated Regulatory Response arrivals use the same rare roll.
 - Approving work recognizes `quoted contract payout × (0.8 + 0.4 × Confidence / 100) × Process Revenue Assurance`, rounded to a whole dollar. Revenue Assurance ranges from `1.00×` to `1.15×`; the quoted payout follows the task through processing, Review, and any requested rework.
 - Regulatory Response work pays `$0`.
 - Death condition: Cash at or below `$0` after the operating close.
@@ -134,7 +134,9 @@ Mutually exclusive caps, terms, sources, record ranges, client rules, and fatigu
 
 ## Expanded work request pool
 
-Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue Enablement Packet (Client Data), and Spend Governance Calibration (Receipt). Each has a specialist and one ordinary cross-role coverage recipe. Every valid task also has an emergency Manager recipe at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress. Every one of those 23 worker/task combinations has a juiced counterpart requiring two resources and 35% more base time. They reuse the three existing Review document schemas, and completed documents record the originating request and scope so correction returns the same task type and standard/juiced requirement rather than generic legacy work.
+Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue Enablement Packet (Client Data), and Governance Recalibration (Receipt; internal template ID remains `spend_governance_calibration` for save compatibility). Each has a specialist and one ordinary cross-role coverage recipe. Every valid task also has an emergency Manager recipe at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress. Every one of those 23 worker/task combinations has a juiced counterpart requiring two resources and 35% more base time. They reuse the three existing Review document schemas, and completed documents record the originating request and scope so correction returns the same task type and standard/juiced requirement rather than generic legacy work.
+
+Every overnight recruit, including an Acting Manager, is a **Juiced Hire**. Its deterministic stat total is at least two pips above the opening worker of the same role when the six-pip caps permit, no stat may fall below the role baseline, and the primary role stat receives priority. Juiced Hires also process 10% faster and recover stress 20% faster in Backlog. Training Budget adds one further seeded pip rather than one pip to every stat.
 
 ## Liabilities and audits
 
@@ -144,7 +146,7 @@ Liabilities are created by:
 - Rejecting accurate work.
 - Deleting a legitimate resource.
 
-Each liability immediately adds 15 points to Audit Chance. Deadline misses and deliberate task/document deletion do not create a liability, but add 12 Audit Chance, apply Confidence -6, and add 30% to future audit severity. Inbox overflow adds 15 Audit Chance and removes 6 Confidence; a task displaced by overflow also receives the deadline penalties. Firing an employee adds 12 Audit Chance, completing junk-disguised work adds 10, and requesting an unnecessary correction adds 8.
+Each liability immediately adds 15 points to Audit Chance. Deadline misses and deliberate Review-document deletion do not create a liability, but add 12 Audit Chance, apply Confidence -6, and add 30% to future audit severity. Deliberately deleting an ordinary valid task instead rolls 75% no consequence, 12.5% Confidence -2, and 12.5% future audit severity +10%. Stakeholder Alignment Memo overrides that roll with 50% no consequence / 50% Confidence -2; Governance Recalibration uses 50% no consequence / 50% future audit severity +10%. Inbox overflow adds 15 Audit Chance and removes 6 Confidence; a task displaced by overflow also receives the deadline penalties. Firing an employee adds 12 Audit Chance, completing junk-disguised work adds 10, and requesting an unnecessary correction adds 8.
 
 When an audit finds liabilities:
 
@@ -172,7 +174,7 @@ The deterministic embedded test mode forces the leave/stat-growth branch so logi
 
 ## Pacing and player agency
 
-Automatic Inbox arrivals remain on the day-scaled schedule, but the current countdown is always visible in the action bar. While the clock is running and the Inbox has capacity, the player may use **Pull next item** to deliver the next seeded arrival immediately. Pulling an item resets the automatic-arrival clock; a full Inbox disables the action instead of silently displacing existing work. This makes waiting optional without changing the arrival order or removing capacity and deadline pressure.
+Automatic Inbox arrivals remain on the day-scaled schedule, but the current countdown is always visible in the action bar. While the clock is running and the Inbox has capacity, the player may use **Pull next item** to deliver the next seeded arrival immediately. Pulling an item resets the automatic-arrival clock; a full Inbox disables the action instead of silently displacing existing work. Every deterministic ten-card bag contains exactly three distinct legitimate tasks, four resources (one of each plus one seeded duplicate), and three distinct junk cards. This yields 30% tasks, 40% resources, and 30% junk and applies to every refill, not only the first ten pulls.
 
 Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. Matching resource-disguised junk is deliberately prioritized by the Inspector shortcut and also starts work. Both forms run for the normal workflow duration, accept interventions, and produce a document in Review with a guaranteed Source Integrity Failure. Completion adds `10` employee stress and `10` Audit Chance and leaves the employee in In Progress. Fake tasks carry no collectible value; legitimate tasks contaminated by a junk resource retain their quote, so approving the invalid output creates the same immediate-revenue-versus-liability trap as other bad work.
 
@@ -180,7 +182,7 @@ Task-disguised junk can be assigned using the same worker and resource flow as t
 
 Every successful operating close enters a bonus award stage before overnight activity. Day 5 also grants its award before the quarterly review. The stage grants exactly one Process Point per day; save migration initializes the run tree safely, and reopening a saved reward stage cannot duplicate the daily point.
 
-The stage displays four seeded random specialization rows from the non-maxed pool. A player may spend available points to fill the next pip from left to right or bank points for a later day. Each row has three ranks, benefits apply immediately, and all ranks last for the remainder of the current five-day run.
+The stage always displays the same five specialization rows: Elastic Intake, Parallel Processing, Revenue Assurance, Restorative Controls, and Audit Dampening. A player may spend available points to fill the next pip from left to right or bank points for a later day. Each row has three ranks, benefits apply immediately, and all ranks last for the remainder of the current five-day run.
 
 | Specialization | Pip 1 | Pip 2 | Pip 3 |
 | --- | --- | --- | --- |
@@ -199,16 +201,18 @@ Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security
 
 ### Card stacking and deletion
 
-- Dragging any card in a homogeneous multi-card stack onto another homogeneous stack of the same template merges the complete source stack, rather than moving only the clicked card.
+- Dragging any card in a homogeneous stack onto another homogeneous stack of the same template merges the complete source stack, including multi-card stacks dropped onto a single matching card.
 - Resource stacks have no merge-size limit. Other matching stacks retain the five-card limit.
 - Active jobs and locked workflow stacks cannot merge. Invalid stack combinations fall back to the normal single-card move rules.
+- Only the physical top card in a stack advances its deadline. Every covered timer pauses at its exact remaining value and resumes when that card becomes the top card.
+- The top card displays a hoverable/focusable pip for every covered card. Pips expose card identity, paused countdown, Juiced/low-value/glitch state, and employee status; selecting a pip opens that buried card in the Inspector without reordering the stack.
 - Staged resource chips can be dragged back out of an assignment. The board always rerenders from state after a drop, preventing a rejected resource from remaining visually over an employee card.
 - The board trash target includes a trash-can icon and has an equivalent Inspector action.
-- Deleting ordinary junk safely increments phishing-test progress. Deleting a valid resource costs `$8` and creates one severity-3 liability. Deleting a task or Review document applies its expiration consequence; firing an employee costs `$25` plus Morale and Confidence.
+- Deleting ordinary junk safely increments phishing-test progress. Deleting a valid resource costs `$8` and creates one severity-3 liability. Valid tasks use the seeded mild deletion outcomes above; Review documents retain the full expiration consequence. Firing an employee costs `$25` plus Morale and Confidence.
 
 ### First-workflow guidance
 
-A newly created run records the exact opening Data Entry Request, Spreadsheet, and Intern instances as its guided workflow. Those three cards receive a sparkly aura, followed by the matching **Assign Intern** and **Add Spreadsheet and begin** actions in the Inspector. The opening **Begin workday** button uses the same cue. The existing unsafe shortcut behavior is preserved: a matching junk decoy can still be pulled first, while the legitimate Spreadsheet keeps its aura until real work begins. The guide permanently retires when any first legitimate workflow starts, or when one of its recorded cards is deleted or expires. Migrated runs without guide state do not gain the tutorial retroactively.
+A newly created run records the opening Data Entry Request as its guided workflow. The task, every legitimate available employee that can perform or cover it, every legitimate Spreadsheet, the resulting partial workflow, and all matching Inspector actions receive the yellow sparkle treatment. Junk decoys never receive the guide even when they can contaminate the shortcut. The opening **Begin workday** button uses the same cue. The guide permanently retires when any first legitimate workflow starts, or when its recorded task is deleted or expires. Migrated runs without guide state do not gain the tutorial retroactively.
 
 ### Charts and labels
 
@@ -216,6 +220,11 @@ A newly created run records the exact opening Data Entry Request, Spreadsheet, a
 - Quarterly Opening, Projection, and Actual series use a legend above the chart, right-aligned with the plot.
 - Timeline endpoints use full labels such as `Day 1 00:00`, never the abbreviated `D1` form.
 - Task-revenue telemetry changes only for recognized task payouts. It remains capped at 64 points per day and 320 persisted quarterly points.
+- The small persistent task-revenue sparkline lives inside the Cash header tile and opens the detailed Progress panel.
+- The Recipes panel is a compact input-to-output network: specialist, task, consumed resource, optional Juiced resource branch, coverage alternatives, duration, and resulting document are visible together.
+- Done uses a compact narrow lane so Inbox, Backlog, In Progress, and Review receive more horizontal space.
+- At a 1920-pixel desktop viewport, all five lanes and the roughly 300-pixel Inspector remain visible simultaneously at compact card density. This large-monitor view is the baseline; Done alone is intentionally narrower than the reference layout.
+- Completed work entering Review never changes the current card or panel selection. Review attention styling and the completion toast announce the arrival.
 
 ## Feedback and visual language
 
@@ -227,7 +236,8 @@ A newly created run records the exact opening Data Entry Request, Spreadsheet, a
 - The currently selected card or workflow uses a three-pixel black dashed frame, offset isolation halo, and slight lift so Inspector context remains obvious over every card type and status treatment.
 - Selecting a worker, task, or resource gives recipe-compatible cards and incomplete workflows a subtle green outline. The cue is computed from actual recipe pairs, including disguised junk identities; Manager/document approval and Backlog check-in pairs use their special action rules.
 - Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
-- Only a new run's recorded opening workflow receives the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
+- Only a new run's valid opening workflow options receive the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
+- The Audit header shows effective nightly Audit Chance, liability count, findings-if-audited chance, and a five-pip Clear/Fine/Escalated/Severe/Critical punishment rail. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
 
 ## Implementation order
 

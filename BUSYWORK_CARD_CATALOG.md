@@ -38,7 +38,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Preferred workload | 45% before seeded variation |
 | Hiring cost | $60 |
 | Specialist tasks | Data Entry Request, Stakeholder Alignment Memo, Regulatory Response |
-| Coverage tasks | Expense Report, Invoice Request, Spend Governance Calibration |
+| Coverage tasks | Expense Report, Invoice Request, Governance Recalibration |
 
 ### Junior Analyst
 
@@ -69,7 +69,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Salary | $28/day |
 | Preferred workload | 78% before seeded variation |
 | Hiring cost | $145 |
-| Specialist tasks | Expense Report, Spend Governance Calibration |
+| Specialist tasks | Expense Report, Governance Recalibration |
 | Coverage tasks | Invoice Request, Data Entry Request, Revenue Enablement Packet |
 
 ### Manager
@@ -97,11 +97,11 @@ The Manager is an intentionally terrible emergency task worker. The assignment f
 
 Task cards are work requests. A valid In Progress stack combines one task, a compatible employee, and its required resource.
 
-Every task or document deadline miss now also adds 12 Audit Chance, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a task or document applies the same global penalty.
+Every natural task or document deadline miss adds 12 Audit Chance, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a Review document applies the same global penalty. Ordinary valid task deletion instead rolls 75% no consequence, 12.5% Confidence −2, and 12.5% audit severity +10%; Stakeholder Alignment Memo uses 50% none / 50% Confidence −2, while Governance Recalibration uses 50% none / 50% audit severity +10%.
 
 Each positive-revenue task instance receives a contract rate when created. Windfall cards (5%) pay exactly 5× the task type's base reward and use a gold treatment; Premium cards (8%) pay 2×; Low Fee cards (25%) pay 20% and use a muted treatment; the remaining 62% pay 0.75×, 0.9×, or 1×. This keeps the long-run expected multiplier near 1× while making individual requests much more consequential. The card and Inspector show the quote before assignment. Confidence scales the quoted value only when the completed document is approved, and correction preserves the original quote. Task-disguised junk receives the same convincing visual/value roll but still pays nothing when exposed.
 
-Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multiplies the already-rolled quote by 1.75×, takes 35% longer, requires a second resource, consumes that added resource, and survives production and correction. The guaranteed opening tutorial remains standard scope; audit-generated Regulatory Response arrivals use the same rare roll as ordinary tasks.
+Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multiplies the already-rolled quote by 1.75×, takes 35% longer, requires a second resource, consumes both resources, and survives production and correction. All resources in every completed workflow are consumed; canceled workflows consume nothing, and correction requires fresh inputs. The guaranteed opening tutorial remains standard scope; audit-generated Regulatory Response arrivals use the same rare roll as ordinary tasks.
 
 | Task type | Base | Low Fee (20%) | Premium (2×) | Windfall (5×) |
 |---|---:|---:|---:|---:|
@@ -110,7 +110,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Invoice Request | $75 | $15 | $150 | $375 |
 | Stakeholder Alignment Memo | $45 | $9 | $90 | $225 |
 | Revenue Enablement Packet | $85 | $17 | $170 | $425 |
-| Spend Governance Calibration | $65 | $13 | $130 | $325 |
+| Governance Recalibration | $65 | $13 | $130 | $325 |
 | Regulatory Response | $0 fixed | $0 | $0 | $0 |
 
 ### Juiced Scope Requirements
@@ -122,7 +122,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Invoice Request | Spreadsheet | Client Data | $131 |
 | Stakeholder Alignment Memo | Spreadsheet | Client Data | $79 |
 | Revenue Enablement Packet | Client Data | Spreadsheet | $149 |
-| Spend Governance Calibration | Receipt | Spreadsheet | $114 |
+| Governance Recalibration | Receipt | Spreadsheet | $114 |
 | Regulatory Response | Spreadsheet | Receipt | $0 |
 
 ### Data Entry Request
@@ -132,7 +132,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `data_entry_request` |
 | Card code | `WK` |
 | Tags | `task`, `admin` |
-| Description | Transcribe a routine operational dataset. |
+| Description | Enter the operational dataset in the approved Spreadsheet. |
 | Starting deadline | 1:40 |
 | Base reward | $35 |
 | Expiration effect | Executive Confidence −2 |
@@ -148,7 +148,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `expense_report` |
 | Card code | `WK` |
 | Tags | `task`, `finance`, `reimbursement` |
-| Description | Validate an employee reimbursement claim. |
+| Description | Validate the reimbursement claim against its Receipt. |
 | Starting deadline | 2:00 |
 | Base reward | $70 |
 | Expiration effect | Morale −2 |
@@ -164,7 +164,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `invoice_request` |
 | Card code | `WK` |
 | Tags | `task`, `analysis` |
-| Description | Prepare client billing for completed services. |
+| Description | Prepare client billing in the approved Spreadsheet. |
 | Starting deadline | 1:55 |
 | Base reward | $75 |
 | Expiration effect | Cash −$15 |
@@ -180,11 +180,11 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `stakeholder_alignment_memo` |
 | Card code | `WK` |
 | Tags | `task`, `admin`, `routine` |
-| Description | Operationalize cross-functional consensus into an actionable alignment artifact. |
+| Description | Build the alignment artifact in a shared Spreadsheet. |
 | Starting deadline | 1:45 |
 | Base reward | $45 |
 | Expiration effect | Executive Confidence −2 |
-| Required resource | Spreadsheet (retained) |
+| Required resource | Spreadsheet (consumed) |
 | Output | Completed Data Entry |
 | Specialist / coverage | Intern / Junior Analyst |
 
@@ -195,7 +195,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `revenue_enablement_packet` |
 | Card code | `WK` |
 | Tags | `task`, `analysis`, `billing` |
-| Description | Synthesize client intelligence into a monetization-ready enablement packet. |
+| Description | Synthesize the supplied Client Data into a billing packet. |
 | Starting deadline | 1:50 |
 | Base reward | $85 |
 | Expiration effect | Cash −$18 |
@@ -203,14 +203,14 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Output | Invoice Document |
 | Specialist / coverage | Junior Analyst / Accountant |
 
-### Spend Governance Calibration
+### Governance Recalibration
 
 | Field | Value |
 |---|---|
 | Template ID | `spend_governance_calibration` |
 | Card code | `WK` |
 | Tags | `task`, `finance`, `reimbursement` |
-| Description | Right-size reimbursement controls against the enterprise spend-governance posture. |
+| Description | Recalibrate reimbursement controls against the submitted Receipt. |
 | Starting deadline | 1:55 |
 | Base reward | $65 |
 | Expiration effect | Morale −2 |
@@ -225,7 +225,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 | Template ID | `regulatory_response` |
 | Card code | `RG` |
 | Tags | `task`, `admin`, `regulatory` |
-| Description | Mandatory audit remediation. It consumes capacity and pays no revenue. |
+| Description | Compile the remediation record in the approved Spreadsheet. It pays no revenue. |
 | Starting deadline | 1:10 |
 | Base reward | $0 |
 | Expiration effect | Confidence −4, plus the universal deadline penalty |
@@ -238,7 +238,7 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multipli
 
 `Request correction` converts a Review document back into the originating task template recorded by its completed workflow. Old saves without that source metadata use this fallback map:
 
-For current workflows, Stakeholder Alignment Memo, Revenue Enablement Packet, and Spend Governance Calibration all return as themselves with their original quoted payout. Regulatory work likewise keeps its unpaid identity.
+For current workflows, Stakeholder Alignment Memo, Revenue Enablement Packet, and Governance Recalibration all return as themselves with their original quoted payout. Regulatory work likewise keeps its unpaid identity.
 
 | Review document | Rework task |
 |---|---|
@@ -260,9 +260,9 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Template ID | `spreadsheet` |
 | Card code | `RS` |
 | Tags | `resource`, `spreadsheet` |
-| Description | Approved shared workbook. Retained after routine use. |
+| Description | Approved workbook copy. Consumed when its workflow completes. |
 | Used by | Data Entry Request, Invoice Request, Stakeholder Alignment Memo, Regulatory Response |
-| Consumption | Retained after every supported workflow |
+| Consumption | Consumed when the workflow completes |
 
 ### Receipt
 
@@ -271,8 +271,8 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Template ID | `receipt` |
 | Card code | `RS` |
 | Tags | `resource`, `receipt` |
-| Description | Physical proof of an expense. Consumed during verification. |
-| Used by | Expense Report, Spend Governance Calibration |
+| Description | Physical proof of an expense. Consumed when its workflow completes. |
+| Used by | Expense Report, Governance Recalibration |
 | Consumption | Consumed when the workflow completes |
 
 ### Client Data
@@ -282,7 +282,7 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Template ID | `client_data` |
 | Card code | `RS` |
 | Tags | `resource`, `client-data` |
-| Description | Restricted client information packet. |
+| Description | Restricted client information packet. Consumed when its workflow completes. |
 | Used by | Revenue Enablement Packet |
 | Consumption | Consumed when the workflow completes |
 
@@ -314,7 +314,7 @@ Documents are generated by completed workflows and enter Review with a 1:30 ruli
 | Card code | `DC` |
 | Tags | `document`, `reimbursement` |
 | Description | A reimbursement recommendation awaiting authorization. |
-| Produced by | Expense Report and Spend Governance Calibration workflows |
+| Produced by | Expense Report and Governance Recalibration workflows |
 | Generated fields | `amount`, `receiptAttached`, `managerSigned`, `clientCode` |
 | Possible base anomalies | Missing Manager signature; suspended client; policy-sensitive amount/cents |
 
@@ -340,18 +340,18 @@ Junk uses `kind: distraction` internally but imitates a normal task or resource 
 
 The Inspector's **Add [resource] and begin** shortcut is intentionally unsafe: when a resource-disguised junk card imitates the requested input, the shortcut selects that decoy before legitimate stock. The matching decoy starts a normal-looking contaminated workflow. Manual dragging and close visual inspection remain the explicit safe choices.
 
-Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `10` Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Junk inputs are consumed; legitimate reusable inputs return to Backlog according to the normal recipe.
+Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `10` Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Every task and resource input, legitimate or junk, is consumed when the contaminated workflow completes.
 
 ### Task Disguises
 
 | Template ID | Mimics | Displayed card | Code | Description | Source | Clue IDs |
 |---|---|---|---|---|---|---|
-| `junk_invoice_repeat` | Invoice Request | Invoice Request (Request) | `WK` | Prepare client billing for completed services. | Client Services | `duplicated-word` |
-| `junk_data_urgent` | Data Entry Request | URGENT Data Entry | `WK` | Transcribe immediately to prevent account closure. | External Admin | `wrong-phrasing` |
-| `junk_expense_guarantee` | Expense Report | Expense Report | `WK` | 100% Guaranteed reimbursement approval. | Benefits Reward Center | `wrong-phrasing` |
-| `junk_invoice_domain` | Invoice Request | Invoice Request | `WK` | Prepare client billing for completed services. | Billing via busyw0rk-it.co | `sender-domain` |
-| `junk_expense_currency` | Expense Report | Expense Report | `WК` | Validate an employee reimbursement claim. | Expense Operations | `invalid-code` |
-| `junk_data_secret` | Data Entry Request | Data Entry Request | `WK` | Transcribe a routine operational dataset. Do not tell Finance. | Operations Intake | `wrong-phrasing` |
+| `junk_invoice_repeat` | Invoice Request | Invoice Request (Request) | `WK` | Prepare client billing in the approved Spreadsheet. | Client Services | `duplicated-word` |
+| `junk_data_urgent` | Data Entry Request | URGENT Data Entry | `WK` | Enter this immediately in the approved Spreadsheet to prevent account closure. | External Admin | `wrong-phrasing` |
+| `junk_expense_guarantee` | Expense Report | Expense Report | `WK` | Validate the Receipt for 100% Guaranteed reimbursement approval. | Benefits Reward Center | `wrong-phrasing` |
+| `junk_invoice_domain` | Invoice Request | Invoice Request | `WK` | Prepare client billing in the approved Spreadsheet. | Billing via busyw0rk-it.co | `sender-domain` |
+| `junk_expense_currency` | Expense Report | Expense Report | `WК` | Validate the reimbursement claim against its Receipt. | Expense Operations | `invalid-code` |
+| `junk_data_secret` | Data Entry Request | Data Entry Request | `WK` | Enter the operational dataset in the approved Spreadsheet. Do not tell Finance. | Operations Intake | `wrong-phrasing` |
 
 The `К` in the `WК` code is Cyrillic, not the normal Latin `K`.
 
@@ -360,9 +360,9 @@ The `К` in the `WК` code is Cyrillic, not the normal Latin `K`.
 | Template ID | Mimics | Displayed card | Code | Description | Source | Clue IDs |
 |---|---|---|---|---|---|---|
 | `junk_receipt_typo` | Receipt | Reçeipt | `RS` | Physic& proof of an expense. Consumed during verification. | Expenses Desk | `foreign-character` |
-| `junk_sheet_glyph` | Spreadsheet | Spreadshee† | `RS` | Approved shared workbook. Retained after routine use. | Operations | `foreign-character` |
+| `junk_sheet_glyph` | Spreadsheet | Spreadshee† | `RS` | Approved workbook copy. Consumed when its workflow completes. | Operations | `foreign-character` |
 | `junk_receipt_reply` | Receipt | Receipt (Receipt) | `RS` | Physical proof of an expense. Kindly reply with credentials. | Expenses Desk | `suspicious-parenthetical`, `wrong-phrasing` |
-| `junk_sheet_spacing` | Spreadsheet | Spread sheet | `RS` | Approved shared workbook. Retained after routine use. | Operations | `misspelling` |
+| `junk_sheet_spacing` | Spreadsheet | Spread sheet | `RS` | Approved workbook copy. Consumed when its workflow completes. | Operations | `misspelling` |
 | `junk_client_gift` | Client Data | Client Data | `RS` | Restricted client gift card packet. | Client Appreciation | `wrong-phrasing` |
 | `junk_receipt_code` | Receipt | Reciept | `R5` | Physical proof of an expense. | Expenses Desk | `transposition`, `invalid-code` |
 
@@ -415,9 +415,9 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 | Revenue Enablement Packet | Junior Analyst | Specialist | Client Data | 24s | 0 | 1.00× | +4 default | Invoice Document | $85 |
 | Revenue Enablement Packet | Accountant | Coverage | Client Data | 33s | −8 | 1.50× | +11 | Invoice Document | $85 |
 | Revenue Enablement Packet | Manager | Emergency cover | Client Data | 54s | −70 | 3.20× | +30 | Invoice Document | $85 |
-| Spend Governance Calibration | Accountant | Specialist | Receipt | 25s | 0 | 1.00× | +4 default | Verified Expense | $65 |
-| Spend Governance Calibration | Intern | Coverage | Receipt | 38s | −12 | 1.80× | +15 | Verified Expense | $65 |
-| Spend Governance Calibration | Manager | Emergency cover | Receipt | 56s | −70 | 3.20× | +30 | Verified Expense | $65 |
+| Governance Recalibration | Accountant | Specialist | Receipt | 25s | 0 | 1.00× | +4 default | Verified Expense | $65 |
+| Governance Recalibration | Intern | Coverage | Receipt | 38s | −12 | 1.80× | +15 | Verified Expense | $65 |
+| Governance Recalibration | Manager | Emergency cover | Receipt | 56s | −70 | 3.20× | +30 | Verified Expense | $65 |
 
 ### Workflow Consumption
 
@@ -428,7 +428,7 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 | Invoice preparation | Invoice Request | Employee, Spreadsheet |
 | Stakeholder alignment | Stakeholder Alignment Memo | Employee, Spreadsheet |
 | Revenue enablement | Revenue Enablement Packet, Client Data | Employee |
-| Spend governance | Spend Governance Calibration, Receipt | Employee |
+| Governance recalibration | Governance Recalibration, Receipt | Employee |
 
 After completion, the document enters Review and the worker remains in In Progress until the player moves or reassigns them.
 
@@ -453,7 +453,7 @@ Inbox begins with:
 - Receipt
 - Invoice Request
 
-The specific opening Data Entry Request, Spreadsheet, and Intern instances are linked by the first-workflow guide. Their aura and the corresponding Inspector action cues disappear permanently as soon as the first legitimate workflow starts; later instances of the same templates are never highlighted.
+The opening Data Entry Request is linked to the first-workflow guide. The task, every legitimate available employee that can perform or cover it, every legitimate Spreadsheet, the partial workflow, and corresponding Inspector actions receive the yellow sparkle aura. Junk decoys never receive the guide. All cues disappear permanently as soon as the first legitimate workflow starts.
 
 ### Guaranteed Daily Openings
 
@@ -465,7 +465,16 @@ The specific opening Data Entry Request, Spreadsheet, and Intern instances are l
 | 4 | Data Entry Request + Spreadsheet |
 | 5 | Expense Report + Receipt |
 
-Ordinary arrivals can additionally create Spreadsheet, Client Data, Data Entry Request, Receipt, Expense Report, Invoice Request, Stakeholder Alignment Memo, Revenue Enablement Packet, and Spend Governance Calibration instances. The seeded daily arrival bag also includes three junk templates before switching to the weighted refill system.
+Pulls use repeating deterministic ten-card bags. Every bag contains three distinct legitimate tasks, four resources (one of each plus one seeded duplicate), and three distinct junk templates.
+
+| Pull category | Named cards | Per-card probability | Category total |
+|---|---|---:|---:|
+| Legitimate task | Data Entry Request; Expense Report; Invoice Request; Stakeholder Alignment Memo; Revenue Enablement Packet; Governance Recalibration | 5% each | 30% |
+| Resource | Spreadsheet; Receipt; Client Data | 13.33% each on average | 40% |
+| Task-disguised junk | Six registered task disguises | 2.5% each | 15% |
+| Resource-disguised junk | Six registered resource disguises | 2.5% each | 15% |
+
+Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries and therefore have 0% random-pull probability.
 
 ---
 
@@ -477,7 +486,9 @@ Ordinary arrivals can additionally create Spreadsheet, Client Data, Data Entry R
 - Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
-- Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels.
-- Matching multi-card stacks can be dragged onto each other to merge the complete source stack. Resource stacks have no merge-size cap; other homogeneous stacks retain the five-card cap. Active or locked stacks cannot be merged.
-- The opening Data Entry Request, Spreadsheet, and Intern are the only instances eligible for the first-workflow sparkle guide.
+- Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels. Every recruit is a Juiced Hire: at least two total stat pips above the opening same-role worker where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. Training Budget adds one further pip.
+- Homogeneous stacks of any size can be dragged onto a matching single card or stack to merge the complete source stack. Resource stacks have no merge-size cap; other homogeneous stacks retain the five-card cap. Active or locked stacks cannot be merged.
+- Only the physical top card advances its deadline; covered cards expose hoverable/focusable identity and status pips while their timers pause.
+- The opening Data Entry Request and every legitimate card/action that can advance it are eligible for the first-workflow sparkle guide.
+- Work products entering Review do not replace the current card or panel selection.
 - The catalog excludes policies, upgrades, overnight actions, and company developments because they are not cards.
