@@ -440,7 +440,7 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 | Revenue enablement | Revenue Enablement Packet, Client Data | Employee |
 | Governance recalibration | Governance Recalibration, Receipt | Employee |
 
-After completion, the document enters Review and the worker remains in In Progress until the player moves or reassigns them.
+After completion, the document enters Review and the worker remains in In Progress until the player moves or reassigns them. A taskless worker receives five seconds of grace, then gains stress at a continuously escalating, Resilience-scaled rate. The standalone card and Inspector show both the idle duration and current stress-per-minute pressure; assigning a task or moving the worker out of In Progress resets the timer.
 
 ---
 
@@ -510,6 +510,7 @@ Card faces pair a stable type color and shape with a specific abbreviation such 
 
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.
 - Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, derived abilities, per-stat purchased-pip counts, and total Cash invested.
+- Employee instances also persist their continuous taskless In Progress wait. This timer drives the escalating idle-pressure rate and resets when work is assigned or the employee leaves In Progress.
 - Task instances may become rework tasks and retain revision metadata.
 - Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.

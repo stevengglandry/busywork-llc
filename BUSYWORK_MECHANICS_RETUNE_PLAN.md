@@ -222,6 +222,7 @@ Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security
 - Staged resource chips can be dragged back out of an assignment. The board always rerenders from state after a drop, preventing a rejected resource from remaining visually over an employee card.
 - Dragging a visible top card to empty lane space extracts that top card into a new stack; dragging a compatible stack onto another stack merges the complete source stack atomically. The visible top card never receives its own covered-card pip.
 - Completing a workflow consumes every staged resource, leaves its worker in In Progress for reassignment, and queues the work product in Review without changing the player's current card or panel selection.
+- An employee left in In Progress without a task receives a five-second grace period, then gains stress at `0.04 + 0.001 × exposed seconds` per second, capped at `0.12` before the employee's Resilience multiplier. The continuous wait timer persists in saves, the card and Inspector show elapsed idle time plus current stress per minute, and the rate rises until capped. Assigning a task or moving the employee out of In Progress resets this pressure; Backlog then applies its ordinary recovery.
 - The board trash target includes a trash-can icon and has an equivalent Inspector action.
 - Deleting ordinary junk safely increments phishing-test progress. Deleting a valid resource costs `$8` and creates one severity-3 liability. Valid tasks use the seeded mild deletion outcomes above; Review documents retain the full expiration consequence. Firing an employee costs `$25` plus Morale and Confidence.
 
@@ -245,11 +246,12 @@ A newly created run records the opening Data Entry Request as its guided workflo
 
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
+- Every end-of-day decision menu starts with a compact stage tracker. Days 1–4 show three pips for Process award, Night planning (Strategic planning on Day 3), and Morning briefing; Day 5 shows two pips for Process award and Quarterly review. Premature run-failure summaries do not show a continuation tracker.
 - Every standalone employee card permanently shows a compact ACC / SPD / RES strip with each base stat as a number out of six and a tiny fill meter. The same data remains available in the Inspector and Staff upgrade shop.
 - Standalone employee cards keep their coping/status tags beside the worker name and compress workload state, stress percentage, target band, and current marker into a mini gauge beside the EMPLOYEE header. Full gauges remain available in workflows, the Inspector, and Staff upgrade shop.
 - Every visible card has a text type label plus a type-specific shape: employee square, task circle, resource diamond, document square. Distractions retain their disguise type so the mechanic is not spoiled.
 - The currently selected card or workflow uses a three-pixel black dashed frame, offset isolation halo, and slight lift so Inspector context remains obvious over every card type and status treatment.
-- Selecting a worker, task, or resource gives recipe-compatible cards and incomplete workflows a subtle green outline. The cue is computed from actual recipe pairs, including disguised junk identities; Manager/document approval and Backlog check-in pairs use their special action rules.
+- Selecting a worker, task, or resource does not restyle other cards as compatible. The one-time opening guide may sparkle legitimate first-workflow options, while valid and invalid destination feedback appears only during an active drag.
 - Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
 - Only a new run's valid opening workflow options receive the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
 - The Audit header shows effective nightly Audit Chance, liability count, findings-if-audited chance, and a five-pip Clear/Fine/Escalated/Severe/Critical punishment rail. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
@@ -298,6 +300,7 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Every night rolls the current Audit Chance; findings use liabilities per elapsed day and Confidence protection.
 - An automatic Inbox overflow displays its consequences, adds 15 Audit Chance, and removes 6 Confidence.
 - Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 10 Audit Chance and creates an unapprovable Source Integrity Failure document in Review.
+- An employee waiting taskless in In Progress accrues no stress during the five-second grace period, then gains stress at an increasing visible rate; assigning a task or moving to Backlog resets the wait timer.
 - Every successful daily close grants one non-duplicating Process Point before overnight planning; the randomized specialization tree fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
