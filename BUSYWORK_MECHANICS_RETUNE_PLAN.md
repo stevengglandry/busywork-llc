@@ -170,7 +170,7 @@ When an audit finds liabilities:
 7. Two unpaid Regulatory Response tasks are added to the Inbox.
 8. Confirmed liabilities are cleared; the audit fail count remains.
 
-A third audit failure or a single fine of at least `$225` is a Critical Audit Failure and ends the run.
+A third audit failure or a single fine of at least `$225` is a Critical Audit Failure and ends the run. If that failed audit newly causes any run-ending condition—Critical Audit Failure, Cash at `0` or below, or Confidence at `0` or below—one held Compliance Token is automatically consumed to prevent the loss. The audit's fine, Confidence loss, failure count, added policies, and Regulatory Response tasks still apply; Critical Audit Failure is cleared, and any lethal Cash or Confidence value is stabilized at `1`. Nonlethal audit failures do not consume a token.
 
 ## Burnout outcomes
 
@@ -187,7 +187,7 @@ The deterministic embedded test mode forces the leave/stat-growth branch so logi
 
 Automatic Inbox arrivals remain on the day-scaled schedule, but the current countdown is always visible in the action bar. While the clock is running and the Inbox has capacity, the player may use **Pull next item** to deliver the next seeded arrival immediately. Pulling an item resets the automatic-arrival clock; a full Inbox disables the action instead of silently displacing existing work. Every deterministic ten-card bag contains exactly three distinct legitimate tasks, four resources (one of each plus one seeded duplicate), and three distinct junk cards. This yields 30% tasks, 40% resources, and 30% junk and applies to every refill, not only the first ten pulls.
 
-Card faces keep their colored type icon but replace generic grey type codes with a short abbreviation derived from the specific card name. Task flavor text naturally names the resource needed to begin work and does not add generic consumption boilerplate. Standalone employee cards expose compact Accuracy, Speed, and Resilience values and meters without requiring hover. These face-level cues, the first-workflow sparkle treatment, and invalid-drop feedback must make a legal next action readable directly from the board.
+Card faces use a permanent semantic visual language: blue avatar circles for employees (with executive brown reserved for the Manager), amber target circles for tasks, purple diamonds for resources, and green folded-page marks for documents. The name-specific code square repeats that type color instead of falling back to neutral grey. Small colored pips communicate secondary attributes such as Premium, Windfall, Low Fee, and Juiced status. Juiced tasks and hires use a heavier double edge, layered surface, stronger depth, and lightning pip without replacing their underlying type color. Selecting a card does not add compatibility accents to other cards; only the one-time first-workflow guide may sparkle valid next actions. Task flavor text naturally names the resource needed to begin work and does not add generic consumption boilerplate. Standalone employee cards expose compact Accuracy, Speed, and Resilience values and meters without requiring hover. Invalid-drop feedback remains available during a drag.
 
 Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. Matching resource-disguised junk is deliberately prioritized by the Inspector shortcut and also starts work. Both forms run for the normal workflow duration, accept interventions, and produce a document in Review with a guaranteed Source Integrity Failure. Completion adds `10` employee stress and `10` Audit Chance and leaves the employee in In Progress. Fake tasks carry no collectible value; legitimate tasks contaminated by a junk resource retain their quote, so approving the invalid output creates the same immediate-revenue-versus-liability trap as other bad work.
 
@@ -301,5 +301,5 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Every successful daily close grants one non-duplicating Process Point before overnight planning; the randomized specialization tree fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
-- Cash at 0, Confidence at 0, or Critical Audit Failure ends the run.
+- Cash at 0, Confidence at 0, or Critical Audit Failure ends the run, except that a newly lethal failed audit automatically consumes one held Compliance Token to stabilize the run once.
 - Bad events and the phishing threshold display a high-attention popup containing both description and consequence.

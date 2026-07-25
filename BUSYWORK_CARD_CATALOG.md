@@ -395,7 +395,7 @@ The `К` in the `WК` code is Cyrillic, not the normal Latin `K`.
 | Trigger | The daily junk-deletion threshold |
 | Effect on arrival | Occupies the Inbox slot freed by the triggering deletion |
 | Reward condition | Reward is granted only when this card is deleted |
-| Reward | $125 and 1 persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200 for the current run |
+| Reward | $125 and 1 persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200 for the current run. A held token is automatically consumed when a failed audit would otherwise end the run; the audit penalties remain, while lethal Cash or Confidence is stabilized at 1. |
 
 ---
 
@@ -502,7 +502,7 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 | Drag an In Progress resource chip | Removes only that staged resource from the composite workflow. | In Progress does not show covered pips because the employee, task, and resources are represented directly. |
 | Complete a workflow | Consumes every staged resource, sends the document to Review, and leaves the employee in In Progress. | No resource is retained. A matching disguised junk input is accepted as supplied but guarantees Source Integrity Failure. |
 
-Card faces pair the colored type icon with a specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt; generic `RS` and `WK` labels are not used. Task flavor text names the required resource in natural language without a separate “consumed” footer. Standalone employees show their Accuracy, Speed, and Resilience values and compact meters at all times.
+Card faces pair a stable type color and shape with a specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt; generic `RS` and `WK` labels are not used. Employees use blue/avatar circles with executive brown reserved for the Manager, tasks amber/target circles, resources purple/diamonds, and documents green/folded pages. Secondary payout and scope attributes remain compact colored pips. Juiced tasks and Juiced Hires add a heavy double edge, layered surface, deeper shadow, and lightning pip while retaining the base card-type identity. Selecting a card does not visually accent other cards that could interact with it; drag targets still provide direct valid/invalid feedback during the drag itself. Task flavor text names the required resource in natural language without a separate “consumed” footer. Standalone employees show their Accuracy, Speed, and Resilience values and compact meters at all times.
 
 ---
 
