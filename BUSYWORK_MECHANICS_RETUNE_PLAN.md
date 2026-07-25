@@ -254,7 +254,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 - Selecting a worker, task, or resource does not restyle other cards as compatible. The one-time opening guide may sparkle legitimate first-workflow options, while valid and invalid destination feedback appears only during an active drag.
 - Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
 - Only a new run's valid opening workflow options receive the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
-- The Audit header shows effective nightly Audit Chance, liability count, Exposure, and a five-pip Clear/Fine/Escalated/Severe/Critical punishment rail. Exposure is the chance that an audit discovers a liability. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
+- The Audit header shows effective nightly Audit Chance, liability count, Exposure, and a red **Likely Reprimand** rail with five Clear/Fine/Escalated/Severe/Critical pips. Exposure is the chance that an audit discovers a liability. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
 
 ## Implementation order
 
