@@ -212,11 +212,11 @@ Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security
 
 ### Card stacking and deletion
 
-- A stack may contain at most one employee, one task-like card, one document, and one instance of each effective resource. Resource-disguised junk counts as the resource it imitates. This prevents homogeneous piles while preserving Juiced workflows that require two different resources.
+- A normal stack may contain at most one employee, one task-like card, one document, and one resource card. Resource-disguised junk occupies that resource slot. The only two-resource exception is a Juiced task whose stack contains its exact required resource pair.
 - Dragging a stack onto another stack combines the complete source stack only when the resulting stack respects those compatibility slots and the five-card limit. A compatible three-card stack can therefore still land on a compatible two- or one-card stack.
 - Active jobs and locked workflow stacks cannot merge. Saved homogeneous stacks from earlier builds are split into compatible stacks when loaded.
 - Only the physical top card in a stack advances its deadline. Every covered timer pauses at its exact remaining value and resumes when that card becomes the top card.
-- The top card displays a hoverable/focusable pip for every covered card. Pips expose card identity, paused countdown, Juiced/low-value/glitch state, and employee status; selecting a pip opens that buried card in the Inspector without reordering the stack.
+- The top card displays a compact card-shaped, hoverable/focusable pip for every covered card. Pips use name-specific abbreviations, expose only concise identity and state details, and can be clicked for inspection or dragged to pull that individual card out of the stack. Paused countdown, Juiced/low-value/glitch state, and employee status remain visually encoded.
 - Staged resource chips can be dragged back out of an assignment. The board always rerenders from state after a drop, preventing a rejected resource from remaining visually over an employee card.
 - The board trash target includes a trash-can icon and has an equivalent Inspector action.
 - Deleting ordinary junk safely increments phishing-test progress. Deleting a valid resource costs `$8` and creates one severity-3 liability. Valid tasks use the seeded mild deletion outcomes above; Review documents retain the full expiration consequence. Firing an employee costs `$25` plus Morale and Confidence.
