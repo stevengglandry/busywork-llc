@@ -245,6 +245,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 ## Feedback and visual language
 
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
+- A terminal Cash, Confidence, or Critical Audit outcome opens a visually distinct red **GAME OVER** postmortem instead of the ordinary Quarterly Review. It identifies the exact terminal threshold, snapshots all three run-ending systems, itemizes the cash-flow, judgment, staffing, liability, Discovery Potential, and Audit Severity factors that shaped the result, and lists every structured failed decision or harmful incident in chronological order. Migrated saves without structured events recover relevant incidents from the company log. Permanent Process XP and upgrades remain available in a collapsed carryover section.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
 - Every end-of-day decision menu starts with a compact stage tracker. Days 1–4 show three pips for Process award, Night planning (Strategic planning on Day 3), and Morning briefing; Day 5 shows two pips for Process award and Quarterly review. Premature run-failure summaries do not show a continuation tracker.
 - Every standalone employee card permanently shows a compact ACC / SPD / RES strip with each base stat as a number out of six and a tiny fill meter. The same data remains available in the Inspector and Staff upgrade shop.

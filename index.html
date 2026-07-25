@@ -486,6 +486,52 @@
     .modal p { color: var(--muted); line-height: 1.6; }
     .brief { background: var(--surface-subtle); border: 1px solid var(--border); border-radius: 7px; padding: 12px; margin: 15px 0; font-size: 11px; line-height: 1.55; }
     .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+    dialog:has(.run-failure-screen) { width: min(760px, calc(100vw - 32px)); border: 1px solid #681e25; box-shadow: 0 24px 70px rgb(63 5 12 / 38%); }
+    dialog:has(.run-failure-screen)::backdrop { background: rgb(35 4 9 / 76%); backdrop-filter: blur(4px) saturate(.72); }
+    .run-failure-screen { margin: -24px; background: #fffafa; min-height: 100%; }
+    .run-failure-hero { position: relative; overflow: hidden; padding: 28px 30px 26px; border-bottom: 4px solid #6f1820; background: linear-gradient(125deg,#7f2028,#4b1017 72%); color: #fff4f4; }
+    .run-failure-hero::after { content: "TERMINATED"; position: absolute; right: -16px; bottom: -11px; color: rgb(255 255 255 / 5%); font-size: 54px; font-weight: 900; letter-spacing: .04em; transform: rotate(-4deg); }
+    .run-failure-kicker { position: relative; z-index: 1; color: #ffc3c6; font-size: 10px; font-weight: 850; letter-spacing: .18em; text-transform: uppercase; }
+    .run-failure-hero h2 { position: relative; z-index: 1; margin: 7px 0 2px; color: #fff; font-size: 38px; line-height: 1; letter-spacing: .04em; }
+    .run-failure-reason { position: relative; z-index: 1; margin-top: 12px; font-size: 17px; font-weight: 780; }
+    .run-failure-hero p { position: relative; z-index: 1; max-width: 540px; margin: 5px 0 0; color: #f3c8ca; font-size: 11px; line-height: 1.5; }
+    .run-failure-body { padding: 22px 26px 26px; }
+    .terminal-cause { display: grid; grid-template-columns: auto minmax(0,1fr) auto; align-items: center; gap: 12px; border: 1px solid #d99aa0; border-left: 5px solid var(--danger); border-radius: 7px; background: #fff0f1; padding: 12px 14px; }
+    .terminal-cause-mark { width: 30px; height: 30px; border-radius: 50%; background: var(--danger); color: white; display: grid; place-items: center; font-size: 18px; font-weight: 850; }
+    .terminal-cause strong, .terminal-cause span { display: block; }
+    .terminal-cause strong { font-size: 12px; }
+    .terminal-cause span { margin-top: 3px; color: #7f4b50; font-size: 9px; line-height: 1.4; }
+    .terminal-cause-value { color: #851f28; font-size: 19px; font-weight: 850; font-variant-numeric: tabular-nums; text-align: right; }
+    .run-failure-section { margin-top: 20px; }
+    .run-failure-section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 9px; }
+    .run-failure-section h3 { margin: 0; color: #4f1d22; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+    .run-failure-section-head span { color: var(--muted); font-size: 9px; }
+    .terminal-metrics { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+    .terminal-metric { border: 1px solid #d8c1c4; border-top: 3px solid #a96a70; border-radius: 6px; background: var(--surface); padding: 10px; }
+    .terminal-metric.is-cause { border-color: #c95b64; border-top-color: #9f2530; background: #fff1f2; box-shadow: 0 0 0 2px rgb(169 71 79 / 9%); }
+    .terminal-metric-label { color: #7e565a; font-size: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .terminal-metric strong { display: block; margin-top: 4px; color: #351f22; font-size: 17px; font-variant-numeric: tabular-nums; }
+    .terminal-metric p { margin: 5px 0 0; color: var(--muted); font-size: 8px; line-height: 1.4; }
+    .factor-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 6px; }
+    .factor-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; border: 1px solid var(--border); border-radius: 5px; background: var(--surface); padding: 8px 9px; }
+    .factor-row span, .factor-row strong { display: block; }
+    .factor-row span { color: var(--muted); font-size: 8px; line-height: 1.35; }
+    .factor-row strong { color: #5d272c; font-size: 10px; font-variant-numeric: tabular-nums; text-align: right; }
+    .failure-ledger { list-style: none; margin: 0; padding: 0; border: 1px solid #ddc8ca; border-radius: 7px; background: var(--surface); overflow: hidden; }
+    .failure-ledger-item { display: grid; grid-template-columns: 74px minmax(0,1fr); gap: 11px; padding: 11px 12px; border-top: 1px solid #eadcdf; }
+    .failure-ledger-item:first-child { border-top: 0; }
+    .failure-ledger-time { color: #9c555b; font-size: 8px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .failure-ledger-copy strong { display: block; color: #59242a; font-size: 10px; }
+    .failure-ledger-copy p { margin: 3px 0 0; color: var(--muted); font-size: 9px; line-height: 1.4; }
+    .failure-ledger-consequence { display: block; margin-top: 5px; color: #8d3038; font-size: 8px; font-weight: 700; line-height: 1.4; }
+    .failure-ledger-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .failure-ledger-tag { border-radius: 999px; background: #f4e5e7; color: #8b3b42; padding: 2px 5px; font-size: 7px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .failure-ledger-empty { padding: 14px; color: var(--muted); font-size: 9px; line-height: 1.5; }
+    .run-failure-carryover { margin-top: 18px; border: 1px solid var(--border); border-radius: 7px; background: #f7f8fa; }
+    .run-failure-carryover summary { cursor: pointer; padding: 10px 12px; color: var(--text); font-size: 10px; font-weight: 750; }
+    .run-failure-carryover-body { padding: 0 12px 12px; }
+    .run-failure-screen .modal-actions { padding-top: 16px; border-top: 1px solid #e4cdd0; }
+    .run-failure-screen .modal-actions .btn.primary { border-color: #781e26; background: #8f2831; }
     .setting { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border); }
     .setting label { font-size: 11px; font-weight: 650; }
     .toast-region { position: fixed; right: 350px; bottom: 55px; z-index: 900; display: grid; gap: 7px; pointer-events: none; }
@@ -533,6 +579,13 @@
       .projection { min-width: 0; }
       .inspector-tools { padding-inline: 16px; }
       .company-metrics { grid-template-columns: 1fr; }
+      .run-failure-hero { padding: 23px 20px 21px; }
+      .run-failure-hero h2 { font-size: 31px; }
+      .run-failure-body { padding: 18px 18px 22px; }
+      .terminal-cause { grid-template-columns: auto minmax(0,1fr); }
+      .terminal-cause-value { grid-column: 2; text-align: left; }
+      .terminal-metrics, .factor-list { grid-template-columns: 1fr; }
+      .failure-ledger-item { grid-template-columns: 1fr; gap: 5px; }
       .reward-row { grid-template-columns:1fr; }
       .reward-row .btn { width:100%; }
     }
@@ -804,6 +857,7 @@
       run.processMaturity.grantedDays=run.processMaturity.grantedDays||[];
       run.startingRoleStats=run.startingRoleStats||{};
       run.cashTelemetry=run.cashTelemetry||freshCashTelemetry(run.dayOpeningCash??run.cash??450);
+      run.failureEvents=Array.isArray(run.failureEvents)?run.failureEvents:[];
       run.dayOpeningState=run.dayOpeningState||{cash:run.dayOpeningCash??run.cash,morale:run.morale,audit:run.auditRisk,confidence:run.executiveConfidence};
       for(const [key,fallback] of Object.entries({moraleModifier:-30,auditFailCount:0,auditDiscoveryPenalty:0,auditSeverityRelief:0,auditSeverityPenalty:0,auditPolicyPenalty:0,regulatoryTaskBomb:0,sweetSpotCompanyBonus:0}))if(!Number.isFinite(run[key]))run[key]=fallback;
       run.criticalAuditFailure=Boolean(run.criticalAuditFailure);
@@ -902,7 +956,7 @@
         day:1,dayElapsedMs:0,drawElapsedMs:0,dayOpeningCash:opening.cash,dayOpeningState:{...opening},
         cash:opening.cash,morale:opening.morale,moraleModifier:-30,auditRisk:opening.audit,executiveConfidence:opening.confidence,
         auditFailCount:0,auditDiscoveryPenalty:0,auditSeverityRelief:0,auditSeverityPenalty:0,auditPolicyPenalty:0,regulatoryTaskBomb:0,criticalAuditFailure:false,sweetSpotCompanyBonus:0,
-        development:null,processMaturity:{points:0,ranks:{},offeredIds:[],grantedDays:[]},daySummaries:[],cardsById:{},columns:{inbox:[],backlog:[],active:[],review:[],done:[]},stacksById:{},jobsById:{},startingRoleStats:{},
+        development:null,processMaturity:{points:0,ranks:{},offeredIds:[],grantedDays:[]},daySummaries:[],failureEvents:[],cardsById:{},columns:{inbox:[],backlog:[],active:[],review:[],done:[]},stacksById:{},jobsById:{},startingRoleStats:{},
         activePolicyIds:[],previousPolicyIds:[],liabilities:[],log:[],history:[],lastHistoryAt:-Infinity,selected:null,
         arrivalBag:[],arrivalSequence:0,arrivalBagCycle:0,recentArrivalTemplateIds:[],phishing:freshPhishingState(),firstWorkflowGuide:{active:false,taskId:null,resourceId:null,employeeId:null},cashTelemetry:freshCashTelemetry(opening.cash),
         statistics:{...DEFAULT_STATISTICS,arrivalsByKind:{}}
@@ -1212,7 +1266,13 @@
     function clampMeters() { game.morale=Math.max(0,Math.min(100,game.morale)); game.auditRisk=Math.max(0,Math.min(100,game.auditRisk)); game.auditDiscoveryPenalty=Math.max(0,Math.min(100,game.auditDiscoveryPenalty||0)); game.executiveConfidence=Math.max(0,Math.min(100,game.executiveConfidence)); }
     function log(message) { if (!game) return; game.log.unshift({at:formatTime(dayRemaining()),message}); game.log=game.log.slice(0,80); }
     function toast(message,options={}) { const node=document.createElement('div');node.className=`toast ${options.tone||''}`;node.innerHTML=options.title?`<strong>${esc(options.title)}</strong><span>${esc(message)}${options.consequence?`<br>${esc(options.consequence)}`:''}</span>`:esc(message);document.getElementById('toasts').append(node);setTimeout(()=>node.remove(),options.tone?5200:3200);document.getElementById('liveRegion').textContent=[options.title,message,options.consequence].filter(Boolean).join('. '); }
-    function badEvent(title,description,consequence){toast(description,{tone:'bad',title,consequence});}
+    function recordFailureEvent(title,description,consequence){
+      if(!game)return;
+      game.failureEvents=Array.isArray(game.failureEvents)?game.failureEvents:[];
+      const audit=auditSummary();
+      game.failureEvents.push({sequence:game.failureEvents.length+1,day:game.day,time:formatTime(dayRemaining()),title,description,consequence,cash:Math.round(game.cash),confidence:Math.round(game.executiveConfidence),auditChance:Math.round(audit.auditChance),exposure:Math.round(audit.findingChance),severity:Number(audit.nextMultiplier.toFixed(1)),liabilities:audit.liabilityCount});
+    }
+    function badEvent(title,description,consequence){recordFailureEvent(title,description,consequence);toast(description,{tone:'bad',title,consequence});}
     function removeCardFromLocation(cardId) {
       const loc=locationOf(cardId); if(!loc)return;
       if(loc.stackId){ const stack=game.stacksById[loc.stackId]; const index=stack.cardIds.indexOf(cardId); stack.cardIds.splice(index,1); game.cardsById[cardId].stackId=null; if(!stack.cardIds.length){ game.columns[loc.columnId]=game.columns[loc.columnId].filter(id=>id!==stack.id); delete game.stacksById[stack.id]; } }
@@ -1480,6 +1540,61 @@
       const auditChance=Math.max(0,Math.min(100,game.auditRisk-processRank('audit_dampener')*5)),findingChance=auditFindingChance()*100,liabilityCount=game.liabilities.length,severityTotal=game.liabilities.reduce((sum,item)=>sum+(item.severity||5),0),nextMultiplier=Math.max(.5,1+game.auditFailCount*.5+game.auditSeverityPenalty-game.auditSeverityRelief-(game.executiveConfidence/250)),projectedFine=liabilityCount?Math.max(15,Math.round(severityTotal*3*nextMultiplier)):0,nextFailure=game.auditFailCount+1,critical=liabilityCount>0&&(projectedFine>=225||nextFailure>=3),band=liabilityCount===0?0:critical?4:projectedFine>=150?3:projectedFine>=75?2:1;
       return {auditChance,findingChance,overallFailureChance:auditChance*findingChance/100,liabilityCount,severityTotal,nextMultiplier,projectedFine,nextFailure,critical,band};
     }
+    function failureEventTags(event){
+      const text=[event.title,event.description,event.consequence,event.message].filter(Boolean).join(' ').toLowerCase(),tags=[];
+      if(/confidence|board/.test(text))tags.push('Confidence');
+      if(/cash|fine|payroll|upkeep|severance|waste|\$/.test(text))tags.push('Cash');
+      if(/audit|liabilit|finding|exposure|severity|regulat/.test(text))tags.push('Audit');
+      if(/stress|morale|employee|manager|burnout|fired/.test(text))tags.push('Workforce');
+      return tags.length?tags:['Decision'];
+    }
+    function failureLedgerEvents(){
+      const structured=Array.isArray(game.failureEvents)?game.failureEvents:[];
+      if(structured.length)return structured;
+      const matcher=/failed|missed|deleted|destroyed|fired|overflow|inaccurate|rejected|burnout|junk|audit|violation|penalty|expired/i;
+      return [...(game.log||[])].reverse().filter(entry=>matcher.test(entry.message||'')).map((entry,index)=>({sequence:index+1,day:null,time:entry.at,title:'Recorded incident',description:entry.message,consequence:'Recovered from the company log; detailed meter snapshots were not available in this older save.'}));
+    }
+    function runFailureCause(reason){
+      const audit=auditSummary(),terminalEvent=[...(game.failureEvents||[])].reverse().find(event=>/critical audit failure/i.test(event.title||''));
+      if(reason==='Board Confidence Lost')return {label:'Board confidence reached zero',value:`${Math.round(game.executiveConfidence)} confidence`,threshold:'The run ends at 0 confidence.',detail:'The board withdrew its mandate after accumulated rulings, losses, and personnel decisions exhausted confidence.'};
+      if(reason==='Insolvency')return {label:'Operating cash reached zero',value:`$${Math.round(game.cash)}`,threshold:'The run ends at $0 cash.',detail:'Available cash could no longer cover the consequences of the quarter’s operating decisions.'};
+      return {label:'Audit punishment became terminal',value:`${game.auditFailCount} failed audit${game.auditFailCount===1?'':'s'}`,threshold:'The third failed audit or a single fine of $225+ ends the run.',detail:terminalEvent?.consequence||`The latest audit crossed the critical punishment threshold at severity ×${audit.nextMultiplier.toFixed(2)}.`};
+    }
+    function runFailureMetrics(reason){
+      const audit=auditSummary();
+      return [
+        {label:'Cash',value:`$${Math.round(game.cash)}`,cause:reason==='Insolvency',note:`Terminal at $0 · ${game.daySummaries.length} daily close${game.daySummaries.length===1?'':'s'} recorded`},
+        {label:'Confidence',value:Math.round(game.executiveConfidence),cause:reason==='Board Confidence Lost',note:`Terminal at 0 · ${game.statistics.incorrectRulings} incorrect ruling${game.statistics.incorrectRulings===1?'':'s'}`},
+        {label:'Audit',value:`${Math.round(audit.auditChance)}% · ${game.auditFailCount} failed`,cause:reason==='Critical Audit Failure',note:`${Math.round(audit.findingChance)}% Discovery Potential · severity ×${audit.nextMultiplier.toFixed(2)}`}
+      ];
+    }
+    function runFailureFactors(){
+      const summaries=game.daySummaries||[],sum=key=>summaries.reduce((total,item)=>total+(Number(item[key])||0),0),audit=auditSummary(),opening=summaries[0]?.openingCash??450;
+      return [
+        ['Starting cash',`$${Math.round(opening)}`],
+        ['Task revenue recognized',`+$${Math.round(sum('recognizedTaskRevenue'))}`],
+        ['Payroll paid',`−$${Math.round(sum('payroll'))}`],
+        ['Operating upkeep',`−$${Math.round(sum('upkeep'))}`],
+        ['Discretionary / other cash',`${sum('discretionary')>=0?'+':'−'}$${Math.abs(Math.round(sum('discretionary')))}`],
+        ['Incorrect rulings',game.statistics.incorrectRulings],
+        ['Expired tasks',game.statistics.tasksExpired],
+        ['Valid items deleted',game.statistics.legitimateItemsDeleted],
+        ['Employees fired / burned out',`${game.statistics.employeesFired} / ${game.statistics.employeeDeaths}`],
+        ['Open liabilities',audit.liabilityCount],
+        ['Open liability severity',audit.severityTotal],
+        ['Discovery Potential',`${Math.round(audit.findingChance)}%`],
+        ['Audit Severity',`×${audit.nextMultiplier.toFixed(2)}`],
+        ['Failed audits',game.auditFailCount]
+      ];
+    }
+    function renderFailureEnd(reason,xp){
+      const cause=runFailureCause(reason),events=failureLedgerEvents(),metrics=runFailureMetrics(reason),factors=runFailureFactors(),stats=game.statistics;
+      const metricHtml=metrics.map(metric=>`<div class="terminal-metric ${metric.cause?'is-cause':''}"><span class="terminal-metric-label">${esc(metric.label)}${metric.cause?' · terminal trigger':''}</span><strong>${esc(metric.value)}</strong><p>${esc(metric.note)}</p></div>`).join('');
+      const factorHtml=factors.map(([label,value])=>`<div class="factor-row"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
+      const ledgerHtml=events.length?`<ol class="failure-ledger">${events.map(event=>`<li class="failure-ledger-item"><div class="failure-ledger-time">${event.day?`Day ${event.day} · `:''}${esc(event.time||'Recorded')}</div><div class="failure-ledger-copy"><strong>${esc(event.title||'Failed decision')}</strong><p>${esc(event.description||event.message||'No description recorded.')}</p>${event.consequence?`<span class="failure-ledger-consequence">${esc(event.consequence)}</span>`:''}<div class="failure-ledger-tags">${failureEventTags(event).map(tag=>`<span class="failure-ledger-tag">${esc(tag)}</span>`).join('')}</div></div></li>`).join('')}</ol>`:`<div class="failure-ledger failure-ledger-empty">No discrete failed decisions were recorded. The run ended from the cumulative meter changes shown above.</div>`;
+      document.getElementById('dayEndContent').innerHTML=`<div class="run-failure-screen"><header class="run-failure-hero"><div class="run-failure-kicker">Run terminated · Day ${game.day}</div><h2>GAME OVER</h2><div class="run-failure-reason">${esc(reason)}</div><p>This quarter is closed. Review the terminal trigger and the decisions that contributed before starting another run.</p></header><div class="run-failure-body"><div class="terminal-cause"><div class="terminal-cause-mark" aria-hidden="true">!</div><div><strong>${esc(cause.label)}</strong><span>${esc(cause.threshold)} ${esc(cause.detail)}</span></div><div class="terminal-cause-value">${esc(cause.value)}</div></div><section class="run-failure-section"><div class="run-failure-section-head"><h3>Run-condition breakdown</h3><span>All three terminal systems at shutdown</span></div><div class="terminal-metrics">${metricHtml}</div></section><section class="run-failure-section"><div class="run-failure-section-head"><h3>Factors affecting this run</h3><span>Cash flow, judgment, staffing, and audit exposure</span></div><div class="factor-list">${factorHtml}</div></section><section class="run-failure-section"><div class="run-failure-section-head"><h3>Failed decisions &amp; incidents</h3><span>${events.length} recorded</span></div>${ledgerHtml}</section><div class="brief"><strong>Run totals:</strong> ${stats.tasksCompleted} tasks completed · ${stats.correctRulings} correct rulings · ${stats.incorrectRulings} incorrect rulings · ${stats.tasksExpired} expired · ${stats.legitimateItemsDeleted} valid deletions<br><strong>Carryover earned:</strong> ${xp} Process XP · ${runtime.meta.processXp} XP and ${runtime.meta.complianceTokens} Compliance Tokens available</div><details class="run-failure-carryover"><summary>Process maturity and permanent upgrades</summary><div class="run-failure-carryover-body"><div class="upgrade-grid">${Object.entries(UPGRADES).map(([id,u])=>upgradeNodeHtml(id,u)).join('')}</div></div></details><div class="modal-actions"><button class="btn primary" id="summaryNewRunBtn">Start a new run</button></div></div></div>`;
+      resetDecisionDialogScroll();
+    }
     function consumeComplianceTokenForAuditDeath(wasTerminal){
       const failure=runFailure();
       if(wasTerminal||!failure||runtime.meta.complianceTokens<=0)return null;
@@ -1624,7 +1739,7 @@
       const closingState=summary.closingState||companySnapshot(),openingState=summary.openingState||{cash:summary.openingCash,morale:closingState.morale,audit:closingState.audit,confidence:closingState.confidence},discretionaryCash=`${summary.discretionary<0?'-':''}$${Math.abs(summary.discretionary)}`;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">End of Day ${summary.day}</div><h2>Operating close</h2><p>Payroll and operating upkeep have been settled.</p>${companyDashboardHtml(closingState,openingState,'Closing company position')}${View.openCloseBarChartSvg(summary.openingCash,summary.closingCash,'Daily cash movement','Opening and closing cash. Bars show each value; the line connects opening to closing.',v=>`$${Math.round(v)}`)}<div class="brief"><strong>Opening cash:</strong> $${summary.openingCash}<br><strong>Recognized task revenue:</strong> +$${summary.recognizedTaskRevenue}<br><strong>Discretionary / other:</strong> ${summary.discretionary>=0?'+':''}${discretionaryCash}<br><strong>Payroll:</strong> −$${summary.payroll}<br><strong>Operations:</strong> −$${summary.upkeep}<br><strong>Closing cash:</strong> $${summary.closingCash}<br><strong>Resolved today:</strong> ${summary.resolved}${summary.audit?`<br><strong>Audit:</strong> ${esc(summary.audit)}`:''}</div>${choice}`;resetDecisionDialogScroll();
     }
     function renderRunEnd(reason=null){
-      game.mode='runEnd';const correct=game.statistics.correctRulings,violations=game.liabilities.length,promoted=!reason&&game.executiveConfidence>=40&&game.cash>=300&&correct>=12&&violations<=3;const title=reason|| (promoted?'Quarterly Promotion':'Performance Improvement Plan');const xp=Math.max(0,5+Math.floor(correct/3)-game.statistics.incorrectRulings-Math.floor(game.statistics.tasksExpired/2));if(!game.metaAwarded){runtime.meta.processXp+=xp;game.metaAwarded=true;saveMeta();}
+      game.mode='runEnd';const correct=game.statistics.correctRulings,violations=game.liabilities.length,promoted=!reason&&game.executiveConfidence>=40&&game.cash>=300&&correct>=12&&violations<=3;const title=reason|| (promoted?'Quarterly Promotion':'Performance Improvement Plan');const xp=Math.max(0,5+Math.floor(correct/3)-game.statistics.incorrectRulings-Math.floor(game.statistics.tasksExpired/2));if(!game.metaAwarded){runtime.meta.processXp+=xp;game.metaAwarded=true;saveMeta();}if(reason){renderFailureEnd(reason,xp);Store.save(true);markDirty();return;}
       const quarter=game.daySummaries.map(s=>({day:s.day,elapsedMs:300000,opening:s.openingCash,projected:s.finalProjection,actual:s.closingCash})),qValues=quarter.flatMap(p=>[p.opening,p.projected,p.actual]).filter(Number.isFinite),qMin=Math.min(...qValues,game.cash)-30,qMax=Math.max(...qValues,game.cash)+30;document.getElementById('dayEndContent').innerHTML=`<div class="modal-kicker">Quarterly review</div><h2>${esc(title)}</h2><p>${promoted?'The committee has determined that your administrative output qualifies as leadership.':reason?'The quarter ended before review requirements were met.':'The company survives, but the committee requires measurable improvement next quarter.'}</p>${companyDashboardHtml(companySnapshot(),game.daySummaries.at(-1)?.openingState||null,'Quarterly company position')}<div class="chart-legend"><span style="--legend-color:var(--muted)">Opening</span><span style="--legend-color:var(--success)">Projection</span><span style="--legend-color:var(--purple)">Actual</span></div>${quarter.length?View.lineChartSvg(quarter,[{key:'opening',cls:'prior',label:'Opening cash'},{key:'projected',cls:'projected',label:'Final projection'},{key:'actual',cls:'actual',label:'Actual close'}],qMin,qMax,'Five-day cash performance','Opening cash, final task-revenue projection, and actual close by day.',v=>`$${Math.round(v)}`):''}<div class="brief"><strong>Cash:</strong> $${game.cash}<br><strong>Correct rulings:</strong> ${correct}<br><strong>Incorrect rulings:</strong> ${game.statistics.incorrectRulings}<br><strong>Tasks completed:</strong> ${game.statistics.tasksCompleted}<br><strong>Tasks expired:</strong> ${game.statistics.tasksExpired}<br><strong>Security rewards:</strong> ${game.statistics.phishingRewardsClaimed} · <strong>Employees fired:</strong> ${game.statistics.employeesFired}<br><strong>Legitimate deletions:</strong> ${game.statistics.legitimateItemsDeleted}<br><strong>Morale / confidence:</strong> ${Math.round(game.morale)} / ${Math.round(game.executiveConfidence)}<br><strong>Open violations:</strong> ${violations}<br><strong>Process XP earned:</strong> ${xp}<br><strong>Available:</strong> ${runtime.meta.processXp} XP · ${runtime.meta.complianceTokens} Compliance Tokens</div><h3>Process maturity</h3><div class="upgrade-grid">${Object.entries(UPGRADES).map(([id,u])=>upgradeNodeHtml(id,u)).join('')}</div><div class="modal-actions"><button class="btn primary" id="summaryNewRunBtn">Start a new quarter</button></div>`;resetDecisionDialogScroll();Store.save(true);markDirty();
     }
     function upgradeNodeHtml(id,u){const unlocked=runtime.meta.unlockedUpgradeIds.includes(id),requiresMet=!u.requires||runtime.meta.unlockedUpgradeIds.includes(u.requires),affordable=runtime.meta.processXp>=(u.costXp||0)&&runtime.meta.complianceTokens>=(u.costTokens||0);return `<div class="upgrade-node ${unlocked?'unlocked':''}"><strong>${esc(u.branch)} · ${esc(u.name)}</strong><span>${esc(u.text)}</span><button class="btn small" data-upgrade="${id}" ${unlocked||!requiresMet||!affordable?'disabled':''}>${unlocked?'Unlocked':!requiresMet?'Requires prior node':`Unlock · ${u.costXp||0} XP${u.costTokens?` + ${u.costTokens} token${u.costTokens===1?'':'s'}`:''}`}</button></div>`;}
@@ -1892,6 +2007,8 @@
         test('Strategic planning night rejects ordinary overnight actions',()=>{newRun(60,false);game.day=3;game.mode='dayEnd';const cash=game.cash;if(chooseOvernight('training')||hireEmployee('intern')||game.cash!==cash||!chooseDevelopment('wellness')||game.development!=='wellness'||game.day!==4)throw Error('Day 3 action gate failed');});
         test('Daily close enters process reward before overnight planning',()=>{newRun(92,false);endDay();if(game.mode!=='processReward'||game.processMaturity.points!==1||game.processMaturity.grantedDays.join()!=='1'||game.processMaturity.offeredIds.join('|')!==FIXED_PROCESS_SPECIALIZATION_IDS.join('|'))throw Error('Process reward stage did not gate overnight planning');const id=game.processMaturity.offeredIds[0];if(!investProcessPoint(id)||processRank(id)!==1||game.processMaturity.points!==0||!continueProcessReward()||game.mode!=='dayEnd')throw Error('Process point could not be invested before overnight planning');});
         test('Process reward tree is fixed and awards once per day',()=>{newRun(93,false);game.mode='processReward';prepareProcessReward();prepareProcessReward();if(game.processMaturity.points!==1||game.processMaturity.offeredIds.join('|')!==FIXED_PROCESS_SPECIALIZATION_IDS.join('|'))throw Error('Daily fixed Process reward is incorrect');renderProcessReward();if(document.querySelectorAll('.reward-row').length!==5||document.querySelectorAll('.reward-pip').length!==15)throw Error('Specialization tree pips did not render');});
+        test('Failed decisions retain structured postmortem snapshots',()=>{newRun(118,false);game.cash=321;game.executiveConfidence=44;game.auditRisk=37;game.liabilities=[{severity:6}];recordFailureEvent('DECISION FAILED','A risky ruling was rejected.','Confidence −4; audit severity increased.');const event=game.failureEvents[0];if(!event||event.day!==1||event.cash!==321||event.confidence!==44||event.auditChance!==37||event.liabilities!==1||!event.consequence.includes('Confidence'))throw Error('Structured failure snapshot was incomplete');});
+        test('Terminal outcomes render a distinct complete game-over postmortem',()=>{for(const [seed,reason,setup] of [[119,'Board Confidence Lost',()=>game.executiveConfidence=0],[120,'Insolvency',()=>game.cash=0],[121,'Critical Audit Failure',()=>{game.criticalAuditFailure=true;game.auditFailCount=3;}]]){newRun(seed,false);recordFailureEvent('FAILED DECISION','A test decision damaged the company.','Cash −10; Confidence −2; Audit Severity +1.');setup();renderRunEnd(reason);const screen=document.querySelector('.run-failure-screen'),metrics=document.querySelectorAll('.terminal-metric'),ledger=document.querySelectorAll('.failure-ledger-item'),text=document.getElementById('dayEndContent').textContent.replace(/\s+/g,' ');if(!screen||screen.querySelector('h2')?.textContent!=='GAME OVER'||!text.includes(reason)||!text.includes('Run-condition breakdown')||!text.includes('Factors affecting this run')||!text.includes('Failed decisions & incidents')||metrics.length!==3||ledger.length!==1||document.querySelector('.company-dashboard')||document.getElementById('summaryNewRunBtn')?.textContent!=='Start a new run')throw Error(`${reason} postmortem was incomplete or resembled quarterly review`);}});
         test('Process specialization pips scale run benefits',()=>{newRun(94,false);game.processMaturity.ranks={inbox_elasticity:2,review_bench:1,security_awareness:2,intake_cadence:3,revenue_assurance:2,restorative_controls:2,audit_dampener:2,correction_buffer:2};applyRunCapacities();const card=createCard('completed_data_entry',{meta:{reward:100}});game.executiveConfidence=50;if(COLUMN_META.inbox.capacity!==BASE_LANE_CAPACITY.inbox+2+(runtime.meta.unlockedUpgradeIds.includes('mail_shelf')?1:0)||COLUMN_META.review.capacity!==BASE_LANE_CAPACITY.review+1||phishingThreshold()>2||phishingRewardValue()!==BALANCE.phishingReward+75||dailyDrawInterval()!==BALANCE.arrivalIntervals[0]+6000||recognizedPayout(card)!==110)throw Error('Process specialization scaling is incorrect');});
         test('Specialists cost more to recruit',()=>{if(!(HIRING_OPTIONS.intern.cost<HIRING_OPTIONS.junior_analyst.cost&&HIRING_OPTIONS.junior_analyst.cost<HIRING_OPTIONS.accountant.cost))throw Error('Hiring costs are not specialized');});
         test('Coverage forecasts real penalties',()=>{newRun(20,false);const invoice=Object.values(game.cardsById).find(c=>c.templateId==='invoice_request'),intern=Object.values(game.cardsById).find(c=>c.templateId==='intern'),analyst=Object.values(game.cardsById).find(c=>c.templateId==='junior_analyst'),specialist=assignmentRecipe(invoice,analyst),cover=assignmentRecipe(invoice,intern),specialistImpact=comboImpact({cardIds:[analyst.id,invoice.id]},specialist),coverImpact=comboImpact({cardIds:[intern.id,invoice.id]},cover);if(!cover?.coverage||coverImpact.seconds<=specialistImpact.seconds||coverImpact.accuracy>=specialistImpact.accuracy||cover.stressMultiplier<=1||cover.completionStress<=4)throw Error('Coverage penalty missing');});
