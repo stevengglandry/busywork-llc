@@ -46,21 +46,25 @@
 
     /* 02 LAYOUT */
     .app { height: 100%; display: grid; grid-template-rows: auto 1fr; }
-    .topbar { min-height: var(--header-h); background: #182633; color: #edf3f7; display: grid; grid-template-columns: minmax(170px, 1fr) auto auto; align-items: center; gap: 14px; padding: 8px 14px; border-bottom: 1px solid #0d1922; }
+    .topbar { min-height: var(--header-h); background: #182633; color: #edf3f7; display: grid; grid-template-columns: minmax(170px, 1fr) minmax(610px, 680px) auto; align-items: center; gap: 12px; padding: 7px 14px; border-bottom: 1px solid #0d1922; }
     .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
     .brand-mark { width: 34px; height: 34px; border: 1px solid #587083; border-radius: 7px; display: grid; place-items: center; font-size: 11px; font-weight: 800; letter-spacing: .08em; color: #bcd1e1; background: #223543; }
     .brand h1 { font-size: 15px; letter-spacing: .18em; margin: 0; line-height: 1; }
     .brand p { margin: 6px 0 0; color: #9fb0bd; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .meters { display: flex; align-items: stretch; gap: 6px; }
-    .meter { position: relative; min-width: 76px; padding: 6px 9px; border: 1px solid #405361; border-radius: 6px; background: rgb(255 255 255 / 3%); }
-    .meter.cash-meter { min-width: 150px; display: grid; grid-template-columns: 1fr 62px; gap: 7px; align-items: center; }
-    .meter.audit-meter { min-width: 196px; }
+    .meters { width: 100%; display: grid; grid-template-columns: .78fr 1.38fr .78fr 1.72fr .85fr; align-items: stretch; gap: 6px; }
+    .meter { position: relative; min-width: 0; min-height: 62px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding: 5px 8px; border: 1px solid #405361; border-radius: 6px; background: rgb(255 255 255 / 3%); }
+    .meter:nth-child(1), .meter:nth-child(3), .meter:nth-child(5) { align-items: center; text-align: center; }
+    .meter.cash-meter { display: grid; grid-template-columns: minmax(0,1fr) 62px; gap: 7px; align-items: center; }
+    .meter.audit-meter { align-items: stretch; text-align: left; }
     .meter-label { display: block; color: #9fb0bd; font-size: 9px; letter-spacing: .09em; text-transform: uppercase; }
     .meter-value { display: block; margin-top: 3px; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
     .meter-value.risk { color: #f0c58c; }
     .meter-detail { display: block; margin-top: 2px; color: #b8c7d2; font-size: 8px; white-space: nowrap; }
     .cash-meter svg { width: 62px; height: 25px; }
-    .cash-graph-button { border: 0; background: transparent; padding: 0; color: inherit; cursor: pointer; }
+    .cash-meter svg path { fill: none; vector-effect: non-scaling-stroke; }
+    .cash-meter svg .prior { stroke: #718695; stroke-width: 1; stroke-dasharray: 3 2; }
+    .cash-meter svg .projected { stroke: #74b493; stroke-width: 1.75; }
+    .cash-graph-button { border: 0; border-left: 1px solid #405361; background: transparent; padding: 0 0 0 7px; color: inherit; cursor: pointer; }
     .audit-rail { display: flex; align-items: center; gap: 7px; margin-top: 5px; }
     .audit-rail-pips { position: relative; display: inline-flex; align-items: center; gap: 4px; padding: 2px 0; }
     .audit-rail-pips::before { content: ""; position: absolute; left: 4px; right: 4px; top: 50%; height: 1px; background: #7e4147; transform: translateY(-50%); }
@@ -554,10 +558,9 @@
 
     /* 05 RESPONSIVE AND ACCESSIBILITY */
     @media (max-width: 1120px) {
-      .topbar { grid-template-columns: minmax(150px, 1fr) auto; }
-      .meters { order: 3; grid-column: 1 / -1; overflow-x: auto; border-top: 1px solid #334957; padding-top: 7px; }
-      .meter { min-width: 105px; }
-      :root { --header-h: 112px; }
+      .topbar { grid-template-columns: minmax(150px, 1fr) auto; gap: 8px 12px; }
+      .meters { order: 3; grid-column: 1 / -1; grid-template-columns: minmax(72px,.78fr) minmax(132px,1.38fr) minmax(72px,.78fr) minmax(182px,1.72fr) minmax(82px,.85fr); border-top: 1px solid #334957; padding-top: 7px; }
+      :root { --header-h: 126px; }
     }
     @media (max-width: 900px) {
       body { overflow: auto; }
@@ -571,6 +574,7 @@
     }
     @media (max-width: 560px) {
       .topbar { gap: 10px; padding-inline: 11px; }
+      .meters { overflow-x: auto; grid-template-columns: 72px 132px 72px 182px 82px; padding-bottom: 2px; }
       .brand p { display: none; }
       .header-actions .btn:first-child { display: none; }
       .noticebar { align-items: flex-start; flex-direction: column; gap: 3px; }
@@ -2091,6 +2095,7 @@
         test('Cash telemetry appends and caps at 64',()=>{newRun(50,false);for(let i=0;i<70;i++)recordTaskRevenuePoint(`doc_${i}`,1);if(game.cashTelemetry.currentDayPoints.length!==64||game.cashTelemetry.recognizedTaskRevenue!==64)throw Error('Telemetry cap failed');});
         test('Non-task cash changes do not add projection points',()=>{newRun(51,false);const count=game.cashTelemetry.currentDayPoints.length;game.cash-=20;if(game.cashTelemetry.currentDayPoints.length!==count)throw Error('Discretionary cash sampled');});
         test('Chart recording does not dirty the board',()=>{newRun(52,false);runtime.dirty=false;recordTaskRevenuePoint('doc',10);if(runtime.dirty)throw Error('Chart marked board dirty');});
+        test('Header metrics use an aligned compact grid',()=>{newRun(122,false);View.renderHeader();const meters=document.getElementById('meters'),cards=[...meters.children],style=getComputedStyle(meters),rects=cards.map(card=>card.getBoundingClientRect()),compact=[cards[0],cards[2],cards[4]],sparkline=document.querySelector('#cashSparkline .prior');if(style.display!=='grid'||style.gridTemplateColumns.split(' ').length!==5||rects.some(rect=>Math.abs(rect.height-rects[0].height)>.5)||compact.some(card=>getComputedStyle(card).textAlign!=='center')||getComputedStyle(cards[1]).textAlign==='center'||getComputedStyle(cards[3]).textAlign==='center'||getComputedStyle(sparkline).stroke==='none')throw Error('Header metrics are not evenly aligned, appropriately justified, or visually complete');});
         test('Chart day labels use full words',()=>{const html=View.lineChartSvg([{day:1,elapsedMs:300000,value:10},{day:3,elapsedMs:300000,value:20}],[{key:'value',cls:'actual',label:'Value'}],0,20,'Test chart','Test chart labels.',String);if(!html.includes('Day 1 00:00')||!html.includes('Day 3 00:00')||html.includes('D1 00:00'))throw Error('Chart day labels are abbreviated');});
         test('Version one migration preserves ownership',()=>{newRun(53,false);const old=JSON.parse(JSON.stringify(game));old.schemaVersion=1;delete old.phishing;delete old.cashTelemetry;delete old.firstWorkflowGuide;delete old.processMaturity;Object.values(old.cardsById).forEach(c=>delete c.stats);migrateRunState(old);assertGameState(old);if(Object.values(old.cardsById).filter(c=>c.kind==='employee').some(c=>!c.stats)||old.firstWorkflowGuide.active||!old.processMaturity)throw Error('Stats, guide, or process maturity migration incorrect');});
         test('State invariants',()=>{newRun(9,false);assertGameState();});game=prior;runtime.meta=priorMeta;runtime.testing=false;markDirty();console.table(tests);return {passed:tests.filter(t=>t.pass).length,failed:tests.filter(t=>!t.pass).length,tests};},
