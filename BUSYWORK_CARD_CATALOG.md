@@ -488,6 +488,24 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 
 ---
 
+## Player Card Interaction Reference
+
+| Player action | Runtime result | Constraint or feedback |
+|---|---|---|
+| Wait for an arrival | The next seeded card enters Inbox when the visible countdown reaches zero. | The automatic interval scales by day. If Inbox is full, the automatic arrival displaces the oldest stack and applies the documented overflow consequences. |
+| Select **Pull next item** | The next seeded card enters immediately and the automatic-arrival clock resets. | Disabled while Inbox is full. Each ten-card bag preserves the 30% task, 40% resource, and 30% junk composition above. |
+| Click a visible card | Opens that card or stack in the Inspector. | Review output arriving later does not replace this selection. |
+| Drag a visible top card to empty lane space | Extracts that card into a new stack in the destination lane. | Lane capacity and movement restrictions still apply. |
+| Drag one stack onto another | Merges the complete source stack atomically. | The result must contain no more than five cards and at most one employee, task-like card, document, and resource. The exact two-resource Juiced recipe is the only resource-slot exception. Active and locked workflows reject merges. |
+| Click a covered-card pip | Opens that specific buried card in the Inspector. | The top card has no pip because it is already visible. |
+| Drag a covered-card pip | Pulls only that buried card into its own stack. | Its paused deadline resumes only when it becomes a physical top card. Pip shape, abbreviation, color, and decoration identify the referent and relevant timer, Juiced, low-value, glitch, or employee state. |
+| Drag an In Progress resource chip | Removes only that staged resource from the composite workflow. | In Progress does not show covered pips because the employee, task, and resources are represented directly. |
+| Complete a workflow | Consumes every staged resource, sends the document to Review, and leaves the employee in In Progress. | No resource is retained. A matching disguised junk input is accepted as supplied but guarantees Source Integrity Failure. |
+
+Card faces pair the colored type icon with a specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt; generic `RS` and `WK` labels are not used. Task flavor text names the required resource in natural language without a separate “consumed” footer. Standalone employees show their Accuracy, Speed, and Resilience values and compact meters at all times.
+
+---
+
 ## Runtime Instance Notes
 
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.

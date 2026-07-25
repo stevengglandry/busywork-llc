@@ -4,7 +4,9 @@
 
 > Current technical implementation: the browser build uses seeded arrival bags rather than the legacy deck/discard proposal below. Run construction and migration, Review rulings, audits, burnout, and day rollover are implemented as separate named state-transition helpers. The legacy design sections remain as historical product direction, not a claim about current runtime fields.
 
-> Current content amendment: the shipped catalog contains 30 card templates, 16 recipes, and 30 policies. It includes three corporate-jargon work requests, per-instance payouts from 20% Low Fee through 5× Windfall, assignable task-disguised junk, unsafe resource auto-pull decoys, uncapped homogeneous resource stacks, overflow Audit/Confidence penalties, and a one-time first-workflow sparkle guide. See `BUSYWORK_CARD_CATALOG.md` for exact templates and `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for consequences and balance values.
+> Current content amendment: the shipped catalog contains 30 card templates, 46 standard and juiced recipes, and 30 policies. It includes three corporate-jargon work requests, per-instance payouts from 20% Low Fee through 5× Windfall, LOW-FEE-free juiced contracts, assignable task-disguised junk, exact compatible-stack rules, per-employee stat investment, Manager team stakes, overflow Audit/Confidence penalties, and a one-time first-workflow sparkle guide. See `BUSYWORK_CARD_CATALOG.md` for exact templates and `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for consequences and balance values.
+
+> Current interaction amendment: card faces use name-specific abbreviations and task copy names its required resource. Standalone employee stats are always visible. Pulls come from deterministic ten-card bags and may be requested early from the action bar. Compatible stacks merge as complete units, while covered-card pips and staged resource chips extract one specific card. Only a physical top card's timer advances. In Progress composites show every participant directly, completion consumes all resources, and new Review output does not change selection. These shipped rules supersede conflicting interaction proposals below.
 
 ## Implementation-Ready Product and Technical Plan
 
@@ -240,12 +242,16 @@ Detailed fields appear in a side inspector on selection. Avoid putting every sta
 - Use Pointer Events, `setPointerCapture`, and a movement threshold so clicks do not become accidental drags.
 - The dragged card follows the pointer using a lightweight ghost; the original position remains visible as a placeholder.
 - Valid column and card targets receive a clear highlight.
-- Dropping on empty column space appends the card as a new stack.
-- Dropping on a card adds it to that card’s stack if the target column permits stacking.
-- Dragging the visible top card of a stack removes only that card.
-- Selecting a stack opens its ordered contents and recipe status in the inspector.
+- Dropping a visible top card on empty column space pulls that card into a new stack.
+- Dropping one stack on another merges the complete source stack atomically only when the result is compatible and contains no more than five cards.
+- A normal stack has at most one employee, one task-like card, one document, and one resource. Resource-disguised junk occupies the resource slot. The sole two-resource exception is the exact pair required by a Juiced task.
+- Similar resource cards cannot stack together. Active jobs and locked workflow stacks cannot merge.
+- Only the physical top card's deadline advances; covered card timers pause at their exact remaining value.
+- Every genuinely covered card appears as a compact card-shaped pip with a name-specific abbreviation and visible state treatment. Clicking a pip inspects that card; dragging it extracts only that card. The visible top card has no redundant pip.
+- In Progress uses a composite workflow face instead of covered pips because its employee, task, resources, forecasts, coverage effects, and progress are directly visible. Each staged resource chip may be dragged out individually before completion.
+- Selecting a stack opens its ordered contents and recipe status in the inspector. Finished work entering Review must not replace the current selection.
 - Pressing Escape during a drag cancels and restores the original state.
-- A failed drop restores the card without changing state.
+- A failed drop restores the card without changing state and gives a clear rejection treatment.
 - Card order inside a stack must not affect recipe matching.
 - Review and Done do not permit arbitrary stacking.
 - Cards being consumed or transformed cannot be dragged until the recipe is cancelled.
