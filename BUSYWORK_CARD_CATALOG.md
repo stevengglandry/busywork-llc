@@ -91,6 +91,16 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 
 The Manager begins as a deliberately poor emergency task worker, but Cash investment can turn him into a risky workhorse and stress healer. Each Accuracy pip above baseline adds 12 coverage-chance points on top of the ordinary stat gain; each Speed pip above baseline adds 5% multiplicative processing speed; Resilience raises check-in healing from 20 to as much as 32. Depending on his seeded Resilience, a compliant Manager output relieves every employee by 8–26 stress (10 at the baseline stat), while a noncompliant or junk-tainted output stresses everyone by 18–8 (16 at baseline). The Staff shop exposes the live values before assignment.
 
+### Stat Behavior and Training
+
+| Stat | Runtime effect | Training base |
+|---|---|---:|
+| Accuracy | Adds four percentage points per pip before role, stress, rhythm, trait, and coverage modifiers. Accuracy 6 guarantees worker-caused compliance outside Manager coverage. Manager Accuracy above its four-pip baseline adds a further 12 emergency-coverage points per pip. | $18 |
+| Speed | Uses pip multipliers 0.60×, 0.80×, 1.00×, 1.10×, 1.20×, and 1.35×. Manager Speed above its two-pip baseline also adds a multiplicative 5% per pip. | $16 |
+| Resilience | Resilience 1 takes 175% standard work stress, 2 takes 135%, 3–5 take 100%, and 6 takes 50%. Manager Resilience also scales check-in healing and the team-wide success/failure stakes described above. | $14 |
+
+The next pip costs `training base + (current stat × $6) + (all prior pips bought for that employee × $4)`. Purchases are permanent for that employee, spend Cash immediately, and stop at six pips. Seeded opening stats can begin one pip above or below the role baseline, so the displayed first-purchase price can vary between runs.
+
 ---
 
 ## Task Cards
@@ -101,7 +111,7 @@ Every natural task or document deadline miss adds 12 Audit Chance, applies Confi
 
 Each positive-revenue task instance receives a contract rate when created. Windfall cards (5%) pay exactly 5× the task type's base reward and use a gold treatment; Premium cards (8%) pay 2×; Low Fee cards (25%) pay 20% and use a muted treatment; the remaining 62% pay 0.75×, 0.9×, or 1×. This keeps the long-run expected multiplier near 1× while making individual requests much more consequential. The card and Inspector show the quote before assignment. Confidence scales the quoted value only when the completed document is approved, and correction preserves the original quote. Task-disguised junk receives the same convincing visual/value roll but still pays nothing when exposed.
 
-Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope multiplies the already-rolled quote by 1.75×, takes 35% longer, requires a second resource, consumes both resources, and survives production and correction. All resources in every completed workflow are consumed; canceled workflows consume nothing, and correction requires fresh inputs. The guaranteed opening tutorial remains standard scope; audit-generated Regulatory Response arrivals use the same rare roll as ordinary tasks.
+Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope never combines with LOW FEE; it multiplies a standard, premium, or windfall quote by 1.75×, takes 35% longer, requires a second resource, consumes both resources, and survives production and correction. Saved JUICED/LOW contracts upgrade to a standard JUICED quote on load. All resources in every completed workflow are consumed; canceled workflows consume nothing, and correction requires fresh inputs. The guaranteed opening tutorial remains standard scope; audit-generated Regulatory Response arrivals use the same rare roll as ordinary tasks.
 
 | Task type | Base | Low Fee (20%) | Premium (2×) | Windfall (5×) |
 |---|---:|---:|---:|---:|
