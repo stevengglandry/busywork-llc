@@ -87,9 +87,9 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Replacement hiring cost | $90 |
 | Specialist task | None |
 | Emergency coverage | Every valid task at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress |
-| Special functions | Signs qualifying Review documents; conducts private employee check-ins while both cards are in Backlog |
+| Special functions | Signs qualifying Review documents; conducts Resilience-scaled private check-ins; applies a team-wide stress result after his own tasks |
 
-The Manager is an intentionally terrible emergency task worker. The assignment forecast labels this as Emergency cover and exposes the severe accuracy, time, and stress costs before the player commits.
+The Manager begins as a deliberately poor emergency task worker, but Cash investment can turn him into a risky workhorse and stress healer. Each Accuracy pip above baseline adds 12 coverage-chance points on top of the ordinary stat gain; each Speed pip above baseline adds 5% multiplicative processing speed; Resilience raises check-in healing from 20 to as much as 32. Depending on his seeded Resilience, a compliant Manager output relieves every employee by 8–26 stress (10 at the baseline stat), while a noncompliant or junk-tainted output stresses everyone by 18–8 (16 at baseline). The Staff shop exposes the live values before assignment.
 
 ---
 
@@ -481,12 +481,13 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 ## Runtime Instance Notes
 
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.
-- Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, and derived abilities.
+- Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, derived abilities, per-stat purchased-pip counts, and total Cash invested.
 - Task instances may become rework tasks and retain revision metadata.
 - Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
 - Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels. Every recruit is a Juiced Hire: at least two total stat pips above the opening same-role worker where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. Training Budget adds one further pip.
+- The Staff side panel sells one permanent base-stat pip at a time to a selected employee. Each stat caps at six; the price depends on the stat, its current value, and the employee’s total prior purchases.
 - Similar cards cannot share a stack: at most one employee, task-like card, document, and instance of each effective resource are allowed. Resource-disguised junk occupies the slot of the resource it imitates. Compatible stacks can be combined atomically up to five total cards, including a three-card stack dropped onto a complementary two- or one-card stack. Active or locked stacks cannot be merged, and legacy homogeneous stacks are split when loaded.
 - Only the physical top card advances its deadline; covered cards expose hoverable/focusable identity and status pips while their timers pause.
 - The opening Data Entry Request and every legitimate card/action that can advance it are eligible for the first-workflow sparkle guide.

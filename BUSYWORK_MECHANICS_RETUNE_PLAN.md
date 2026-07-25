@@ -138,6 +138,17 @@ Ordinary arrivals also include Stakeholder Alignment Memo (Spreadsheet), Revenue
 
 Every overnight recruit, including an Acting Manager, is a **Juiced Hire**. Its deterministic stat total is at least two pips above the opening worker of the same role when the six-pip caps permit, no stat may fall below the role baseline, and the primary role stat receives priority. Juiced Hires also process 10% faster and recover stress 20% faster in Backlog. Training Budget adds one further seeded pip rather than one pip to every stat.
 
+### Employee stat shop and Manager strategy
+
+The Staff side panel is a per-employee stat upgrade shop. Accuracy, Speed, and Resilience can each be raised one permanent base-stat pip at a time to the six-pip cap. Each purchase spends Cash on that specific employee. Prices start in the small `$20–$50` range and rise with the employee’s current stat and total purchased pips, so specializing one worker remains accessible while maximizing an entire worker—especially the Manager—is a major economic commitment.
+
+- Accuracy is used when generating the actual work product, not only in the forecast. Six Accuracy guarantees compliant specialist work. Manager emergency coverage retains its severe −70 base penalty, but each Accuracy pip above the Manager’s four-pip baseline adds another 12 points to his real and displayed coverage chance.
+- Speed continues to use the normal stat curve. Each Manager Speed pip above his two-pip baseline also adds 5% multiplicative speed, allowing a fully developed Manager to work through the 2.25× emergency-coverage duration.
+- Resilience reduces work stress for every employee. Manager Resilience additionally scales private check-ins from 20 stress relief at baseline to 32 at six pips.
+- When a Manager-produced document reaches Review, its active-policy compliance is resolved immediately. A compliant result relieves every current employee by `6 + 2 × Resilience + 2 × pips above baseline` stress, spanning 8–26 depending on his seeded stat (10 at baseline). A noncompliant or junk-tainted result stresses every current employee by `max(6, 20 − 2 × Resilience)`, spanning 18–8 (16 at baseline).
+
+The Staff shop shows current Cash, each worker’s purchased investment total, live stat effects, escalating next prices, and the Manager’s current whole-team win/failure stakes. These upgrades persist in the run save.
+
 ## Liabilities and audits
 
 Liabilities are created by:
@@ -230,8 +241,8 @@ A newly created run records the opening Data Entry Request as its guided workflo
 
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
-- Employee hover/focus consistently exposes the stat popover; selected employees also show the same data in the Inspector and Staff roster.
-- Standalone employee cards keep their coping/status tags beside the worker name and compress workload state, stress percentage, target band, and current marker into a mini gauge beside the EMPLOYEE header. Full gauges remain available in workflows, the Inspector, and Staff roster.
+- Employee hover/focus consistently exposes the stat popover; selected employees also show the same data in the Inspector and Staff upgrade shop.
+- Standalone employee cards keep their coping/status tags beside the worker name and compress workload state, stress percentage, target band, and current marker into a mini gauge beside the EMPLOYEE header. Full gauges remain available in workflows, the Inspector, and Staff upgrade shop.
 - Every visible card has a text type label plus a type-specific shape: employee square, task circle, resource diamond, document square. Distractions retain their disguise type so the mechanic is not spoiled.
 - The currently selected card or workflow uses a three-pixel black dashed frame, offset isolation halo, and slight lift so Inspector context remains obvious over every card type and status treatment.
 - Selecting a worker, task, or resource gives recipe-compatible cards and incomplete workflows a subtle green outline. The cue is computed from actual recipe pairs, including disguised junk identities; Manager/document approval and Backlog check-in pairs use their special action rules.
@@ -272,6 +283,8 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Task cards visibly distinguish 5× Windfall, 2× Premium, and 20% Low Fee contracts; the quoted amount survives processing and correction.
 - Juiced task cards are visibly distinct, require exactly two task-specific resources, pay 1.75× their rolled quote, last 35% longer, spawn rarely, and retain their scope through correction.
 - The three new ordinary task types use existing resources and document schemas, preserve their identity through correction, and expose both specialist and coverage routes.
+- The Staff side panel can buy permanent Accuracy, Speed, or Resilience pips for a particular employee with escalating Cash prices, never beyond six.
+- A heavily upgraded Manager has materially better coverage accuracy, throughput, check-in healing, and whole-team success relief; every Manager task also applies its displayed team-wide success or failure stress outcome.
 - Similar cards cannot share a stack; compatible multi-card stacks merge atomically up to five cards while locked work remains immovable.
 - Deleting a valid resource deducts $8 and creates exactly one liability.
 - A worker held in the sweet spot receives both speed and accuracy bonuses and visible flair.
