@@ -237,6 +237,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 - Timeline endpoints use full labels such as `Day 1 00:00`, never the abbreviated `D1` form.
 - Task-revenue telemetry changes only for recognized task payouts. It remains capped at 64 points per day and 320 persisted quarterly points.
 - The small persistent task-revenue sparkline lives inside the Cash header tile and opens the detailed Progress panel.
+- The company-status header uses five equal-height proportional columns. Day/Time, Morale, and Confidence center their short readouts; Cash and Audit remain left-aligned for secondary details. Cash separates its visible sparkline from the value block, while responsive layouts distribute every tile across the available row before allowing horizontal scrolling below 560 pixels. Header compaction changes spacing and alignment without reducing text size.
 - The Recipes panel is a compact input-to-output network: specialist, task, consumed resource, optional Juiced resource branch, coverage alternatives, duration, and resulting document are visible together.
 - Done uses a compact narrow lane so Inbox, Backlog, In Progress, and Review receive more horizontal space.
 - At a 1920-pixel desktop viewport, all five lanes and the roughly 300-pixel Inspector remain visible simultaneously at compact card density. This large-monitor view is the baseline; Done alone is intentionally narrower than the reference layout.
