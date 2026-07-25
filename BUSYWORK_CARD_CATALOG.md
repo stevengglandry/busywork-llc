@@ -107,7 +107,7 @@ The next pip costs `training base + (current stat × $6) + (all prior pips bough
 
 Task cards are work requests. A valid In Progress stack combines one task, a compatible employee, and its required resource.
 
-Every natural task or document deadline miss adds 12 Audit Chance, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a Review document applies the same global penalty. Ordinary valid task deletion instead rolls 75% no consequence, 12.5% Confidence −2, and 12.5% audit severity +10%; Stakeholder Alignment Memo uses 50% none / 50% Confidence −2, while Governance Recalibration uses 50% none / 50% audit severity +10%.
+Every natural task or document deadline miss adds 8 Exposure, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a Review document applies the same global penalty. Ordinary valid task deletion instead rolls 75% no consequence, 12.5% Confidence −2, and 12.5% audit severity +10%; Stakeholder Alignment Memo uses 50% none / 50% Confidence −2, while Governance Recalibration uses 50% none / 50% audit severity +10%. These penalties leave Audit Chance unchanged.
 
 Each positive-revenue task instance receives a contract rate when created. Windfall cards (5%) pay exactly 5× the task type's base reward and use a gold treatment; Premium cards (8%) pay 2×; Low Fee cards (25%) pay 20% and use a muted treatment; the remaining 62% pay 0.75×, 0.9×, or 1×. This keeps the long-run expected multiplier near 1× while making individual requests much more consequential. The card and Inspector show the quote before assignment. Confidence scales the quoted value only when the completed document is approved, and correction preserves the original quote. Task-disguised junk receives the same convincing visual/value roll but still pays nothing when exposed.
 
@@ -296,7 +296,7 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Used by | Revenue Enablement Packet |
 | Consumption | Consumed when the workflow completes |
 
-Deleting any legitimate resource through the board trash target or Inspector costs `$8`, creates one severity-3 liability with the source `legitimate resource destroyed`, and immediately adds 15 Audit Chance. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
+Deleting any legitimate resource through the board trash target or Inspector costs `$8` and creates one severity-3 liability with the source `legitimate resource destroyed`. The liability raises Exposure through the discovery formula but does not change Audit Chance. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
 
 ---
 
@@ -350,7 +350,7 @@ Junk uses `kind: distraction` internally but imitates a normal task or resource 
 
 The Inspector's **Add [resource] and begin** shortcut is intentionally unsafe: when a resource-disguised junk card imitates the requested input, the shortcut selects that decoy before legitimate stock. The matching decoy starts a normal-looking contaminated workflow. Manual dragging and close visual inspection remain the explicit safe choices.
 
-Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `10` Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Every task and resource input, legitimate or junk, is consumed when the contaminated workflow completes.
+Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `8` Exposure without changing Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Every task and resource input, legitimate or junk, is consumed when the contaminated workflow completes.
 
 ### Task Disguises
 

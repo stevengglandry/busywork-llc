@@ -48,14 +48,14 @@ Morale is not a direct run-ending condition. Its danger is slower throughput, mo
 
 - A run starts at `50%` Audit Chance.
 - The audit roll happens every night.
-- An inaccurate approval adds `6` points.
-- Every automatic Inbox overflow adds `15` Audit Chance and removes `6` Confidence, in addition to consequences from the displaced card.
+- Operational penalties do not directly raise Audit Chance. They create liabilities, add Exposure, or increase audit severity instead.
+- Every automatic Inbox overflow adds `8` Exposure and removes `6` Confidence, in addition to consequences from the displaced card.
 - Accurate approvals remove `1` point; Compliance Training removes `8`.
-- When an audit occurs, its chance to find something is:
+- When an audit occurs, **Exposure** is its chance to discover a liability:
 
-`min(1, liabilities / elapsed days) × (1 - Confidence / 200)`
+`min(1, min(1, liabilities / elapsed days) × (1 - Confidence / 200) + exposure penalties / 100)`
 
-This makes liabilities the error rate while Confidence provides partial board/compliance protection.
+Exposure is `0%` when there are no liabilities. This keeps the nightly audit roll stable while liabilities and specific operational mistakes make an audit more dangerous. Confidence provides partial board/compliance protection.
 
 ### Confidence
 
@@ -84,9 +84,9 @@ Confidence widens the comfort zone. A burnout learning outcome can permanently w
 
 | Choice | Hit | Miss |
 | --- | --- | --- |
-| Approve | Accurate work pays Confidence-scaled revenue, Confidence +2, Audit Chance -1 | Revenue still pays, but +1 liability, Audit Chance +15, producer stress, Morale modifier -1 |
-| Request correction | Inaccurate work returns to Backlog as rework with a 40% shorter deadline; producer stress +7 | Accurate work is unnecessarily reworked; producer stress +14, Audit Chance +8, and a red consequence popup |
-| Reject | Inaccurate/unsalvageable work is destroyed with no reward or additional consequence | Accurate work is destroyed; +1 liability, Audit Chance +15, Confidence -2, producer stress +16 |
+| Approve | Accurate work pays Confidence-scaled revenue, Confidence +2, Audit Chance -1 | Revenue still pays, but +1 liability increases Exposure, producer stress, Morale modifier -1 |
+| Request correction | Inaccurate work returns to Backlog as rework with a 40% shorter deadline; producer stress +7 | Accurate work is unnecessarily reworked; producer stress +14, future audit severity +10%, and a red consequence popup |
+| Reject | Inaccurate/unsalvageable work is destroyed with no reward or additional consequence | Accurate work is destroyed; +1 liability increases Exposure, Confidence -2, producer stress +16 |
 | Escalate | Work moves to Done regardless of accuracy | Confidence -4 and future audit severity -15%, with no task revenue |
 
 Rulings remain final except Request correction, which creates a new assignable rework task.
@@ -157,11 +157,11 @@ Liabilities are created by:
 - Rejecting accurate work.
 - Deleting a legitimate resource.
 
-Each liability immediately adds 15 points to Audit Chance. Deadline misses and deliberate Review-document deletion do not create a liability, but add 12 Audit Chance, apply Confidence -6, and add 30% to future audit severity. Deliberately deleting an ordinary valid task instead rolls 75% no consequence, 12.5% Confidence -2, and 12.5% future audit severity +10%. Stakeholder Alignment Memo overrides that roll with 50% no consequence / 50% Confidence -2; Governance Recalibration uses 50% no consequence / 50% future audit severity +10%. Inbox overflow adds 15 Audit Chance and removes 6 Confidence; a task displaced by overflow also receives the deadline penalties. Firing an employee adds 12 Audit Chance, completing junk-disguised work adds 10, and requesting an unnecessary correction adds 8.
+Liabilities no longer add Audit Chance; each one instead raises Exposure through the discovery formula. Deadline misses and deliberate Review-document deletion add 8 Exposure, apply Confidence -6, and add 30% to future audit severity. Deliberately deleting an ordinary valid task instead rolls 75% no consequence, 12.5% Confidence -2, and 12.5% future audit severity +10%. Stakeholder Alignment Memo overrides that roll with 50% no consequence / 50% Confidence -2; Governance Recalibration uses 50% no consequence / 50% future audit severity +10%. Inbox overflow adds 8 Exposure and removes 6 Confidence; a task displaced by overflow also receives the deadline penalties. Firing an employee adds 15% future audit severity, completing junk-disguised work adds 8 Exposure, and requesting an unnecessary correction adds 10% future audit severity. None of these penalties directly raises Audit Chance.
 
 When an audit finds liabilities:
 
-1. All currently discoverable liabilities are counted as findings.
+1. Exposure is rolled; if successful, all currently discoverable liabilities are counted as findings.
 2. Severity is calculated from their policy severity.
 3. The severity multiplier increases by `0.5` for each prior audit failure, plus deadline penalties, minus escalation relief and Confidence protection. It cannot fall below `0.5`.
 4. A minimum `$15` fine is assessed.
@@ -189,7 +189,7 @@ Automatic Inbox arrivals remain on the day-scaled schedule, but the current coun
 
 Card faces use a permanent semantic visual language: blue avatar circles for employees (with executive brown reserved for the Manager), amber target circles for tasks, purple diamonds for resources, and green folded-page marks for documents. The name-specific code square repeats that type color instead of falling back to neutral grey. Small colored pips communicate secondary attributes such as Premium, Windfall, Low Fee, and Juiced status. Juiced tasks and hires use a heavier double edge, layered surface, stronger depth, and lightning pip without replacing their underlying type color. Selecting a card does not add compatibility accents to other cards; only the one-time first-workflow guide may sparkle valid next actions. Task flavor text naturally names the resource needed to begin work and does not add generic consumption boilerplate. Standalone employee cards expose compact Accuracy, Speed, and Resilience values and meters without requiring hover. Invalid-drop feedback remains available during a drag.
 
-Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. Matching resource-disguised junk is deliberately prioritized by the Inspector shortcut and also starts work. Both forms run for the normal workflow duration, accept interventions, and produce a document in Review with a guaranteed Source Integrity Failure. Completion adds `10` employee stress and `10` Audit Chance and leaves the employee in In Progress. Fake tasks carry no collectible value; legitimate tasks contaminated by a junk resource retain their quote, so approving the invalid output creates the same immediate-revenue-versus-liability trap as other bad work.
+Task-disguised junk can be assigned using the same worker and resource flow as the legitimate task it imitates. Matching resource-disguised junk is deliberately prioritized by the Inspector shortcut and also starts work. Both forms run for the normal workflow duration, accept interventions, and produce a document in Review with a guaranteed Source Integrity Failure. Completion adds `10` employee stress and `8` Exposure and leaves the employee in In Progress. Fake tasks carry no collectible value; legitimate tasks contaminated by a junk resource retain their quote, so approving the invalid output creates the same immediate-revenue-versus-liability trap as other bad work.
 
 ## Daily process maturity specialization
 
@@ -254,7 +254,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 - Selecting a worker, task, or resource does not restyle other cards as compatible. The one-time opening guide may sparkle legitimate first-workflow options, while valid and invalid destination feedback appears only during an active drag.
 - Ordinary junk cards use one of two deterministic glitch signatures—chromatic registration/scanline tearing or offset-code/clipped-edge printing—without displaying a junk label. Legitimate cards and the phishing reward notice do not receive these effects.
 - Only a new run's valid opening workflow options receive the gold-and-blue sparkle aura; it follows the relevant Inspector buttons and disappears after the first legitimate workflow begins.
-- The Audit header shows effective nightly Audit Chance, liability count, findings-if-audited chance, and a five-pip Clear/Fine/Escalated/Severe/Critical punishment rail. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
+- The Audit header shows effective nightly Audit Chance, liability count, Exposure, and a five-pip Clear/Fine/Escalated/Severe/Critical punishment rail. Exposure is the chance that an audit discovers a liability. The Progress panel additionally shows overall failure chance, liability severity, projected multiplier, and projected fine.
 
 ## Implementation order
 
@@ -272,7 +272,7 @@ The single-file build keeps the runtime dependency-free but separates high-risk 
 - `createInitialRunState`, `migrateRunState`, `freshPhishingState`, and `freshCashTelemetry` own state creation and save compatibility.
 - Workforce selectors calculate work share, sweet-spot width, payout multiplier, stress, and derived Morale without duplicating formulas in UI code.
 - Review uses separate approve, reject, correction, escalation, and finalization helpers. Unknown actions are ignored without mutating state.
-- Audit calculation separates roll chance, finding chance, severity multiplier, and failed-audit consequences.
+- Audit calculation separates the nightly roll, Exposure, severity multiplier, and failed-audit consequences.
 - New-day preparation separates daily resets, employee recovery, and scheduled/regulatory arrivals.
 - Legacy unused deck, discard, generic data state, and shuffle helpers were removed from the active runtime. Seeded arrival bags remain the authoritative draw model.
 
@@ -298,8 +298,8 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Correction never pays or charges Cash and always returns a shortened-deadline task.
 - Escalation pays no task revenue, costs 4 Confidence, and reduces audit severity by 15%.
 - Every night rolls the current Audit Chance; findings use liabilities per elapsed day and Confidence protection.
-- An automatic Inbox overflow displays its consequences, adds 15 Audit Chance, and removes 6 Confidence.
-- Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 10 Audit Chance and creates an unapprovable Source Integrity Failure document in Review.
+- An automatic Inbox overflow displays its consequences, leaves Audit Chance unchanged, adds 8 Exposure, and removes 6 Confidence.
+- Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 8 Exposure without changing Audit Chance, and creates an unapprovable Source Integrity Failure document in Review.
 - An employee waiting taskless in In Progress accrues no stress during the five-second grace period, then gains stress at an increasing visible rate; assigning a task or moving to Backlog resets the wait timer.
 - Every successful daily close grants one non-duplicating Process Point before overnight planning; the randomized specialization tree fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
