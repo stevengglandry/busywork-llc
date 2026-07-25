@@ -201,9 +201,9 @@ Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security
 
 ### Card stacking and deletion
 
-- Dragging any card in a homogeneous stack onto another homogeneous stack of the same template merges the complete source stack, including multi-card stacks dropped onto a single matching card.
-- Resource stacks have no merge-size limit. Other matching stacks retain the five-card limit.
-- Active jobs and locked workflow stacks cannot merge. Invalid stack combinations fall back to the normal single-card move rules.
+- A stack may contain at most one employee, one task-like card, one document, and one instance of each effective resource. Resource-disguised junk counts as the resource it imitates. This prevents homogeneous piles while preserving Juiced workflows that require two different resources.
+- Dragging a stack onto another stack combines the complete source stack only when the resulting stack respects those compatibility slots and the five-card limit. A compatible three-card stack can therefore still land on a compatible two- or one-card stack.
+- Active jobs and locked workflow stacks cannot merge. Saved homogeneous stacks from earlier builds are split into compatible stacks when loaded.
 - Only the physical top card in a stack advances its deadline. Every covered timer pauses at its exact remaining value and resumes when that card becomes the top card.
 - The top card displays a hoverable/focusable pip for every covered card. Pips expose card identity, paused countdown, Juiced/low-value/glitch state, and employee status; selecting a pip opens that buried card in the Inspector without reordering the stack.
 - Staged resource chips can be dragged back out of an assignment. The board always rerenders from state after a drop, preventing a rejected resource from remaining visually over an employee card.
@@ -272,7 +272,7 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - Task cards visibly distinguish 5× Windfall, 2× Premium, and 20% Low Fee contracts; the quoted amount survives processing and correction.
 - Juiced task cards are visibly distinct, require exactly two task-specific resources, pay 1.75× their rolled quote, last 35% longer, spawn rarely, and retain their scope through correction.
 - The three new ordinary task types use existing resources and document schemas, preserve their identity through correction, and expose both specialist and coverage routes.
-- Matching multi-card resource stacks merge without a size cap, while locked work remains immovable.
+- Similar cards cannot share a stack; compatible multi-card stacks merge atomically up to five cards while locked work remains immovable.
 - Deleting a valid resource deducts $8 and creates exactly one liability.
 - A worker held in the sweet spot receives both speed and accuracy bonuses and visible flair.
 - Incorrect approval and incorrect rejection each add exactly one liability.
