@@ -11,13 +11,13 @@ This expansion adds a mail-triage pressure loop, makes the Manager the source of
 ### Current shipped extensions
 
 - The active policy pool contains 30 policies, including ten later corporate controls for payout floors/increments, Net 45 terms, record normalization, Revenue Operations sourcing, stress ceilings, and specialist-only output.
-- Ordinary arrivals include three additional work requests: Stakeholder Alignment Memo, Revenue Enablement Packet, and Spend Governance Calibration. Together they add six recipes and reuse Spreadsheet, Client Data, and Receipt.
+- Ordinary arrivals include three additional work requests: Stakeholder Alignment Memo, Revenue Enablement Packet, and Spend Governance Calibration. They reuse Spreadsheet, Client Data, and Receipt and add nine standard worker/task variants (specialist, ordinary coverage where available, and Manager cover) plus their nine Juiced counterparts.
 - Positive-revenue task instances roll a visible contract quote: 5% at 5×, 8% at 2×, 25% at 20%, and the remaining 62% at 0.75×, 0.9×, or 1×. The quote survives production and correction.
-- **Pull next item** lets the player advance the seeded arrival queue while the Inbox has space. Automatic overflow instead adds 5 Audit Chance, removes 3 Confidence, and applies the displaced card's normal consequence.
-- Resource shortcuts deliberately prioritize a matching disguised junk card. Task-disguised junk can start a bogus job that produces no document or revenue and adds 6 worker stress.
+- **Pull next item** lets the player advance the seeded arrival queue while the Inbox has space. Automatic overflow leaves Audit Chance unchanged, adds 8 Exposure, removes 6 Confidence, and keeps the Inbox at capacity.
+- Resource shortcuts deliberately prioritize a matching disguised junk card. Task-disguised junk can start a bogus job that produces an unapprovable Source Integrity Failure document, collects no revenue, and adds 10 worker stress plus 8 Exposure.
 - Ordinary junk has two deterministic visual fault families: chromatic/scanline registration errors and offset/clipped printing errors.
 - Deleting a legitimate resource costs $8 and creates one severity-3 liability. The trash target now includes a trash-can icon.
-- Matching multi-card stacks can merge as whole stacks; resource stacks have no size cap.
+- Matching multi-card stacks can merge as whole stacks when the result fits the five-card cap and its compatibility slots. Normal stacks allow one resource; only a Juiced task may carry its exact two-resource pair.
 - A new run uses a one-time sparkle guide for the opening Data Entry Request, Spreadsheet, Intern, and corresponding Begin/Assign/Add actions.
 - Daily Cash close uses bars connected by a line. Quarterly legends are above and right-aligned, with full `Day x` endpoint labels.
 

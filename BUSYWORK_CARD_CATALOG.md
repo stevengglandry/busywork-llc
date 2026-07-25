@@ -1,8 +1,8 @@
 # BUSYWORK Card and Task Catalog
 
-Source of truth: the current `Content.cards`, `Content.recipes`, opening allocation, and daily opening rules in `index.html`.
+Source of truth: the current `Content.cards`, `Content.recipes`, stat/trait pools, balance and progression constants, opening allocation, and runtime rules in `index.html`.
 
-This file catalogs card **templates**. Runtime card instances receive unique IDs such as `card_17`, and the game may create multiple instances from the same template through arrivals, hiring, rework, and completed workflows.
+This file catalogs card **templates** and the systems that modify their runtime instances. Runtime cards receive unique IDs such as `card_17`, and the game may create multiple instances from the same template through arrivals, hiring, rework, and completed workflows.
 
 ## Catalog Summary
 
@@ -90,16 +90,6 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Special functions | Signs qualifying Review documents; conducts Resilience-scaled private check-ins; applies a team-wide stress result after his own tasks |
 
 The Manager begins as a deliberately poor emergency task worker, but Cash investment can turn him into a risky workhorse and stress healer. Each Accuracy pip above baseline adds 12 coverage-chance points on top of the ordinary stat gain; each Speed pip above baseline adds 5% multiplicative processing speed; Resilience raises check-in healing from 20 to as much as 32. Depending on his seeded Resilience, a compliant Manager output relieves every employee by 8–26 stress (10 at the baseline stat), while a noncompliant or junk-tainted output stresses everyone by 18–8 (16 at baseline). The Staff shop exposes the live values before assignment.
-
-### Stat Behavior and Training
-
-| Stat | Runtime effect | Training base |
-|---|---|---:|
-| Accuracy | Adds four percentage points per pip before role, stress, rhythm, trait, and coverage modifiers. Accuracy 6 guarantees worker-caused compliance outside Manager coverage. Manager Accuracy above its four-pip baseline adds a further 12 emergency-coverage points per pip. | $18 |
-| Speed | Uses pip multipliers 0.60×, 0.80×, 1.00×, 1.10×, 1.20×, and 1.35×. Manager Speed above its two-pip baseline also adds a multiplicative 5% per pip. | $16 |
-| Resilience | Resilience 1 takes 175% standard work stress, 2 takes 135%, 3–5 take 100%, and 6 takes 50%. Manager Resilience also scales check-in healing and the team-wide success/failure stakes described above. | $14 |
-
-The next pip costs `training base + (current stat × $6) + (all prior pips bought for that employee × $4)`. Purchases are permanent for that employee, spend Cash immediately, and stop at six pips. Seeded opening stats can begin one pip above or below the role baseline, so the displayed first-purchase price can vary between runs.
 
 ---
 
@@ -444,9 +434,156 @@ After completion, the document enters Review and the worker remains in In Progre
 
 ---
 
-## Opening and Scheduled Card Instances
+## Systems
 
-### New Run Opening Allocation
+This section consolidates the pools, modifiers, rarity, progression, and card-state rules that can change a template after it becomes a runtime card. Exact percentages are authoritative. Rarity labels are descriptive: **Common** is at least 20%, **Uncommon** is 8–19.99%, **Rare** is 2–7.99%, and **Very rare** is below 2%. **Conditional** means the effect does not come from an ordinary random roll, and **Guaranteed** means it always applies when its stated trigger occurs.
+
+### Employee Stat Pool
+
+Every employee card has three independently rolled stats from 1–6. An opening employee rolls baseline −1, baseline, or baseline +1 with equal one-third chances, clamped to the 1–6 range.
+
+| Role | Accuracy pool | Speed pool | Resilience pool |
+|---|---|---|---|
+| Intern | 2 / 3 / 4 | 2 / 3 / 4 | 3 / 4 / 5 |
+| Junior Analyst | 3 / 4 / 5 | 3 / 4 / 5 | 2 / 3 / 4 |
+| Accountant | 4 / 5 / 6 | 2 / 3 / 4 | 3 / 4 / 5 |
+| Manager | 3 / 4 / 5 | 1 / 2 / 3 | 1 / 2 / 3 |
+
+Each listed value is **Common within that role** at 33.33%. Across the four-card opening roster, role-exclusive extremes such as Accountant Accuracy 6 or Manager Speed 1 occur on 8.33% of employee cards, but still have a one-third chance on their eligible role.
+
+| Stat | What it controls | Current conversion | Training base |
+|---|---|---|---:|
+| Accuracy | Forecast and generated-document compliance | Starts from `74 + 4 × Accuracy`, then applies coverage, Manager investment, coping, rhythm, sweet-spot, and stress modifiers. Accuracy 2 takes another −8 and Accuracy 1 another −16. Accuracy 6 guarantees worker-caused compliance outside Manager coverage; Accuracy 1 forces a worker-caused violation. | $18 |
+| Speed | Workflow processing rate | Pip multipliers are 0.60×, 0.80×, 1.00×, 1.10×, 1.20×, and 1.35×, multiplied by the role scalar and current state modifiers. Manager Speed above its two-pip baseline adds another multiplicative 5% per pip. | $16 |
+| Resilience | Positive stress gain and Manager support/team stakes | Resilience 1 takes 175% standard positive stress, 2 takes 135%, 3–5 take 100%, and 6 takes 50%. Manager Resilience also scales check-in healing and team-wide success/failure stress. | $14 |
+
+The next purchased pip costs `training base + (current stat × $6) + (all prior pips bought for that employee × $4)`. Purchases permanently modify that employee, spend Cash immediately, and stop at six pips.
+
+### Extreme-Stat Ability Pool
+
+Extreme abilities are derived automatically from stat values; they do not replace the employee's coping trait. The opening rarity below is calculated over the complete four-employee opening roster. Values unavailable at opening can still be reached through Staff training or Juiced Hire generation.
+
+| Stat value | Displayed ability | Opening rarity | Current applied effect |
+|---|---|---|---|
+| Accuracy 6 | Perfectionist — Never Misses | Uncommon · 8.33% of opening employees; Accountant only | Forces worker-caused fields compliant on non-Manager-coverage output. |
+| Accuracy 2 | Careless — Needs Checking | Uncommon · 8.33%; Intern only | Applies the normal lower pip value plus an additional −8 accuracy points. |
+| Accuracy 1 | Compliance Hazard — A Walking Finding | Conditional · not naturally rolled at opening | Forces at least one worker-caused field noncompliant. |
+| Speed 6 | Inbox Zero — Frighteningly Efficient | Conditional · not naturally rolled at opening | Applies the 1.35× stat-speed multiplier. The displayed 15% specialist head start is not currently applied by job creation. |
+| Speed 2 | Methodical — Thoroughly Eventually | Common · 25% across the opening roster | Applies the 0.80× stat-speed multiplier. The displayed extra intervention stress is not separately applied. |
+| Speed 1 | Glacial — Schedules Meetings About Starting | Uncommon · 8.33%; Manager only | Applies the 0.60× stat-speed multiplier while deadlines retain their normal rate. |
+| Resilience 6 | Unflappable — Seen Worse | Conditional · not naturally rolled at opening | Halves positive stress gain. The displayed first-threshold-condition immunity is not currently applied. |
+| Resilience 2 | Thin-Skinned — Takes Notes Personally | Uncommon · 16.67%; Junior Analyst or Manager | Multiplies positive stress gain by 1.35×. The displayed −15% Backlog recovery is not separately applied. |
+| Resilience 1 | Brittle — One Email From Collapse | Uncommon · 8.33%; Manager only | Multiplies positive stress gain by 1.75× and lowers burnout from 100 to 90 stress. |
+
+### Coping Trait Pool
+
+Every non-Manager employee independently receives one of four coping traits at a **Common 25%** chance. The Manager is **Guaranteed** to receive Boundary Setter. Traits persist on the card.
+
+| Trait | Rarity | Current applied effect |
+|---|---|---|
+| Boundary Setter | 25% on non-Managers; guaranteed on Manager | Backlog stress recovery ×1.35. |
+| Pressure Performer | 25% on non-Managers | Processing speed ×1.10 while stress is 50–79; no bonus at 80+. |
+| Perfectionist | 25% on non-Managers | +3 forecast/output accuracy. The displayed correction-stress penalty is not separately applied. |
+| People Pleaser | 25% on non-Managers | Correct approval relieves 8 stress instead of 4; incorrectly approved work adds 12 instead of 8. |
+
+### Stress-Condition Pool
+
+Crossing into 80+ stress without an existing condition rolls one of four conditions. Clutch Focus has a 25% roll; otherwise one of the three adverse conditions is selected uniformly, making every condition **Common at 25% conditional on the stress break**. A condition clears after recovery below 50 stress.
+
+| Condition | Current applied effect |
+|---|---|
+| Clutch Focus | Processing speed ×1.10. The displayed +3 accuracy is not currently applied. |
+| Tunnel Vision | Processing speed ×0.85. The displayed +4 accuracy is not currently applied. |
+| Reckless Urgency | Processing speed ×1.20. The displayed −10 accuracy is not currently applied. |
+| Withdrawal | Processing speed ×0.70 and Backlog recovery ×2. |
+
+### Workload, Rhythm, Support, and Burnout
+
+Each employee rolls a preferred-work target within eight percentage points of the role template: Intern 37–53%, Junior Analyst 54–70%, Accountant 70–86%, and Manager 5–18%. Work share is time spent working divided by total tracked working and idle time.
+
+- After ten tracked seconds, being inside the current sweet-spot width grants +15% processing speed and +8 accuracy. The width starts from `8 + round(Confidence / 25)` percentage points, can gain permanent run-wide width from a burnout outcome, and caps at 20.
+- Rhythm starts at 72. Staying within 12 points of the preferred-work target raises it; larger mismatches lower it. Rhythm at 78+ grants +2 accuracy and, when the stronger sweet-spot speed bonus is not active, +5% speed. The rhythm and sweet-spot accuracy bonuses can stack. Rhythm below 45 applies −10% speed and −5 accuracy.
+- Stress 0–49 is Steady, 50–79 is Strained, and 80+ is Fractured and rolls a stress condition. Reaching the employee's burnout threshold cancels active work, applies morale −6 and Confidence −8, and resolves the conditional outcome pool below.
+- A taskless employee left in In Progress gets five seconds of grace, then accumulates continuously accelerating Resilience-scaled stress until assigned or moved.
+- A private Manager check-in requires both cards in Backlog, costs $20, adds 5 target rhythm, and heals `20 + 3 × Manager Resilience pips above 2`. The Manager takes a base +10 stress modified by their own Resilience. Each target can receive one check-in per day.
+
+| Burnout outcome | Conditional rarity | Result |
+|---|---:|---|
+| Hard-earned growth | Common · 50% | Employee remains for next-day leave and gains +1 permanent pip in one random stat, capped at six. |
+| Company learning | Common · 22% | Employee remains for next-day leave and every employee's sweet-spot width increases by 2 for the run, capped at +6. |
+| Resignation | Common · 21% | Employee is permanently removed from the run. |
+| Death | Rare · 7% | Employee is permanently removed and the workforce takes an additional morale −12 shock. |
+
+### Task Bonus and Rarity Pool
+
+Positive-revenue tasks and task-disguised junk roll a visible contract tier when created. Fake tasks show convincing terms but collect no revenue after their Source Integrity Failure is exposed.
+
+| Modifier | Rarity per eligible card | Quote/result |
+|---|---:|---|
+| Standard | Common · 62% normally; 87% when Juiced | Randomly 0.75×, 0.90×, or 1.00× base with equal conditional chances. |
+| Low Fee | Common · 25% | 0.20× base. Never combines with Juiced scope. |
+| Premium | Uncommon · 8% | 2.00× base. |
+| Windfall | Rare · 5% | 5.00× base. |
+| Juiced scope | Uncommon · independent 8% of eligible task arrivals | Multiplies the rolled non-Low quote by 1.75×, requires the task-specific second resource, consumes both resources, and increases base duration by 35%. |
+| Juiced Hire | Guaranteed on every overnight recruit | At least +2 total stat pips over the opening same-role employee where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. |
+
+Because scope and payout tier are separate rolls, an eligible arrival is both Juiced and Windfall 0.40% of the time (**Very rare**), Juiced and Premium 0.64% (**Very rare**), and Juiced with a standard tier 6.96% (**Rare**). The guaranteed opening tutorial is standard scope. Audit-generated Regulatory Response tasks can roll Juiced scope but always pay $0.
+
+Training Budget gives each future Juiced Hire one additional seeded pip. Staff-shop purchases and hired-card bonuses belong to the individual employee instance rather than the role template.
+
+### Distraction, Clue, and Phishing Systems
+
+- Each deterministic ten-card arrival bag contains three distinct junk templates: three draws from the 12-card junk pool, or 30% of ordinary pulls.
+- Junk is internally marked as a distraction but visually uses its task/resource disguise. Each template has registered textual clue IDs and one of two deterministic print-glitch families.
+- Correctly deleting junk records its clue IDs permanently and advances the daily phishing threshold. Deleting legitimate cards never advances it.
+- The base threshold is three correct deletions. Persistent Security Liaison lowers it to two; Security Awareness rank 1 lowers it by one more, never below one.
+- Reaching the threshold produces exactly one BUSYWORK-IT reward notice for that day in the slot freed by the triggering deletion. Deleting the notice awards $125 and one persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200.
+- Security Awareness rank 3 also lowers Audit Chance by 2 for each correctly deleted junk card.
+- A reward notice displaced by Inbox overflow is forfeited. Partial junk progress resets the next morning.
+
+### Policy Pool and Review Interaction
+
+The active policy pool contains 30 document rules. A seeded, conflict-aware sampler chooses 3 / 4 / 4 / 4 / 5 base policies on Days 1–5, plus two after a failed audit. It attempts to include reimbursement, billing, and routine families, respects minimum-day eligibility, and avoids mutually exclusive groups. Document correctness therefore depends on both generated fields and that day's sampled policies, not only on the document template.
+
+### Task-Revenue Telemetry
+
+The header projection is a task-performance view rather than a complete Cash ledger. It records one point only when a Review ruling recognizes task revenue and calculates `prior close + recognized task revenue − payroll − operating upkeep`. Hiring, check-ins, phishing rewards, waste, penalties, and other non-task Cash changes affect the displayed Cash total and nightly bridge but do not create graph points. The series is capped at 64 recognized payouts per day and five days, or 320 persisted points per quarter.
+
+### Progression Currencies and Persistent Bonuses
+
+| Currency | Earned from | Card-system use |
+|---|---|---|
+| Cash | Starting funds, approved task payouts, phishing rewards | Hiring, per-employee stat pips, check-ins, operating choices, payroll, and penalties. |
+| Process Points | One after each successful daily close | Invest immediately in one of five three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, or nightly Audit Chance reduction. |
+| Process XP | Quarterly review: `5 + floor(correct rulings / 3) − incorrect rulings − floor(expired tasks / 2)`, minimum 0 | Persistent Inbox Shelf, Known Sender Registry, Training Budget, and Better Benefits upgrades. |
+| Compliance Tokens | One per claimed BUSYWORK-IT reward | Buy Security Liaison or Employee Assistance for two tokens after prerequisites. A held token is also automatically consumed if a failed audit would newly cause Insolvency, Board Confidence Lost, or Critical Audit Failure; Cash/Confidence are stabilized at 1 where needed, but other audit penalties remain. |
+
+The five daily Process Point choices are fixed for the run:
+
+| Specialization | Rank 1 / 2 / 3 bonus |
+|---|---|
+| Elastic Intake | Inbox capacity +1 / +2 / +3 |
+| Parallel Processing | In Progress capacity +1 / +2 / +3 |
+| Revenue Assurance | Approved task payouts +5% / +10% / +15% |
+| Restorative Controls | Overnight employee recovery +3 / +6 / +9 |
+| Audit Dampening | Nightly Audit Chance −5 / −10 / −15 |
+
+The between-quarter persistent branches are:
+
+| Upgrade | Cost and prerequisite | Persistent card-system bonus |
+|---|---|---|
+| Inbox Shelf | 4 Process XP | +1 Inbox capacity. |
+| Known Sender Registry | 5 Process XP; requires Inbox Shelf | Previously discovered junk patterns gain a faint source-line clue. |
+| Security Liaison | 2 Compliance Tokens; requires Known Sender Registry | Base phishing threshold becomes two instead of three. |
+| Training Budget | 5 Process XP | Every future Juiced Hire gains one additional seeded stat pip. |
+| Better Benefits | 5 Process XP; requires Training Budget | Backlog stress recovery +10%. |
+| Employee Assistance | 2 Compliance Tokens; requires Better Benefits | First private Manager check-in each day costs $0. |
+
+Persistent unlocks never auto-play cards: they add capacity, recognition clues, employee support, or improved recruits while preserving mail triage and Review decisions.
+
+### Arrival and Opening Pools
+
+#### New Run Opening Allocation
 
 Backlog begins with one instance of each employee:
 
@@ -465,7 +602,7 @@ Inbox begins with:
 
 The opening Data Entry Request is linked to the first-workflow guide. The task, every legitimate available employee that can perform or cover it, every legitimate Spreadsheet, the partial workflow, and corresponding Inspector actions receive the yellow sparkle aura. Junk decoys never receive the guide. All cues disappear permanently as soon as the first legitimate workflow starts.
 
-### Guaranteed Daily Openings
+#### Guaranteed Daily Openings
 
 | Day | Added at briefing |
 |---:|---|
@@ -488,7 +625,7 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 
 ---
 
-## Player Card Interaction Reference
+### Player Card Interaction Reference
 
 | Player action | Runtime result | Constraint or feedback |
 |---|---|---|
@@ -506,7 +643,7 @@ Card faces pair a stable type color and shape with a specific abbreviation such 
 
 ---
 
-## Runtime Instance Notes
+### Runtime Instance Notes
 
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.
 - Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, derived abilities, per-stat purchased-pip counts, and total Cash invested.
@@ -522,4 +659,4 @@ Card faces pair a stable type color and shape with a specific abbreviation such 
 - Only the physical top card advances its deadline. Genuinely covered cards use compact card-shaped identity/status pips with name-specific abbreviations while their timers pause; each pip can be clicked for inspection or dragged to pull that individual card out. Composite In Progress workflows omit the pips because all participating cards are already represented directly.
 - The opening Data Entry Request and every legitimate card/action that can advance it are eligible for the first-workflow sparkle guide.
 - Work products entering Review do not replace the current card or panel selection.
-- The catalog excludes policies, upgrades, overnight actions, and company developments because they are not cards.
+- Policy, progression, and operating systems are summarized here only where they change card generation, card state, workflow outcomes, or card-facing decisions; they are not counted as card templates.

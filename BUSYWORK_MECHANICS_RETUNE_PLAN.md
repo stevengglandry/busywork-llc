@@ -200,17 +200,12 @@ The stage always displays the same five specialization rows: Elastic Intake, Par
 | Specialization | Pip 1 | Pip 2 | Pip 3 |
 | --- | --- | --- | --- |
 | Elastic Intake | Inbox capacity +1 | +2 | +3 |
-| Backlog Architecture | Backlog capacity +1 | +2 | +3 |
 | Parallel Processing | In Progress capacity +1 | +2 | +3 |
-| Review Throughput | Review capacity +1 | +2 | +3 |
-| Security Awareness | phishing threshold -1 | security reward +$75 | correct junk deletion lowers Audit Chance by 2 |
-| Managed Intake Cadence | automatic arrivals +2 seconds | +4 seconds | +6 seconds |
 | Revenue Assurance | approved payouts +5% | +10% | +15% |
 | Restorative Controls | overnight recovery +3 | +6 | +9 |
 | Audit Dampening | nightly Audit Chance -5 points | -10 points | -15 points |
-| Correction Buffer | correction stress -2 | -4 | -6 |
 
-Capacity ranks stack with persistent meta upgrades such as Inbox Shelf. Security Awareness also stacks with Security Liaison but never lowers the phishing threshold below one deletion.
+Elastic Intake stacks with the persistent Inbox Shelf upgrade. The other process-specialization definitions remain in source as unused content; they are not offered by the current Process Maturity board.
 
 ### Card stacking and deletion
 
@@ -238,7 +233,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 - Task-revenue telemetry changes only for recognized task payouts. It remains capped at 64 points per day and 320 persisted quarterly points.
 - The small persistent task-revenue sparkline lives inside the Cash header tile and opens the detailed Progress panel.
 - The company-status header uses five equal-height proportional columns. Day/Time, Morale, and Confidence center their short readouts; Cash and Audit remain left-aligned for secondary details. Cash separates its visible sparkline from the value block, while responsive layouts distribute every tile across the available row before allowing horizontal scrolling below 560 pixels. Header compaction changes spacing and alignment without reducing text size.
-- The Recipes panel is a compact input-to-output network: specialist, task, consumed resource, optional Juiced resource branch, coverage alternatives, duration, and resulting document are visible together.
+- The Recipes panel is a compact input-to-output network for the seven standard specialist routes: specialist, task, primary resource, duration, output document, and each task's possible contract range. Coverage and Juiced branches remain runtime rules rather than separate panel rows.
 - Done uses a compact narrow lane so Inbox, Backlog, In Progress, and Review receive more horizontal space.
 - At a 1920-pixel desktop viewport, all five lanes and the roughly 300-pixel Inspector remain visible simultaneously at compact card density. This large-monitor view is the baseline; Done alone is intentionally narrower than the reference layout.
 - Completed work entering Review never changes the current card or panel selection. Review attention styling and the completion toast announce the arrival.
@@ -303,7 +298,7 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - An automatic Inbox overflow displays its consequences, leaves Audit Chance unchanged, adds 8 Exposure, and removes 6 Confidence.
 - Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 8 Exposure without changing Audit Chance, and creates an unapprovable Source Integrity Failure document in Review.
 - An employee waiting taskless in In Progress accrues no stress during the five-second grace period, then gains stress at an increasing visible rate; assigning a task or moving to Backlog resets the wait timer.
-- Every successful daily close grants one non-duplicating Process Point before overnight planning; the randomized specialization tree fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
+- Every successful daily close grants one non-duplicating Process Point before overnight planning; the fixed five-row specialization board fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
 - Cash at 0, Confidence at 0, or Critical Audit Failure ends the run, except that a newly lethal failed audit automatically consumes one held Compliance Token to stabilize the run once.
