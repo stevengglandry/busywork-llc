@@ -59,26 +59,25 @@ Exposure is `0%` when there are no liabilities. This keeps the nightly audit rol
 
 ### Confidence
 
-Confidence is Trust of the Board and has three mechanical effects:
+Confidence is Trust of the Board and has two mechanical effects:
 
 - It scales recognized Cash payouts from 80% at 0 Confidence to 120% at 100.
 - It lowers an audit's chance to find a liability and reduces the severity multiplier.
-- It widens every worker sweet spot from a base width of 8 percentage points up to 12 at 100 Confidence, before company burnout bonuses.
 
 Death condition: Confidence at or below `0`.
 
 ## Worker sweet spot
 
-A worker enters the sweet spot after at least ten seconds of observed work/idle time when their worked-time share is within the current comfort width of their personal preferred-work target.
+A worker enters the sweet spot when their current stress is inside a role-specific band. The Intern, Junior Analyst, and Accountant use 10–20% stress. The Manager has two distinct valid bands: 0–5% and 50–75%.
 
 While active:
 
 - Processing speed: `+15%`.
 - Accuracy forecast: `+8` percentage points.
-- Morale contribution: up to `+10`, strongest at the center of the target.
+- Morale contribution: `+10` while inside either valid band.
 - Visual feedback: green border, glow, pulse, and `SWEET SPOT` badge.
 
-Confidence widens the comfort zone. A burnout learning outcome can permanently widen it by another two points, up to six additional points.
+Preferred workload remains a separate daily work/idle rhythm target. A company-learning burnout outcome now improves overnight stress recovery by two points, up to six additional points for the run.
 
 ## Review choices
 
@@ -177,7 +176,7 @@ A third audit failure or a single fine of at least `$225` is a Critical Audit Fa
 Crossing a worker's burnout threshold always applies Confidence -8 and Morale modifier -6. The follow-up is randomly selected:
 
 - Leave plus a permanent +1 Accuracy, Speed, or Resilience increase.
-- Leave plus a company-wide +2 sweet-spot width improvement.
+- Leave plus a company-wide +2 overnight stress-recovery improvement.
 - Employee quits permanently.
 - Employee dies, permanently removing the worker and applying an additional Morale modifier -12.
 
@@ -193,9 +192,9 @@ Task-disguised junk can be assigned using the same worker and resource flow as t
 
 ## Daily process maturity specialization
 
-Every successful operating close enters a bonus award stage before overnight activity. Day 5 also grants its award before the quarterly review. The stage grants exactly one Process Point per day; save migration initializes the run tree safely, and reopening a saved reward stage cannot duplicate the daily point.
+Every successful operating close enters a bonus award stage before overnight activity. Day 5 also grants its award before the quarterly review. The stage grants exactly one Run Process Point per day; save migration initializes the run tree safely, and reopening a saved reward stage cannot duplicate the daily point.
 
-The stage always displays the same five specialization rows: Elastic Intake, Parallel Processing, Revenue Assurance, Restorative Controls, and Audit Dampening. A player may spend available points to fill the next pip from left to right or bank points for a later day. Each row has three ranks, benefits apply immediately, and all ranks last for the remainder of the current five-day run.
+The stage always displays the same five specialization rows: Elastic Intake, Parallel Processing, Revenue Assurance, Restorative Controls, and Audit Dampening. A player may spend available points to fill the next pip from left to right or bank points for a later day. Each row has three ranks, benefits apply immediately, and all points and ranks expire when the current five-day run ends. The `Run Process Points` label deliberately distinguishes this temporary currency from permanent `Process XP`.
 
 | Specialization | Pip 1 | Pip 2 | Pip 3 |
 | --- | --- | --- | --- |
@@ -241,7 +240,8 @@ A newly created run records the opening Data Entry Request as its guided workflo
 ## Feedback and visual language
 
 - Harmful rulings, deadline misses, burnout, termination, and audit failures use a red popup with an event title, flavor description, and explicit consequence line.
-- A terminal Cash, Confidence, or Critical Audit outcome opens a visually distinct red postmortem instead of the ordinary Quarterly Review. The death reason itself is the primary headline. The postmortem identifies the exact terminal threshold, snapshots all three run-ending systems, itemizes the cash-flow, judgment, staffing, liability, Discovery Potential, and Audit Severity factors that shaped the result, and lists every structured failed decision or harmful incident in chronological order. Migrated saves without structured events recover relevant incidents from the company log. Permanent Process XP and upgrades remain available in a collapsed carryover section.
+- A terminal Cash, Confidence, or Critical Audit outcome opens a visually distinct red postmortem instead of the ordinary Quarterly Review. The death reason itself is the primary headline. The postmortem identifies the exact terminal threshold, snapshots all three run-ending systems, itemizes the cash-flow, judgment, staffing, liability, Discovery Potential, and Audit Severity factors that shaped the result, and lists every structured failed decision or harmful incident in chronological order. Migrated saves without structured events recover relevant incidents from the company log. It then separates Process XP earned this run, the prior and updated permanent XP bank, and held Compliance Tokens; the permanent upgrade board remains expanded and spendable.
+- The top header carries an always-visible persistent wallet for Process XP and Compliance Tokens. The Progress panel explains Run Process Points, Process XP, and Compliance Tokens together; shows their current balances and earning rules; states that audit-death protection spends a token automatically without erasing penalties; and provides a read-only permanent-upgrade preview. Purchases remain available only at run end.
 - Reaching the phishing-test threshold uses the same high-attention security notice and explains how to claim the reward.
 - Every end-of-day decision menu starts with a compact stage tracker. Days 1–4 show three pips for Process award, Night planning (Strategic planning on Day 3), and Morning briefing; Day 5 shows two pips for Process award and Quarterly review. Premature run-failure summaries do not show a continuation tracker.
 - Every standalone employee card permanently shows a compact ACC / SPD / RES strip with each base stat as a number out of six and a tiny fill meter. The same data remains available in the Inspector and Staff upgrade shop.
@@ -267,7 +267,7 @@ A newly created run records the opening Data Entry Request as its guided workflo
 The single-file build keeps the runtime dependency-free but separates high-risk transitions into named helpers:
 
 - `createInitialRunState`, `migrateRunState`, `freshPhishingState`, and `freshCashTelemetry` own state creation and save compatibility.
-- Workforce selectors calculate work share, sweet-spot width, payout multiplier, stress, and derived Morale without duplicating formulas in UI code.
+- Workforce selectors calculate work share, stress sweet-spot bands, payout multiplier, stress, and derived Morale without duplicating formulas in UI code.
 - Review uses separate approve, reject, correction, escalation, and finalization helpers. Unknown actions are ignored without mutating state.
 - Audit calculation separates the nightly roll, Exposure, severity multiplier, and failed-audit consequences.
 - New-day preparation separates daily resets, employee recovery, and scheduled/regulatory arrivals.
@@ -282,7 +282,8 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 ## Acceptance criteria
 
 - A new run displays 50% Audit Chance and cannot survive an operating close at 0 Cash.
-- Confidence changes the displayed approval payout and sweet-spot width.
+- Confidence changes the displayed approval payout.
+- Ordinary employee sweet spots are 10–20% stress; the Manager's two sweet spots are 0–5% and 50–75%.
 - Task cards visibly distinguish 5× Windfall, 2× Premium, and 20% Low Fee contracts; the quoted amount survives processing and correction.
 - Juiced task cards are visibly distinct, require exactly two task-specific resources, pay 1.75× their rolled quote, last 35% longer, spawn rarely, and retain their scope through correction.
 - The three new ordinary task types use existing resources and document schemas, preserve their identity through correction, and expose both specialist and coverage routes.
@@ -298,8 +299,10 @@ GitHub Pages publishes the repository root from `main` at `https://stevengglandr
 - An automatic Inbox overflow displays its consequences, leaves Audit Chance unchanged, adds 8 Exposure, and removes 6 Confidence.
 - Task- or resource-disguised junk can complete a workflow; it adds 10 worker stress and 8 Exposure without changing Audit Chance, and creates an unapprovable Source Integrity Failure document in Review.
 - An employee waiting taskless in In Progress accrues no stress during the five-second grace period, then gains stress at an increasing visible rate; assigning a task or moving to Backlog resets the wait timer.
-- Every successful daily close grants one non-duplicating Process Point before overnight planning; the fixed five-row specialization board fills three ordered pips per row, permits banking, and applies each benefit for the rest of the run.
+- Every successful daily close grants one non-duplicating Run Process Point before overnight planning; the fixed five-row specialization board fills three ordered pips per row, permits banking within the run, and applies each benefit only for the rest of that run.
+- Every run end, including an early terminal failure, grants Process XP once using `max(0, 5 + floor(correct rulings / 3) - incorrect rulings - floor(expired tasks / 2))`; end screens show both the earned amount and updated permanent bank.
 - Quarterly chart legends are right-aligned above the plot and use full `Day x` endpoint labels.
 - A failed audit adds two active policies and two zero-revenue Regulatory Response tasks the next day.
 - Cash at 0, Confidence at 0, or Critical Audit Failure ends the run, except that a newly lethal failed audit automatically consumes one held Compliance Token to stabilize the run once.
+- The header wallet and Progress panel expose permanent XP and token balances during play; the permanent upgrade preview shows costs, prerequisites, affordability, and whether remaining tokens have any upgrade sink beyond automatic audit protection.
 - Bad events and the phishing threshold display a high-attention popup containing both description and consequence.

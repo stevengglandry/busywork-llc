@@ -36,6 +36,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Processing scalar | 0.8× |
 | Salary | $15/day |
 | Preferred workload | 45% before seeded variation |
+| Stress sweet spot | 10–20% |
 | Hiring cost | $60 |
 | Specialist tasks | Data Entry Request, Stakeholder Alignment Memo, Regulatory Response |
 | Coverage tasks | Expense Report, Invoice Request, Governance Recalibration |
@@ -52,6 +53,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Processing scalar | 1.1× |
 | Salary | $24/day |
 | Preferred workload | 62% before seeded variation |
+| Stress sweet spot | 10–20% |
 | Hiring cost | $110 |
 | Specialist tasks | Invoice Request, Revenue Enablement Packet |
 | Coverage tasks | Expense Report, Data Entry Request, Stakeholder Alignment Memo |
@@ -68,6 +70,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Processing scalar | 1.0× |
 | Salary | $28/day |
 | Preferred workload | 78% before seeded variation |
+| Stress sweet spot | 10–20% |
 | Hiring cost | $145 |
 | Specialist tasks | Expense Report, Governance Recalibration |
 | Coverage tasks | Invoice Request, Data Entry Request, Revenue Enablement Packet |
@@ -84,6 +87,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Processing scalar | 0.45× |
 | Salary | $42/day |
 | Preferred workload | 10%, with a 5% minimum |
+| Stress sweet spots | 0–5% and 50–75% |
 | Replacement hiring cost | $90 |
 | Specialist task | None |
 | Emergency coverage | Every valid task at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress |
@@ -501,7 +505,7 @@ Crossing into 80+ stress without an existing condition rolls one of four conditi
 
 Each employee rolls a preferred-work target within eight percentage points of the role template: Intern 37–53%, Junior Analyst 54–70%, Accountant 70–86%, and Manager 5–18%. Work share is time spent working divided by total tracked working and idle time.
 
-- After ten tracked seconds, being inside the current sweet-spot width grants +15% processing speed and +8 accuracy. The width starts from `8 + round(Confidence / 25)` percentage points, can gain permanent run-wide width from a burnout outcome, and caps at 20.
+- The Intern, Junior Analyst, and Accountant enter their sweet spot at 10–20% stress. The Manager has two separate sweet spots, 0–5% and 50–75%. Being inside any valid band grants +15% processing speed, +8 accuracy, and +10 morale contribution.
 - Rhythm starts at 72. Staying within 12 points of the preferred-work target raises it; larger mismatches lower it. Rhythm at 78+ grants +2 accuracy and, when the stronger sweet-spot speed bonus is not active, +5% speed. The rhythm and sweet-spot accuracy bonuses can stack. Rhythm below 45 applies −10% speed and −5 accuracy.
 - Stress 0–49 is Steady, 50–79 is Strained, and 80+ is Fractured and rolls a stress condition. Reaching the employee's burnout threshold cancels active work, applies morale −6 and Confidence −8, and resolves the conditional outcome pool below.
 - A taskless employee left in In Progress gets five seconds of grace, then accumulates continuously accelerating Resilience-scaled stress until assigned or moved.
@@ -510,7 +514,7 @@ Each employee rolls a preferred-work target within eight percentage points of th
 | Burnout outcome | Conditional rarity | Result |
 |---|---:|---|
 | Hard-earned growth | Common · 50% | Employee remains for next-day leave and gains +1 permanent pip in one random stat, capped at six. |
-| Company learning | Common · 22% | Employee remains for next-day leave and every employee's sweet-spot width increases by 2 for the run, capped at +6. |
+| Company learning | Common · 22% | Employee remains for next-day leave and every employee recovers 2 additional stress overnight for the run, capped at +6. |
 | Resignation | Common · 21% | Employee is permanently removed from the run. |
 | Death | Rare · 7% | Employee is permanently removed and the workforce takes an additional morale −12 shock. |
 
@@ -554,11 +558,11 @@ The header projection is a task-performance view rather than a complete Cash led
 | Currency | Earned from | Card-system use |
 |---|---|---|
 | Cash | Starting funds, approved task payouts, phishing rewards | Hiring, per-employee stat pips, check-ins, operating choices, payroll, and penalties. |
-| Process Points | One after each successful daily close | Invest immediately in one of five three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, or nightly Audit Chance reduction. |
-| Process XP | Quarterly review: `5 + floor(correct rulings / 3) − incorrect rulings − floor(expired tasks / 2)`, minimum 0 | Persistent Inbox Shelf, Known Sender Registry, Training Budget, and Better Benefits upgrades. |
-| Compliance Tokens | One per claimed BUSYWORK-IT reward | Buy Security Liaison or Employee Assistance for two tokens after prerequisites. A held token is also automatically consumed if a failed audit would newly cause Insolvency, Board Confidence Lost, or Critical Audit Failure; Cash/Confidence are stabilized at 1 where needed, but other audit penalties remain. |
+| Run Process Points | One after each successful daily close | Invest immediately in one of five three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, or nightly Audit Chance reduction. Unspent points and purchased ranks expire when the run ends. |
+| Process XP | Once whenever a run ends, including an early failure: `5 + floor(correct rulings / 3) − incorrect rulings − floor(expired tasks / 2)`, minimum 0 | Persistent Inbox Shelf, Known Sender Registry, Training Budget, and Better Benefits upgrades. |
+| Compliance Tokens | One per claimed BUSYWORK-IT reward after deleting the daily junk threshold and then deleting the delivered reward notice | Buy Security Liaison or Employee Assistance for two tokens after prerequisites. A held token is also automatically consumed if a failed audit would newly cause Insolvency, Board Confidence Lost, or Critical Audit Failure; Cash/Confidence are stabilized at 1 where needed, but other audit penalties remain. |
 
-The five daily Process Point choices are fixed for the run:
+The five daily Run Process Point choices are fixed for the run:
 
 | Specialization | Rank 1 / 2 / 3 bonus |
 |---|---|
@@ -578,6 +582,10 @@ The between-quarter persistent branches are:
 | Training Budget | 5 Process XP | Every future Juiced Hire gains one additional seeded stat pip. |
 | Better Benefits | 5 Process XP; requires Training Budget | Backlog stress recovery +10%. |
 | Employee Assistance | 2 Compliance Tokens; requires Better Benefits | First private Manager check-in each day costs $0. |
+
+The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes the current run's Run Process Points from permanent Process XP and Compliance Tokens, shows the projected XP award if the run ended now, explains the current phishing threshold, and previews all permanent upgrades with their costs, prerequisites, and affordability. Permanent purchases remain restricted to run-end screens.
+
+Run-end accounting separates the XP earned by that run from the updated permanent XP balance and the separately held Compliance Token balance. Failure postmortems keep the permanent upgrade board expanded instead of hiding it in a collapsed disclosure. After both token upgrades have been purchased for four tokens total, all remaining Compliance Tokens serve only as automatic failed-audit death shields.
 
 Persistent unlocks never auto-play cards: they add capacity, recognition clues, employee support, or improved recruits while preserving mail triage and Review decisions.
 
