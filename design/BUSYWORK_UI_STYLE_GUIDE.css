@@ -2189,11 +2189,83 @@
     .bw-lane-body {
       touch-action: auto;
       overscroll-behavior-y: contain;
+      -webkit-overflow-scrolling: touch;
     }
 
     .bw-board {
       touch-action: pan-x;
       overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /*
+     * Mobile overlay scrollbars are too small to acquire reliably. Keep every
+     * two-axis surface swipeable, but also expose a persistent precision rail.
+     */
+    .bw-app {
+      --bw-mobile-scrollbar-size: 1.125rem;
+      --bw-mobile-scrollbar-track: #d7e0e7;
+      --bw-mobile-scrollbar-thumb: #356a9a;
+    }
+
+    .bw-app :is(.bw-board, .bw-lane-body, .bw-inspector-body) {
+      scrollbar-width: auto;
+      scrollbar-color: var(--bw-mobile-scrollbar-thumb) var(--bw-mobile-scrollbar-track);
+    }
+
+    .bw-app :is(.bw-board, .bw-lane-body, .bw-inspector-body)::-webkit-scrollbar {
+      width: var(--bw-mobile-scrollbar-size);
+      height: var(--bw-mobile-scrollbar-size);
+    }
+
+    .bw-app :is(.bw-board, .bw-lane-body, .bw-inspector-body)::-webkit-scrollbar-track {
+      border: 1px solid #91a3b2;
+      border-radius: 999px;
+      background: var(--bw-mobile-scrollbar-track);
+    }
+
+    .bw-app :is(.bw-board, .bw-lane-body, .bw-inspector-body)::-webkit-scrollbar-thumb {
+      min-width: 4rem;
+      min-height: 4rem;
+      border: 3px solid var(--bw-mobile-scrollbar-track);
+      border-radius: 999px;
+      background: var(--bw-mobile-scrollbar-thumb);
+    }
+
+    /*
+     * Do not depend on browser overlay-scrollbar rendering. Add a semantic,
+     * draggable rail beside each vertical scroll surface and across the board.
+     */
+    .bw-touch-scrollbar {
+      position: absolute;
+      z-index: 24;
+      display: block;
+      border: 1px solid #7f93a3;
+      border-radius: 999px;
+      background: var(--bw-mobile-scrollbar-track);
+      box-shadow: 0 1px 4px rgb(25 39 52 / 24%);
+      touch-action: none;
+    }
+
+    .bw-touch-scrollbar[data-axis="x"] {
+      right: 0.5rem;
+      bottom: 0.1875rem;
+      left: 0.5rem;
+      height: 1.375rem;
+    }
+
+    .bw-touch-scrollbar[data-axis="y"] {
+      right: 0.125rem;
+      width: 1.375rem;
+      min-height: 3rem;
+    }
+
+    .bw-touch-scroll-thumb {
+      position: absolute;
+      min-width: 4rem;
+      min-height: 3rem;
+      border-radius: 999px;
+      background: var(--bw-mobile-scrollbar-thumb);
     }
   }
 

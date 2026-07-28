@@ -84,7 +84,7 @@
     .carryover-wallet small { color: #9fb0bd; font-size: 8px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
     .carryover-wallet strong { font-size: 10px; font-variant-numeric: tabular-nums; white-space: nowrap; }
     .workspace { min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 300px; }
-    .board-wrap { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto 1fr; }
+    .board-wrap { position: relative; min-width: 0; min-height: 0; display: grid; grid-template-rows: auto 1fr; }
     .noticebar { min-height: 40px; padding: 9px 16px; display: flex; align-items: center; justify-content: space-between; gap: 15px; border-bottom: 1px solid var(--border); background: var(--surface); }
     .notice-copy { position: relative; min-width: 0; border: 1px solid transparent; border-radius: 6px; padding: 4px 8px; margin: -4px -8px; }
     .notice-copy.first-workflow-cue { background: linear-gradient(135deg,#fffdf1,#fff8dc); }
@@ -95,7 +95,7 @@
     .arrival-control .btn { white-space: nowrap; }
     .arrival-control span { min-width: 66px; font-size: 9px; font-variant-numeric: tabular-nums; }
     .board { min-height: 0; display: grid; grid-template-columns: minmax(190px,1.05fr) minmax(200px,1.1fr) minmax(220px,1.22fr) minmax(200px,1.1fr) minmax(132px,.56fr); gap: 10px; padding: 12px; overflow-x: auto; overflow-y: hidden; }
-    .column { min-width: 180px; min-height: 0; background: #e5eaf0; border: 1px solid var(--border); border-radius: var(--radius); display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
+    .column { position: relative; min-width: 180px; min-height: 0; background: #e5eaf0; border: 1px solid var(--border); border-radius: var(--radius); display: grid; grid-template-rows: auto 1fr; overflow: hidden; }
     .column.active-col { background: #e2e9ef; }
     .column-done { min-width: 132px; }
     .column-done .card { padding: 7px; border-left-width: 3px; }
@@ -123,7 +123,7 @@
     .lane-drop-slot.drop-valid::after, .lane-drop-slot.drop-invalid::after { content: ''; position: absolute; top: 1px; left: 1px; width: 7px; height: 7px; border-radius: 50%; background: currentColor; color: var(--accent); }
     .lane-drop-slot.drop-invalid::after { color: var(--danger); }
     .empty { min-height: 86px; border: 1px dashed #bdc7d1; border-radius: 6px; display: grid; place-items: center; text-align: center; color: var(--faint); font-size: 11px; padding: 12px; }
-    .inspector { min-height: 0; border-left: 1px solid var(--border); background: var(--surface); display: grid; grid-template-rows: auto auto 1fr; }
+    .inspector { position: relative; min-height: 0; border-left: 1px solid var(--border); background: var(--surface); display: grid; grid-template-rows: auto auto 1fr; }
     .inspector-tools { padding: 10px 12px 9px; border-bottom: 1px solid var(--border); background: var(--surface-subtle); display: grid; gap: 8px; }
     .inspector-nav, .inspector-actions { display: flex; align-items: center; gap: 5px; }
     .inspector-nav { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); padding: 3px; border-radius: 7px; background: var(--surface-strong); }
@@ -831,6 +831,7 @@
     .mobile-rotate-card p { margin: 7px auto 13px; color: var(--muted); font-size: 11px; line-height: 1.45; }
     .mobile-rotate-card .btn { min-height: 44px; }
     .mobile-touch-hint { display: none; color: #456377 !important; font-size: 9px !important; font-weight: 750; }
+    .touch-scrollbar { display: none; }
 
     /* 05 RESPONSIVE AND ACCESSIBILITY */
     @media (max-width: 1120px) {
@@ -894,10 +895,15 @@
       .operating-close-decisions .ruling-grid { grid-template-columns: 1fr; }
     }
     @media (any-pointer: coarse) and (max-width: 1000px) {
+      body.mobile-device {
+        --mobile-scrollbar-size: 18px;
+        --mobile-scrollbar-track: #d7e0e7;
+        --mobile-scrollbar-thumb: #356a9a;
+      }
       body.mobile-device .btn, body.mobile-device button, body.mobile-device input, body.mobile-device select { min-height: 40px; }
       body.mobile-device .card { touch-action: pan-y; }
       body.mobile-device :is(.card-label-row,.card-top,.employee-card-head,.workflow-order-head,.workflow-assignment,.folder-tab,[data-stack-card-id],[data-stack-token-card-id]) { touch-action: none; }
-      body.mobile-device .column-body { touch-action: auto; overscroll-behavior-y: contain; }
+      body.mobile-device .column-body, body.mobile-device .inspector-body { touch-action: auto; overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; }
       body.mobile-device .board { touch-action: pan-x; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; }
       body.mobile-device.dragging :is(.board,.column-body,.card) { touch-action: none; }
       body.mobile-device .lane-drop-slot { height: 17px; margin: -6px 0; }
@@ -905,7 +911,55 @@
       body.mobile-device .stack-pip { width: 58px; height: 34px; }
       body.mobile-device .mobile-touch-hint { display: inline; }
       body.mobile-device .brand p { display: block; }
-      body.mobile-device .inspector-body, body.mobile-device .column-body { scrollbar-width: auto; }
+      body.mobile-device :is(.board,.column-body,.inspector-body) {
+        scrollbar-width: auto;
+        scrollbar-color: var(--mobile-scrollbar-thumb) var(--mobile-scrollbar-track);
+      }
+      body.mobile-device :is(.board,.column-body,.inspector-body)::-webkit-scrollbar {
+        width: var(--mobile-scrollbar-size);
+        height: var(--mobile-scrollbar-size);
+      }
+      body.mobile-device :is(.board,.column-body,.inspector-body)::-webkit-scrollbar-track {
+        border: 1px solid #91a3b2;
+        border-radius: 999px;
+        background: var(--mobile-scrollbar-track);
+      }
+      body.mobile-device :is(.board,.column-body,.inspector-body)::-webkit-scrollbar-thumb {
+        min-width: 64px;
+        min-height: 64px;
+        border: 3px solid var(--mobile-scrollbar-track);
+        border-radius: 999px;
+        background: var(--mobile-scrollbar-thumb);
+      }
+      body.mobile-device :is(.board,.column-body,.inspector-body)::-webkit-scrollbar-thumb:active { background: #214f75; }
+      body.mobile-device :is(.board,.column-body,.inspector-body)::-webkit-scrollbar-corner { background: var(--mobile-scrollbar-track); }
+      body.mobile-device .touch-scrollbar {
+        position: absolute;
+        z-index: 24;
+        display: block;
+        border: 1px solid #7f93a3;
+        border-radius: 999px;
+        background: var(--mobile-scrollbar-track);
+        box-shadow: 0 1px 4px rgb(25 39 52 / 24%);
+        touch-action: none;
+        cursor: pointer;
+      }
+      body.mobile-device .touch-scrollbar-x { right: 8px; bottom: 3px; left: 8px; height: 22px; }
+      body.mobile-device .touch-scrollbar-y { top: 0; right: 2px; width: 22px; height: 48px; }
+      body.mobile-device .touch-scroll-thumb {
+        position: absolute;
+        inset: 3px auto auto 3px;
+        min-width: 48px;
+        min-height: 48px;
+        border-radius: 999px;
+        background: var(--mobile-scrollbar-thumb);
+        box-shadow: inset 0 0 0 1px rgb(255 255 255 / 28%);
+      }
+      body.mobile-device .touch-scrollbar-x .touch-scroll-thumb { top: 3px; height: 14px; min-height: 0; }
+      body.mobile-device .touch-scrollbar-y .touch-scroll-thumb { left: 3px; width: 14px; min-width: 0; }
+      body.mobile-device .touch-scrollbar:focus-visible { outline: 3px solid #fff; outline-offset: 1px; }
+      body.mobile-device .touch-scrollbar.is-disabled { opacity: .28; pointer-events: none; }
+      body.mobile-device .column-body, body.mobile-device .inspector-body { padding-right: 26px; }
     }
     @media (any-pointer: coarse) and (max-width: 1000px) and (orientation: portrait) {
       body.mobile-device:not(.rotation-dismissed) .mobile-rotate-prompt { display: grid; }
@@ -987,11 +1041,12 @@
     <div class="workspace">
       <section class="board-wrap" aria-label="Kanban board">
         <div class="noticebar">
-          <div class="notice-copy" id="noticeCopy" aria-live="polite"><strong id="noticeTitle">Opening allocation</strong> <span id="noticeText">Build a valid stack in In Progress.</span> <span class="mobile-touch-hint">Tap to select · drag a card header to move · swipe lane space to browse</span></div>
+          <div class="notice-copy" id="noticeCopy" aria-live="polite"><strong id="noticeTitle">Opening allocation</strong> <span id="noticeText">Build a valid stack in In Progress.</span> <span class="mobile-touch-hint">Swipe cards to scroll · grab blue rails for precision · drag card headers to move</span></div>
           <div class="notice-actions"><div class="arrival-control"><button class="btn small primary" id="pullArrivalBtn">Pull next item</button><span id="arrivalCountdown">Auto in --</span></div></div>
         </div>
         <!-- 02 BOARD -->
         <div class="board" id="board"></div>
+        <div class="touch-scrollbar touch-scrollbar-x" data-scroll-target="board" role="scrollbar" aria-label="Scroll board lanes" aria-orientation="horizontal" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span class="touch-scroll-thumb"></span></div>
       </section>
 
       <!-- 03 INSPECTOR -->
@@ -1007,6 +1062,7 @@
         </div>
         <div class="inspector-head"><div class="eyebrow" id="inspectorKicker">Inspector</div><h2 id="inspectorTitle">Nothing selected</h2></div>
         <div class="inspector-body" id="inspectorBody"></div>
+        <div class="touch-scrollbar touch-scrollbar-y" data-scroll-target="inspectorBody" role="scrollbar" aria-label="Scroll Inspector" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span class="touch-scroll-thumb"></span></div>
       </aside>
     </div>
   </main>
@@ -1229,6 +1285,7 @@
       if(!game)return;
       if(prompt&&game.mode==='playing'&&!runtime.rotationPaused){runtime.rotationPaused=true;game.mode='paused';markDirty();}
       else if(!prompt&&runtime.rotationPaused){runtime.rotationPaused=false;if(game.mode==='paused'){game.mode='playing';runtime.lastFrame=performance.now();markDirty();}}
+      requestAnimationFrame(()=>TouchScrollbars.schedule());
     }
     const DEFAULT_STATISTICS = Object.freeze({tasksCompleted:0,tasksExpired:0,tasksDeleted:0,correctRulings:0,incorrectRulings:0,interventions:0,junkDeleted:0,junkTasksCompleted:0,legitimateItemsDeleted:0,employeesFired:0,employeeDeaths:0,phishingRewardsClaimed:0,arrivalsByKind:{},inboxOverflows:0});
     const freshPhishingState = () => ({correctDeletedToday:0,rewardQueued:false,rewardDelivered:false,rewardClaimed:false,freeCheckInUsed:false});
@@ -2338,7 +2395,7 @@
       game.dayElapsedMs=BALANCE.dayDurationMs;endDay();return true;
     }
     function markDirty(){runtime.dirty=true;}
-    function flushDirtyRender(){if(!runtime.dirty||runtime.drag)return false;View.render();runtime.dirty=false;return true;}
+    function flushDirtyRender(){if(!runtime.dirty||runtime.drag||runtime.scrollDrag)return false;View.render();runtime.dirty=false;return true;}
 
     // 06 RECIPE AND POLICY ENGINES are implemented above as pure selectors and transactional commands.
 
@@ -2390,6 +2447,31 @@
       cancel(){if(runtime.drag?.started)toast('Move cancelled.');Drag.cleanup();}
     };
 
+    const TouchScrollbars = {
+      scheduled:false,
+      target(rail){return rail.dataset.scrollTarget?document.getElementById(rail.dataset.scrollTarget):rail.parentElement?.querySelector(`[data-drop-column="${rail.dataset.scrollColumn}"]`);},
+      update(rail){
+        if(!runtime.mobileLayout)return;const target=this.target(rail),horizontal=rail.classList.contains('touch-scrollbar-x');if(!target)return;
+        if(!horizontal){const host=rail.parentElement,bottomReserve=host?.classList.contains('column')?27:3;rail.style.top=`${target.offsetTop}px`;rail.style.height=`${Math.max(48,host.clientHeight-target.offsetTop-bottomReserve)}px`;}
+        const trackSize=horizontal?rail.clientWidth:rail.clientHeight,clientSize=horizontal?target.clientWidth:target.clientHeight,scrollSize=horizontal?target.scrollWidth:target.scrollHeight,maxScroll=Math.max(0,scrollSize-clientSize),usable=Math.max(0,trackSize-6),minimum=horizontal?64:48,thumbSize=Math.min(usable,Math.max(minimum,usable*(clientSize/Math.max(clientSize,scrollSize)))),travel=Math.max(0,usable-thumbSize),scrollValue=horizontal?target.scrollLeft:target.scrollTop,position=3+(maxScroll?scrollValue/maxScroll*travel:0),thumb=rail.querySelector('.touch-scroll-thumb');
+        rail.classList.toggle('is-disabled',maxScroll<=1||travel<=0);rail.setAttribute('aria-valuenow',String(maxScroll?Math.round(scrollValue/maxScroll*100):0));rail.dataset.maxScroll=String(maxScroll);rail.dataset.travel=String(travel);
+        if(horizontal){thumb.style.width=`${thumbSize}px`;thumb.style.transform=`translateX(${position-3}px)`;}else{thumb.style.height=`${thumbSize}px`;thumb.style.transform=`translateY(${position-3}px)`;}
+      },
+      sync(){if(!runtime.mobileLayout)return;document.querySelectorAll('.touch-scrollbar').forEach(rail=>this.update(rail));},
+      schedule(){if(this.scheduled)return;this.scheduled=true;requestAnimationFrame(()=>{this.scheduled=false;this.sync();});},
+      setFromPosition(rail,target,position){
+        const horizontal=rail.classList.contains('touch-scrollbar-x'),travel=Number(rail.dataset.travel)||0,maxScroll=Number(rail.dataset.maxScroll)||0,value=travel?Math.max(0,Math.min(travel,position))/travel*maxScroll:0;if(horizontal)target.scrollLeft=value;else target.scrollTop=value;this.update(rail);
+      },
+      onDown(event){
+        const rail=event.target.closest?.('.touch-scrollbar');if(!rail||rail.classList.contains('is-disabled')||event.button!==0)return;const target=this.target(rail),thumb=rail.querySelector('.touch-scroll-thumb');if(!target||!thumb)return;event.preventDefault();event.stopPropagation();this.update(rail);rail.setPointerCapture(event.pointerId);const horizontal=rail.classList.contains('touch-scrollbar-x'),railRect=rail.getBoundingClientRect(),thumbRect=thumb.getBoundingClientRect(),pointer=horizontal?event.clientX:event.clientY,railStart=horizontal?railRect.left:railRect.top,thumbStart=horizontal?thumbRect.left:thumbRect.top,thumbSize=horizontal?thumbRect.width:thumbRect.height,inside=event.target===thumb||thumb.contains(event.target);let offset=inside?pointer-thumbStart:thumbSize/2;if(!inside)this.setFromPosition(rail,target,pointer-railStart-3-offset);runtime.scrollDrag={pointerId:event.pointerId,rail,target,horizontal,offset,railStart};rail.focus({preventScroll:true});
+      },
+      onMove(event){const d=runtime.scrollDrag;if(!d||d.pointerId!==event.pointerId)return;event.preventDefault();const pointer=d.horizontal?event.clientX:event.clientY;this.setFromPosition(d.rail,d.target,pointer-d.railStart-3-d.offset);},
+      onUp(event){const d=runtime.scrollDrag;if(!d||d.pointerId!==event.pointerId)return;if(d.rail.hasPointerCapture?.(event.pointerId))try{d.rail.releasePointerCapture(event.pointerId);}catch{}runtime.scrollDrag=null;markDirty();this.schedule();},
+      onKey(event){
+        const rail=event.target.closest?.('.touch-scrollbar');if(!rail)return;const target=this.target(rail),horizontal=rail.classList.contains('touch-scrollbar-x'),negative=horizontal?'ArrowLeft':'ArrowUp',positive=horizontal?'ArrowRight':'ArrowDown';if(![negative,positive,'PageUp','PageDown','Home','End'].includes(event.key))return;event.preventDefault();const current=horizontal?target.scrollLeft:target.scrollTop,max=horizontal?target.scrollWidth-target.clientWidth:target.scrollHeight-target.clientHeight,step=(horizontal?target.clientWidth:target.clientHeight)*.72,value=event.key==='Home'?0:event.key==='End'?max:current+([negative,'PageUp'].includes(event.key)?-step:step);if(horizontal)target.scrollLeft=value;else target.scrollTop=value;this.update(rail);
+      }
+    };
+
     // 09 RENDERING
     const esc=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
     function cardMonogram(card){const displayKind=card?.kind==='distraction'?card.disguiseKind:card?.kind;if(!['resource','task'].includes(displayKind))return tpl(card).code;const words=cardName(card).normalize('NFKD').replace(/[^\w\s]/g,'').trim().split(/\s+/).filter(Boolean);return (words.length>1?`${words[0][0]}${words.at(-1)[0]}`:words[0]?.slice(0,2)||tpl(card).code).toUpperCase();}
@@ -2432,7 +2514,7 @@
         const rows=standards.map(recipe=>{const taskId=recipe.exact.find(id=>Content.cards[id]?.kind==='task'),employeeId=recipe.exact.find(id=>Content.cards[id]?.kind==='employee'),resourceIds=recipe.exact.filter(id=>Content.cards[id]?.kind==='resource'),coverNames=Content.recipes.filter(candidate=>candidate.coverage&&!candidate.juiced&&candidate.exact.includes(taskId)).map(candidate=>Content.cards[candidate.exact.find(id=>Content.cards[id]?.kind==='employee')]?.name).filter(Boolean);const flowLabel=`${Content.cards[employeeId].name}, ${Content.cards[taskId].name}, and ${resourceIds.map(id=>Content.cards[id].name).join(' plus ')} produce ${Content.cards[recipe.output].name}`;return `<article class="recipe-map-row"><div class="recipe-map-head"><strong>${esc(recipe.name)}</strong><span>Reward ${taskRewardRange(taskId)} · ${recipe.durationMs/1000}s</span></div><div class="recipe-flow" role="img" aria-label="${esc(flowLabel)}"><div class="recipe-inputs"><span class="recipe-node employee">■ ${esc(Content.cards[employeeId].name)}</span><span class="recipe-node task">● ${esc(Content.cards[taskId].name)}</span>${resourceIds.map(id=>`<span class="recipe-node resource">◆ ${esc(Content.cards[id].name)}</span>`).join('')}</div><span class="recipe-arrow" aria-hidden="true">→</span><span class="recipe-node output">▣ ${esc(Content.cards[recipe.output].name)}</span></div>${coverNames.length?`<span class="recipe-cover">Coverage: ${coverNames.map(esc).join(' · ')}</span>`:''}</article>`;}).join('');
         return `<div class="section"><p>Each branch converges into one work product. Reward values show the possible cash range before Confidence modifies the recognized payout.</p><div class="recipe-legend"><span><i style="background:#a9c7da"></i>worker</span><span><i style="background:#d8bb80"></i>task</span><span><i style="background:#c1b3d1"></i>resource</span><span><i style="background:#9fc7ad"></i>output</span></div><div class="recipe-map">${rows}</div></div>`;
       },
-      render(){hideModifierTooltip();this.applySettings();this.renderHeader();this.renderBoard();this.renderInspector();document.querySelectorAll('[data-panel]').forEach(button=>button.classList.toggle('is-active',game.selected?.type==='panel'&&game.selected.id===button.dataset.panel));document.getElementById('beginBtn')?.classList.toggle('first-workflow-action',firstWorkflowStage()==='task');document.getElementById('pausedCover').classList.toggle('visible',game.mode==='paused');document.getElementById('pauseBtn').textContent=game.mode==='paused'?'Resume':'Pause';const earlyClose=document.getElementById('endDayEarlyBtn');if(earlyClose)earlyClose.disabled=game.mode!=='playing';},
+      render(){hideModifierTooltip();this.applySettings();this.renderHeader();this.renderBoard();this.renderInspector();document.querySelectorAll('[data-panel]').forEach(button=>button.classList.toggle('is-active',game.selected?.type==='panel'&&game.selected.id===button.dataset.panel));document.getElementById('beginBtn')?.classList.toggle('first-workflow-action',firstWorkflowStage()==='task');document.getElementById('pausedCover').classList.toggle('visible',game.mode==='paused');document.getElementById('pauseBtn').textContent=game.mode==='paused'?'Resume':'Pause';const earlyClose=document.getElementById('endDayEarlyBtn');if(earlyClose)earlyClose.disabled=game.mode!=='playing';TouchScrollbars.sync();},
       updateDynamics(now){
         if(runtime.drag||now-runtime.lastDynamicRender<250)return;runtime.lastDynamicRender=now;this.patchHeaderDynamics();
         document.querySelectorAll('[data-deadline-card]').forEach(el=>{const card=game.cardsById[el.dataset.deadlineCard];if(card?.deadlineRemainingMs!=null){el.textContent=formatTime(card.deadlineRemainingMs);el.classList.toggle('soon',card.deadlineRemainingMs<30000);}});
@@ -2468,6 +2550,7 @@
           else game.columns[columnId].forEach((stackId,index)=>{const stack=game.stacksById[stackId];if(stack){body.append(this.stackNode(stack));appendDropSlot(game.columns[columnId][index+1]||'');}});
           if(!game.columns[columnId].length)body.innerHTML=`<div class="empty">${columnId==='active'?'Drop compatible cards here to assemble a workflow.':columnId==='review'?'Completed documents will queue here.':'No items'}</div>`;
           if(columnId==='inbox')col.insertAdjacentHTML('beforeend','<div class="trash-zone" data-delete-target="true" role="button" tabindex="0" aria-label="Delete selected item"><div><svg class="trash-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 5h10M6 5V3.5h4V5M4.5 5l.7 8h5.6l.7-8M7 7.5v3.5M9 7.5v3.5"/></svg><strong>DELETE</strong><span>Shred junk · legitimate items have consequences</span></div></div>');
+          col.insertAdjacentHTML('beforeend',`<div class="touch-scrollbar touch-scrollbar-y" data-scroll-column="${columnId}" role="scrollbar" aria-label="Scroll ${meta.name}" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><span class="touch-scroll-thumb"></span></div>`);
           board.append(col);body.scrollTop=scrollPositions[columnId]||0;
         }
       },
@@ -2588,10 +2671,13 @@
     }
     document.getElementById('board').addEventListener('pointerdown',Drag.onDown);
     document.getElementById('board').addEventListener('dragstart',event=>event.preventDefault());
+    document.addEventListener('pointerdown',event=>TouchScrollbars.onDown(event));
     document.addEventListener('pointerdown',event=>{if(runtime.drag&&event.button!==0){event.preventDefault();Drag.cancel();}},true);
     document.addEventListener('pointermove',Drag.onMove);
+    document.addEventListener('pointermove',event=>TouchScrollbars.onMove(event));
     document.addEventListener('pointerup',Drag.onUp);
-    document.addEventListener('pointercancel',event=>{if(runtime.drag?.pointerId===event.pointerId)Drag.cancel();});
+    document.addEventListener('pointerup',event=>TouchScrollbars.onUp(event));
+    document.addEventListener('pointercancel',event=>{if(runtime.drag?.pointerId===event.pointerId)Drag.cancel();TouchScrollbars.onUp(event);});
     document.addEventListener('lostpointercapture',event=>{if(runtime.drag?.pointerId===event.pointerId)Drag.cancel();});
     document.addEventListener('contextmenu',event=>{if(runtime.drag){event.preventDefault();Drag.cancel();}});
     window.addEventListener('blur',()=>{if(runtime.drag)Drag.cleanup();});
@@ -2599,7 +2685,8 @@
     document.addEventListener('pointerout',event=>{const token=event.target.closest?.('.modifier-token[data-modifier-tip]');if(token&&!token.contains(event.relatedTarget))hideModifierTooltip();});
     document.addEventListener('focusin',event=>{const token=event.target.closest?.('[data-modifier-tip]');if(token)showModifierTooltip(token);});
     document.addEventListener('focusout',event=>{if(activeModifierToken&&event.target===activeModifierToken)hideModifierTooltip();});
-    document.addEventListener('scroll',hideModifierTooltip,true);window.addEventListener('resize',()=>{hideModifierTooltip();syncDeviceLayout();});window.addEventListener('orientationchange',syncDeviceLayout);
+    document.addEventListener('scroll',event=>{hideModifierTooltip();if(event.target?.matches?.('#board,.column-body,.inspector-body'))TouchScrollbars.schedule();},true);window.addEventListener('resize',()=>{hideModifierTooltip();syncDeviceLayout();TouchScrollbars.schedule();});window.addEventListener('orientationchange',syncDeviceLayout);
+    document.addEventListener('keydown',event=>TouchScrollbars.onKey(event));
     document.addEventListener('keydown',event=>{if(event.key==='Escape'){hideModifierTooltip();if(runtime.drag)Drag.cancel();}if((event.key==='Enter'||event.key===' ')&&document.activeElement?.classList.contains('card')){event.preventDefault();game.selected={type:'card',id:document.activeElement.dataset.cardId};markDirty();}else if((event.key==='Enter'||event.key===' ')&&document.activeElement?.matches('[data-delete-target]')){event.preventDefault();if(game.selected?.type==='card')deleteCard(game.selected.id);else toast('Select a card before using DELETE.');}});
     document.addEventListener('click',event=>{
       const stackToken=event.target.closest('[data-stack-token-card-id]');if(stackToken){game.selected={type:'card',id:stackToken.dataset.stackTokenCardId};markDirty();return;}
@@ -2736,13 +2823,14 @@
         test('A full Backlog blocks employee release without disrupting work',()=>{newRun(159,false);const employee=Object.values(game.cardsById).find(card=>card.templateId==='intern'),task=Object.values(game.cardsById).find(card=>card.templateId==='data_entry_request'),resource=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet');[employee,task,resource].forEach(card=>removeCardFromLocation(card.id));const stack=createStack('active',[employee.id,task.id,resource.id]);maybeStartJob(stack.id);while(game.columns.backlog.length<COLUMN_META.backlog.capacity)createStack('backlog',[createCard('receipt').id]);const reason=canMove(employee.id,'backlog');if(!reason?.includes('Backlog is at capacity')||moveCard(employee.id,'backlog')||locationOf(employee.id)?.stackId!==stack.id||!stack.activeJobId)throw Error('Full Backlog release mutated the active assignment');assertGameState();});
         test('Physical stack exposes concise draggable covered-card tokens',()=>{newRun(64,false);const employee=Object.values(game.cardsById).find(card=>card.templateId==='junior_analyst'),resource=Object.values(game.cardsById).find(card=>card.templateId==='receipt'),task=createCard('expense_report'),documentCard=createCard('verified_expense');removeCardFromLocation(employee.id);removeCardFromLocation(resource.id);const stack=createStack('backlog',[employee.id,task.id,resource.id,documentCard.id]),node=View.stackNode(stack),employeePip=node.querySelector(`[data-stack-token-card-id="${employee.id}"]`),taskPip=node.querySelector(`[data-stack-token-card-id="${task.id}"]`),resourcePip=node.querySelector(`[data-stack-token-card-id="${resource.id}"]`);if(node.querySelectorAll('[data-stack-token-card-id]').length!==3||!employeePip?.classList.contains('kind-employee')||!taskPip?.classList.contains('kind-task')||!resourcePip?.classList.contains('kind-resource')||[employeePip,taskPip,resourcePip].some(pip=>!pip.querySelector('.stack-pip-code')||!pip.querySelector('.stack-pip-type')||!pip.getAttribute('aria-label')?.startsWith('Drag ')||/covered card/i.test(pip.dataset.tip))||taskPip.querySelector('.stack-pip-code')?.textContent!=='ER'||resourcePip.querySelector('.stack-pip-code')?.textContent!=='RE')throw Error('Representative covered-card tokens are not concise drag handles');assertGameState();});
         test('Custom card drag suppresses the browser native drag',()=>{newRun(149,false);const card=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet'),node=View.cardNode(card,null);node.setPointerCapture=()=>{};let prevented=false;Drag.onDown({target:node,button:0,pointerId:149,pointerType:'mouse',clientX:12,clientY:18,preventDefault(){prevented=true;}});if(!prevented||runtime.drag?.cardId!==card.id)throw Error('Primary pickup did not suppress native drag');Drag.cleanup();const quick=document.createElement('button');quick.dataset.addRequired='spreadsheet';node.append(quick);prevented=false;Drag.onDown({target:quick,button:0,pointerId:150,pointerType:'mouse',clientX:0,clientY:0,preventDefault(){prevented=true;}});if(prevented||runtime.drag)throw Error('Resource shortcut was treated as a draggable card');const intervention=document.createElement('button');intervention.dataset.intervene='job_test';node.append(intervention);Drag.onDown({target:intervention,button:0,pointerId:151,pointerType:'mouse',clientX:0,clientY:0,preventDefault(){prevented=true;}});if(runtime.drag)throw Error('Embedded action control was treated as a draggable card');});
-        test('Mobile layout uses capability checks and preserves every board surface',()=>{newRun(175,false);View.render();const workspace=document.querySelector('.workspace'),board=document.getElementById('board'),inspector=document.querySelector('.inspector'),prompt=document.getElementById('mobileRotatePrompt'),hint=document.querySelector('.mobile-touch-hint');if(!mobileDeviceLayout(true,844,390)||!mobileDeviceLayout(true,390,844)||mobileDeviceLayout(false,390,844)||mobileDeviceLayout(true,1200,1000)||workspace.children[0]?.classList.contains('board-wrap')!==true||workspace.children[1]!==inspector||board.querySelectorAll('.column').length!==5||!prompt?.textContent.includes('Rotate to landscape')||!hint?.textContent.includes('Tap to select'))throw Error('Mobile capability check, orientation prompt, or complete board structure is missing');});
+        test('Mobile layout uses capability checks and preserves every board surface',()=>{newRun(175,false);View.render();const workspace=document.querySelector('.workspace'),board=document.getElementById('board'),inspector=document.querySelector('.inspector'),prompt=document.getElementById('mobileRotatePrompt'),hint=document.querySelector('.mobile-touch-hint'),css=document.querySelector('style')?.textContent||'',rails=[...document.querySelectorAll('.touch-scrollbar')];if(!mobileDeviceLayout(true,844,390)||!mobileDeviceLayout(true,390,844)||mobileDeviceLayout(false,390,844)||mobileDeviceLayout(true,1200,1000)||workspace.children[0]?.classList.contains('board-wrap')!==true||workspace.children[1]!==inspector||board.querySelectorAll('.column').length!==5||!prompt?.textContent.includes('Rotate to landscape')||!hint?.textContent.includes('grab blue rails')||!css.includes('--mobile-scrollbar-size: 18px')||rails.length!==7||rails.some(rail=>rail.getAttribute('role')!=='scrollbar'||!rail.querySelector('.touch-scroll-thumb')))throw Error('Mobile capability check, orientation prompt, complete board structure, or touch scroll rail is missing');});
         test('Touch taps select, vertical swipes scroll, and card headers drag',()=>{newRun(176,false);const card=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet'),node=View.cardNode(card,null),bodyTarget=node.querySelector('.card-desc')||node,handle=node.querySelector('.card-top');document.body.append(node);node.setPointerCapture=()=>{};handle.setPointerCapture=()=>{};let prevented=false;Drag.onDown({target:bodyTarget,button:0,pointerId:176,pointerType:'touch',clientX:20,clientY:20,preventDefault(){prevented=true;}});Drag.onMove({pointerId:176,buttons:1,clientX:22,clientY:45});if(prevented||runtime.drag?.started)throw Error('A vertical touch swipe was captured as a card drag');Drag.cleanup();Drag.onDown({target:bodyTarget,button:0,pointerId:177,pointerType:'touch',clientX:20,clientY:20,preventDefault(){}});Drag.onUp({pointerId:177,button:0,clientX:20,clientY:20});if(game.selected?.id!==card.id)throw Error('Touch tap did not preserve card selection');prevented=false;Drag.onDown({target:handle,button:0,pointerId:178,pointerType:'touch',clientX:20,clientY:20,preventDefault(){prevented=true;}});Drag.onMove({pointerId:178,buttons:1,clientX:20,clientY:39});if(!prevented||!runtime.drag?.started||!document.querySelector('.drag-ghost'))throw Error('Touch card header did not provide a reliable drag handle');Drag.cleanup();node.remove();});
         test('Drag threshold protects ordinary clicks',()=>{newRun(166,false);const card=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet'),node=View.cardNode(card,null);document.body.append(node);node.setPointerCapture=()=>{};Drag.onDown({target:node,button:0,pointerId:166,pointerType:'mouse',clientX:20,clientY:20,preventDefault(){}});Drag.onMove({pointerId:166,buttons:1,clientX:29,clientY:20});if(runtime.drag?.started||document.querySelector('.drag-ghost'))throw Error('Sub-threshold pointer jitter started a drag');Drag.onMove({pointerId:166,buttons:1,clientX:31,clientY:20});if(!runtime.drag?.started||!document.querySelector('.drag-ghost'))throw Error('Deliberate pointer movement did not start a drag');Drag.cleanup();node.remove();});
         test('Lane insertion slots bracket every rendered card or stack',()=>{newRun(167,false);View.render();for(const columnId of Object.keys(COLUMN_META)){const body=document.querySelector(`[data-drop-column="${columnId}"]`),items=game.columns[columnId];if(!items.length)continue;const slots=[...body.querySelectorAll(':scope > .lane-drop-slot')];if(slots.length!==items.length+1||slots[0].dataset.dropBeforeItem!==items[0]||slots.at(-1).dataset.dropBeforeItem!=='')throw Error(`${COLUMN_META[columnId].name} insertion slots do not match its lane items`);}});
         test('Lane gap reorder moves an entire stack without disturbing its cards',()=>{newRun(168,false);const firstItem=game.columns.inbox[0],a=createCard('receipt'),b=createCard('receipt'),folder=createStack('inbox',[a.id,b.id]),contents=[...folder.cardIds];if(!reorderLaneItem(a.id,'inbox',firstItem)||game.columns.inbox[0]!==folder.id||folder.cardIds.join('|')!==contents.join('|'))throw Error('Folder did not move intact to the requested lane gap');if(!reorderLaneItem(a.id,'inbox','')||game.columns.inbox.at(-1)!==folder.id||folder.cardIds.join('|')!==contents.join('|'))throw Error('Folder did not move intact to the end of its lane');assertGameState();});
         test('Reordering active work preserves its running workflow',()=>{newRun(169,false);const employee=Object.values(game.cardsById).find(card=>card.templateId==='intern'),task=Object.values(game.cardsById).find(card=>card.templateId==='data_entry_request'),resource=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet');[employee,task,resource].forEach(card=>removeCardFromLocation(card.id));const workflow=createStack('active',[employee.id,task.id,resource.id]);maybeStartJob(workflow.id);const holding=createStack('active',[createCard('receipt').id]),jobId=workflow.activeJobId,progress=game.jobsById[jobId].progress;if(!task.lockedByJobId||!reorderLaneItem(task.id,'active','')||game.columns.active.at(-1)!==workflow.id||workflow.activeJobId!==jobId||game.jobsById[jobId]?.progress!==progress||holding.activeJobId)throw Error('Lane reorder disrupted active work');assertGameState();});
         test('Runtime advances while drag defers board rendering',()=>{newRun(165,false);game.mode='playing';View.render();const employee=Object.values(game.cardsById).find(card=>card.templateId==='intern'),deadlineCard=stackTop(game.stacksById[game.columns.inbox[0]]),dayBefore=game.dayElapsedMs,idleBefore=employee.idleMsToday,deadlineBefore=deadlineCard.deadlineRemainingMs;runtime.drag={pointerId:165,cardId:deadlineCard.id,started:true,sourceEl:null};runtime.dirty=true;advancePlayingState(1000,performance.now());if(game.dayElapsedMs!==dayBefore+1000||employee.idleMsToday!==idleBefore+1000||deadlineCard.deadlineRemainingMs!==deadlineBefore-1000)throw Error('Drag paused the day clock, employee rhythms, or deadlines');if(flushDirtyRender()||!runtime.dirty)throw Error('Board rendered while pointer ownership was active');runtime.drag=null;if(!flushDirtyRender()||runtime.dirty)throw Error('Deferred board render did not flush after drag cleanup');});
+        test('Touch scroll rails preserve runtime and defer board rendering',()=>{newRun(179,false);game.mode='playing';View.render();const deadlineCard=stackTop(game.stacksById[game.columns.inbox[0]]),dayBefore=game.dayElapsedMs,deadlineBefore=deadlineCard.deadlineRemainingMs;runtime.scrollDrag={pointerId:179};runtime.dirty=true;advancePlayingState(1000,performance.now());if(game.dayElapsedMs!==dayBefore+1000||deadlineCard.deadlineRemainingMs!==deadlineBefore-1000)throw Error('Scrolling paused the shift clock or card deadline');if(flushDirtyRender()||!runtime.dirty)throw Error('Board rendered while a touch scroll rail owned the pointer');runtime.scrollDrag=null;if(!flushDirtyRender()||runtime.dirty)throw Error('Deferred scroll render did not flush after pointer release');});
         test('Interrupted drags remove every ghost and drop highlight',()=>{newRun(148,false);const receipt=createCard('receipt'),ghost=View.cardNode(receipt,null),orphan=View.cardNode(receipt,null),target=document.querySelector('[data-drop-column="backlog"]');ghost.classList.add('drag-ghost');orphan.classList.add('drag-ghost');document.body.append(ghost,orphan);document.body.classList.add('dragging');target.classList.add('drop-valid');target.dataset.dropHint='Move Receipt here';runtime.drag={pointerId:314,cardId:receipt.id,started:true,sourceEl:null,ghost};document.dispatchEvent(new PointerEvent('pointercancel',{pointerId:314,bubbles:true}));if(runtime.drag||document.querySelector('.drag-ghost')||document.body.classList.contains('dragging')||target.classList.contains('drop-valid')||target.dataset.dropHint)throw Error('Pointer cancellation left a stuck drag visual');const middleGhost=View.cardNode(receipt,null);middleGhost.classList.add('drag-ghost');document.body.append(middleGhost);runtime.drag={pointerId:315,cardId:receipt.id,started:true,sourceEl:null,ghost:middleGhost};const middleDown=new PointerEvent('pointerdown',{pointerId:315,button:1,buttons:5,bubbles:true,cancelable:true});document.dispatchEvent(middleDown);if(!middleDown.defaultPrevented||runtime.drag||document.querySelector('.drag-ghost'))throw Error('Middle mouse interruption did not cancel the drag');});
         test('Locked employee release handle still begins a drag',()=>{newRun(160,false);const employee=Object.values(game.cardsById).find(card=>card.templateId==='intern'),task=Object.values(game.cardsById).find(card=>card.templateId==='data_entry_request'),resource=Object.values(game.cardsById).find(card=>card.templateId==='spreadsheet');[employee,task,resource].forEach(card=>removeCardFromLocation(card.id));const stack=createStack('active',[employee.id,task.id,resource.id]);maybeStartJob(stack.id);const handle=View.workflowNode(stack).querySelector('.workflow-employee-handle');handle.setPointerCapture=()=>{};let prevented=false;Drag.onDown({target:handle,button:0,pointerId:160,clientX:10,clientY:10,preventDefault(){prevented=true;}});if(!employee.lockedByJobId||!prevented||runtime.drag?.cardId!==employee.id||!runtime.drag.extractOnly)throw Error('Active job lock blocked the employee release handle');Drag.cleanup();assertGameState();});
         test('Composite workflows expose the employee as a release handle without duplicate tokens',()=>{newRun(111,false);const employee=Object.values(game.cardsById).find(card=>card.templateId==='junior_analyst'),task=createCard('stakeholder_alignment_memo');removeCardFromLocation(employee.id);const stack=createStack('active',[employee.id,task.id]),node=View.stackNode(stack),handle=node.querySelector(`.workflow-employee-handle[data-stack-card-id="${employee.id}"]`);if(!handle||!handle.getAttribute('aria-label')?.includes('back to Backlog')||!node.textContent.includes(cardName(employee))||!node.textContent.includes(cardName(task))||node.querySelector('[data-stack-token-card-id]'))throw Error('Composite workflow duplicated a visible card or omitted its employee release handle');assertGameState();});
