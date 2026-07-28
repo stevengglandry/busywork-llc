@@ -13,18 +13,23 @@ This document began as a full redesign brief. The current source now implements 
 Implemented in `index.html`:
 
 - Compact task, resource, employee, folder, and active-workflow cards with stronger semantic type color, shorter landscape proportions, and clearer status tokens.
-- Filing-folder treatment for homogeneous task/resource piles. The five-slot rectangular rail represents every card top-first, unused capacity stays visibly empty, and the folder becomes a normal card when only one item remains.
+- Filing-folder treatment for homogeneous task/resource piles. The four-slot rectangular rail represents covered cards only, nearest to the top first; the full-size folder face represents the active top card, unused capacity stays visibly empty, and the folder becomes a normal card when only one item remains.
 - Drag insertion targets between lane items. Reordering moves a whole card/stack without recreating it or disturbing active jobs, employee rhythms, card deadlines, or unrelated runtime timers.
 - Cleaner Inspector copy and navigation, including the compact `Log` tab, assignment choices, review ruling heading, and active-workflow employee/stress band.
 - Updated phishing reward baseline of four correctly deleted junk cards; Security Liaison still lowers the threshold to two.
 - A sixth Run System, **Grease the Wheels**, which restores five Board Confidence per purchased rank.
-- The approved Process Award composition: `End of Shift` crescent stamp, budget rail, Run Systems selector, selected-upgrade explainer, large `OR` divider, and Employee Development shop. It fits the 1280×720 baseline without modal scrolling.
+- The approved Process Award composition: `End of Shift` crescent stamp, budget rail, directly actionable Run Systems, `&` divider, and Employee Development shop in two equal panels. It fits the 1280×720 baseline without modal scrolling.
+- Operating Close retains its existing company, cash, action, and recruitment content in three equal panels; a circular `OR` divider now makes the action-versus-hire choice explicit.
+- The third page uses the fixed `Morning Brief` title and three equal read-only panels while retaining the existing day-specific briefing sentence and data. Its first panel is `Changes overnight`, showing signed Cash, Staff Morale, Audit Chance, and Board Confidence deltas from the prior close.
+- Capability-based mobile detection now uses coarse-pointer support and the short viewport dimension rather than a user-agent string. Portrait phones receive a landscape prompt that safely pauses and restores a running workday, with an explicit continue-in-portrait escape hatch.
+- In mobile landscape the complete five-lane board remains horizontally scrollable while the complete Inspector stays pinned on the right. Lane widths compress to a 210 / 172 / 198 / 174 / 128 px decision hierarchy, lane bodies retain independent vertical scrolling, and no cards, controls, reference tabs, policies, or status metrics are removed.
+- Touch input distinguishes intent: tap selects, vertical card-body movement remains available to scroll a lane, horizontal movement can drag a card, and card headers plus folder/workflow handles provide full-direction grab surfaces. Drop-between slots and controls expand for coarse pointers.
 
 Still design guidance, not yet implemented:
 
 - The revised Operating Close with full-moon treatment, action/effect tables, and exactly one randomized recruit.
 - The delta-focused **Morning BRIEF** screen.
-- The revised successful quarterly-review/end-of-run layout. The existing terminal-failure postmortem remains intentionally unchanged at this checkpoint.
+- The revised successful quarterly-review/end-of-run layout. The compact terminal-failure report is implemented; the successful-run counterpart remains future work.
 
 The canonical visual references are in `design/ui-concepts/`; `design/BUSYWORK_UI_STYLE_GUIDE.css` is the implementation guide for future UI work.
 
@@ -515,18 +520,18 @@ Use a simultaneous decision workspace with a persistent budget rail:
 PROCESS AWARD  1 of 3                         END OF SHIFT ☾
 Invest today’s reward                     1 point · $450 cash
 
-RUN SYSTEMS          SELECTED UPGRADE       OR     EMPLOYEE DEVELOPMENT
-Elastic Intake       Elastic Intake                 Intern
-Parallel Processing  Current rank 0/3               Junior Analyst
-Revenue Assurance    1 Inbox +1                     Accountant
-Restorative Controls 2 Inbox +2                     Manager
-Audit Dampening      3 Inbox +3
-Grease the Wheels
+RUN SYSTEMS                               &     EMPLOYEE DEVELOPMENT
+Elastic Intake          Inbox +1 [Invest]       Intern
+Parallel Processing     Active +1 [Invest]      Junior Analyst
+Revenue Assurance       Payout +5% [Invest]     Accountant
+Restorative Controls    Recovery +3 [Invest]    Manager
+Audit Dampening         Audit −5 [Invest]
+Grease the Wheels       Confidence +5 [Invest]
 
                     [Keep point and continue]
 ```
 
-The selected-upgrade panel explains the currently highlighted branch without duplicating purchase controls. Run Systems and Employee Development stay visible together because they use different currencies; the large `OR` marker communicates the decision structure. At narrower widths the columns reflow while retaining the same information hierarchy.
+Run Systems and Employee Development stay visible together in equal panels because they use separate currencies; the `&` marker communicates that both shops are available during the same reward step. Each system row contains the current rank, next effect, and purchase action, so a separate detail panel would only repeat information. At narrower widths the columns reflow while retaining the same hierarchy.
 
 ## Night 2: Operating close and planning
 
@@ -572,6 +577,8 @@ Confidence 77 (+2)         Payroll tomorrow $109
 - Collapse the detailed ledger by default.
 - On Day 3, change the heading and visual stamp to `MANDATORY STRATEGIC REVIEW`; do not show ordinary overnight options.
 
+Current implementation checkpoint: the existing content remains intact in three equal-width panels. Within Night Planning, the three operating actions and the overnight recruitment section are separated by a circular `OR` divider. Recruit cards retain their boosted mechanics but display a `NEW HIRE` token.
+
 ## Night 3: Morning briefing
 
 ### Current strengths
@@ -612,6 +619,8 @@ UNCHANGED 2 other policies                                  [View all]
 - Show deltas, not a complete duplicate dashboard.
 - Put new/removed policies before unchanged policies.
 - Link to the full Progress and Policies views for detail.
+
+Current implementation checkpoint: the duplicate opening-position dashboard has been replaced by `Changes overnight`, calculated from the prior closing snapshot. Operating-brief and policy content remains intact in the other two equal-width read-only panels. The main title is `Morning Brief`, with the day-specific briefing sentence beneath it.
 
 ## Today’s active policies
 
@@ -705,32 +714,41 @@ Document Retention · 25 XP                         [Unlock]
 
 ### Terminated run
 
-The current terminated screen is the strongest page aesthetically. It has a clear red identity, explicit terminal cause, non-zero factors, collapsed incidents, and retained-progress information.
+The implemented terminated screen uses the compact incident-report format rather than the earlier wide red dashboard. Its navy report strip, off-white paper, binder hardware, red serif headline, translucent `TERMINATED` stamp, and shield-shaped cause emblem keep the mock-corporate document voice without resembling a game-over panel.
 
-Improvements:
+Current behavior:
 
-- Increase the smallest labels to at least 10–11 px.
-- Replace the five equal run-result counters with three meaningful groups: output, decision quality, personnel losses.
-- Put `What you keep` immediately below the terminal cause to soften the feeling that all progress vanished.
-- Rename `Factors affecting this run` to `What drove the failure`.
-- Sort factors by impact instead of source order.
-- Change `Start a new run` to `Review carryover, then start` when unspent upgrades are affordable.
-- Keep the “TERMINATED” watermark, but prevent clipping at narrow widths.
+- The exact terminal system and threshold lead the report.
+- `What you keep` immediately follows with Compliance Tokens, awarded Process XP and its award-time wallet balance, and retained permanent upgrades.
+- `What drove the failure` ranks only the three highest-impact negative drivers; zero-impact and positive ledger entries cannot displace them.
+- A cause-specific `Key lesson` summarizes the terminal pattern.
+- `Review incidents` and `Review upgrades` expand their complete functional sections in place. Both remain collapsed and visually absent until requested.
+- `Start a new run` remains the primary next step.
+- A deterministic run-log reference and quiet footer close the report.
 
 Recommended hierarchy:
 
 ```text
+RUN TERMINATED
 RUN TERMINATED · DAY 2
-Board Confidence Lost                         0 confidence
+Board Confidence Lost
 
-WHAT YOU KEEP       47 tokens · +0 XP
-WHAT DROVE FAILURE  Payroll −233 · Other −66 · 10 expired
+BOARD CONFIDENCE
+0
+THE RUN ENDS AT 0 CONFIDENCE.
+
+WHAT YOU KEEP
+47 Compliance Tokens | +0 XP | 2 upgrades retained
+
+WHAT DROVE THE FAILURE (by impact)
+1 Expired tasks ........ 10
+2 Payroll paid ......... −$233
+3 Other cash ........... −$66
 
 KEY LESSON
 Confidence reached zero after accumulated rulings and losses.
 
-[Review 17 incidents] [Review permanent upgrades]
-                                             [Start a new run]
+[Review incidents] [Review upgrades] [Start a new run]
 ```
 
 ## Secondary screens

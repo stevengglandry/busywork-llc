@@ -912,10 +912,12 @@
 
   /*
    * Stack cards do not repeat TASK / RESOURCE text. The kind icon, card name,
-   * Folder label, folder color, and five-slot rail already communicate identity.
-   * The rail includes the active top card first, followed by covered cards, and
-   * uses empty rectangular slots for remaining capacity. A one-card remainder
-   * must render as a normal card rather than an empty-looking folder.
+   * Folder label, folder color, and four-slot rail already communicate identity.
+   * The full-size folder face is the active top card and must never be repeated
+   * as a mini token. The rail contains covered cards only, nearest to the top
+   * first, and uses empty rectangular slots for remaining covered capacity. A
+   * one-card remainder must render as a normal card rather than an empty-looking
+   * folder.
    */
   .bw-folder-stack .bw-card-kind {
     font-size: 0;
@@ -1500,10 +1502,9 @@
   .bw-invest-layout {
     display: grid;
     grid-template-columns:
-      minmax(17rem, 1fr)
-      minmax(13rem, 0.72fr)
+      minmax(0, 1fr)
       3.5rem
-      minmax(20rem, 1.25fr);
+      minmax(0, 1fr);
     gap: var(--bw-space-3);
     align-items: stretch;
   }
@@ -1518,8 +1519,19 @@
     font-weight: var(--bw-weight-bold);
   }
 
+  /*
+   * Process Award places "&" in this circle: both shops remain available.
+   * Operating Close uses "OR" between the mutually exclusive operating-action
+   * and recruitment groups. Do not reuse OR on Process Award.
+   */
+
+  /*
+   * Morning Brief panel 1 is "Changes overnight," not a second company
+   * dashboard. Show signed Cash, Staff Morale, Audit Chance, and Board
+   * Confidence deltas from the prior closing snapshot.
+   */
+
   .bw-system-tree,
-  .bw-upgrade-explainer,
   .bw-development-shop {
     min-width: 0;
   }
@@ -1532,19 +1544,6 @@
     gap: var(--bw-space-2);
     border-bottom: 1px solid var(--bw-rule);
     padding: var(--bw-space-2) 0;
-  }
-
-  .bw-system-row[data-selected="true"] {
-    margin-inline: calc(var(--bw-space-2) * -1);
-    border: 1px solid var(--bw-action);
-    border-radius: var(--bw-radius-sm);
-    background: var(--bw-action-soft);
-    padding-inline: var(--bw-space-2);
-  }
-
-  .bw-upgrade-explainer {
-    border-inline: 1px solid var(--bw-rule);
-    padding-inline: var(--bw-space-3);
   }
 
   .bw-development-grid {
@@ -1765,30 +1764,46 @@
 
 @layer busywork.screens {
   .bw-run-end[data-result="terminated"] {
-    --bw-run-accent: var(--bw-danger);
+    --bw-run-accent: #8f1f25;
     overflow: hidden;
-    border: 1px solid #b94d54;
+    border: 1px solid #18354b;
     border-radius: var(--bw-radius-lg);
-    background: var(--bw-paper);
+    background-color: #f8f5ed;
+    background-image:
+      linear-gradient(rgb(25 49 67 / 2.5%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(25 49 67 / 1.8%) 1px, transparent 1px);
+    background-size: 18px 18px;
     box-shadow: var(--bw-shadow-modal);
+  }
+
+  .bw-terminal-report-strip {
+    display: flex;
+    align-items: center;
+    min-height: 2.2rem;
+    padding-inline: var(--bw-space-3);
+    color: #e7f0f5;
+    background: linear-gradient(#12334e, #0b2438);
   }
 
   .bw-terminal-hero {
     position: relative;
-    padding: var(--bw-space-5);
-    color: #fff;
-    background: linear-gradient(135deg, #6f151b, #8d1e25);
+    padding: var(--bw-space-4) var(--bw-space-5);
+    color: #29404f;
+    background: transparent;
   }
 
   .bw-terminal-hero::after {
     content: "TERMINATED";
     position: absolute;
     right: var(--bw-space-4);
-    bottom: -0.25rem;
-    color: rgb(255 255 255 / 8%);
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    top: var(--bw-space-3);
+    border: 3px double rgb(173 58 57 / 25%);
+    padding: 0.2rem 0.45rem;
+    color: rgb(173 58 57 / 24%);
+    font-size: 1.1rem;
     font-weight: 900;
     letter-spacing: 0.04em;
+    transform: rotate(10deg);
     pointer-events: none;
   }
 
@@ -1797,9 +1812,9 @@
   .bw-failure-drivers,
   .bw-key-lesson {
     margin: var(--bw-space-3) var(--bw-space-4);
-    border: 1px solid #e1c0c3;
+    border: 1px solid #dedbd2;
     border-radius: var(--bw-radius-sm);
-    background: #fffafa;
+    background: rgb(255 255 255 / 54%);
     padding: var(--bw-space-3);
   }
 
@@ -1857,11 +1872,17 @@
   }
 
   .bw-run-end-actions {
-    display: flex;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--bw-space-2);
     padding: var(--bw-space-3) var(--bw-space-4);
-    border-top: 1px solid #e1c0c3;
+    border: 1px solid #dedbd2;
+    border-radius: var(--bw-radius-sm);
+    background: rgb(255 255 255 / 54%);
+  }
+
+  .bw-run-end-details:not([open]) {
+    display: none;
   }
 }
 
@@ -1983,7 +2004,7 @@
     }
 
     .bw-invest-layout {
-      grid-template-columns: minmax(17rem, 1fr) minmax(13rem, 0.8fr);
+      grid-template-columns: 1fr;
     }
 
     .bw-invest-or {
@@ -2061,11 +2082,13 @@
     }
 
     .bw-board {
-      grid-template-columns: calc(100vw - 2rem);
-    }
-
-    .bw-board > .bw-lane:not([data-current="true"]) {
-      display: none;
+      overflow-x: auto;
+      grid-template-columns:
+        13.125rem
+        10.75rem
+        12.375rem
+        10.875rem
+        8rem;
     }
 
     .bw-ruling-actions,
@@ -2086,7 +2109,7 @@
     }
 
     .bw-run-end-actions {
-      flex-direction: column;
+      grid-template-columns: 1fr;
     }
 
     .bw-run-end-actions .bw-button {
@@ -2147,6 +2170,52 @@
     .bw-reference-tab,
     .bw-assist-progress {
       min-height: var(--bw-control-height-touch);
+    }
+
+    .bw-card {
+      touch-action: pan-y;
+    }
+
+    .bw-card :is(
+      .bw-card-header,
+      .bw-folder-tab,
+      .bw-workflow-assignee,
+      [data-stack-card-id],
+      [data-stack-token-card-id]
+    ) {
+      touch-action: none;
+    }
+
+    .bw-lane-body {
+      touch-action: auto;
+      overscroll-behavior-y: contain;
+    }
+
+    .bw-board {
+      touch-action: pan-x;
+      overscroll-behavior-x: contain;
+    }
+  }
+
+  @media (any-pointer: coarse) and (max-width: 62.5rem) and (orientation: landscape) {
+    .bw-workspace {
+      overflow: hidden;
+      grid-template-columns: minmax(0, 1fr) clamp(16.25rem, 34vw, 18.75rem);
+    }
+
+    .bw-board {
+      grid-template-columns: 13.125rem 10.75rem 12.375rem 10.875rem 8rem;
+      gap: 0.375rem;
+      padding: 0.375rem;
+    }
+
+    .bw-inspector {
+      position: sticky;
+      inset: auto 0 auto auto;
+      inline-size: auto;
+      max-block-size: 100%;
+      transform: none;
+      box-shadow: -0.5rem 0 1.125rem rgb(28 45 58 / 16%);
     }
   }
 }
