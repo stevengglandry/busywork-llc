@@ -1,0 +1,2152 @@
+/*
+ * BUSYWORK UI STYLE GUIDE
+ * Version: 2.0 concept contract
+ * Status: Reference stylesheet; not imported by index.html.
+ *
+ * PURPOSE
+ * -------
+ * This file is the canonical visual contract for future BUSYWORK UI work.
+ * It translates the approved v2 concept images into reusable CSS rules.
+ * Future AI-authored features should extend these tokens and patterns rather
+ * than introduce new palettes, arbitrary spacing, tiny text, or competing
+ * component styles.
+ *
+ * APPROVED CONCEPT REFERENCES
+ * ---------------------------
+ * design/ui-concepts/01-workday-redesign-v2.png
+ * design/ui-concepts/02-card-stack-panel-system-v2.png
+ * design/ui-concepts/03-end-of-shift-redesign-v2.png
+ * design/ui-concepts/04-review-policies-run-end-v2.png
+ *
+ * NON-NEGOTIABLE RULES
+ * --------------------
+ * 1. Default gameplay text is at least 11px. Actions and meaningful prose are
+ *    at least 12px. Never shrink rules, costs, timers, or consequences to fit.
+ * 2. Board cards are compact landscape records: always wider than they are
+ *    tall. Remove information before reducing type.
+ * 3. Inbox is the widest lane. Done is the narrowest lane.
+ * 4. Only Inbox owns a persistent delete zone. Other lanes do not show empty
+ *    drop-zone boxes; transient drag feedback may tint the lane itself.
+ * 5. Header metrics do not use decorative icons. Icons remain appropriate for
+ *    card types, explicit actions, and restrained end-of-shift choice art.
+ * 6. A storage stack always has exactly five slot tokens. The DOM should
+ *    contain five slot elements, including empty slots.
+ * 7. Relevant policies appear with a selected work product. The reference tab
+ *    is named Policies and contains all active policies.
+ * 8. Review presents evidence, policy text, and four neutral decisions. It must
+ *    not reveal or visually imply the correct ruling.
+ * 9. Use color to reinforce text, never to replace it.
+ * 10. Corporate paper, folder tabs, stamps, and ledger rules add character;
+ *     they may not reduce legibility or obscure interaction.
+ */
+
+@layer busywork.tokens, busywork.base, busywork.layout, busywork.components,
+  busywork.screens, busywork.states, busywork.responsive, busywork.accessibility;
+
+/* -------------------------------------------------------------------------- */
+/* 01. DESIGN TOKENS                                                          */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.tokens {
+  :root {
+    /* Core surfaces */
+    --bw-navy-950: #0d1b28;
+    --bw-navy-900: #12263a;
+    --bw-navy-850: #183047;
+    --bw-navy-700: #36536b;
+    --bw-paper: #fffdf8;
+    --bw-paper-warm: #fbf7ef;
+    --bw-surface: #ffffff;
+    --bw-surface-subtle: #f4f6f7;
+    --bw-surface-raised: #eef2f5;
+    --bw-board: #e8edf1;
+    --bw-lane: #edf1f4;
+
+    /* Text */
+    --bw-text: #1f2d3a;
+    --bw-text-muted: #5e6e7c;
+    --bw-text-faint: #7d8994;
+    --bw-text-on-dark: #f4f7f9;
+    --bw-text-on-dark-muted: #b8c6d1;
+
+    /* Borders and rules */
+    --bw-border: #cbd4dc;
+    --bw-border-strong: #9eacb9;
+    --bw-rule: #d8dfe5;
+    --bw-rule-dotted: #b8c2cb;
+
+    /* Interaction and semantic colors */
+    --bw-action: #1266b1;
+    --bw-action-hover: #0d568f;
+    --bw-action-soft: #e7f0f8;
+    --bw-success: #24724a;
+    --bw-success-soft: #e8f4ec;
+    --bw-warning: #a35f00;
+    --bw-warning-soft: #fff3df;
+    --bw-danger: #a61f27;
+    --bw-danger-soft: #fae9e9;
+    --bw-resource: #624399;
+    --bw-resource-soft: #f1edf8;
+    --bw-neutral: #607383;
+    --bw-neutral-soft: #edf1f4;
+
+    /* Kind coding */
+    --bw-kind-task: #bd6d00;
+    --bw-kind-task-soft: #fff5e5;
+    --bw-kind-resource: var(--bw-resource);
+    --bw-kind-resource-soft: var(--bw-resource-soft);
+    --bw-kind-employee: #155d92;
+    --bw-kind-employee-soft: #eaf3f9;
+    --bw-kind-workflow: #1767a6;
+    --bw-kind-workflow-soft: #e9f2fa;
+    --bw-kind-policy: #28714c;
+    --bw-kind-policy-soft: #e8f4ec;
+    --bw-kind-review: #a72b31;
+    --bw-kind-review-soft: #f9e9ea;
+
+    /* Typography: based on a 16px root */
+    --bw-font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+      BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --bw-font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    --bw-font-2xs: 0.625rem;   /* 10px: decorative labels only */
+    --bw-font-xs: 0.6875rem;   /* 11px: metadata floor */
+    --bw-font-sm: 0.75rem;     /* 12px: card body and actions */
+    --bw-font-md: 0.8125rem;   /* 13px: default UI */
+    --bw-font-lg: 0.9375rem;   /* 15px: titles */
+    --bw-font-xl: 1.125rem;    /* 18px: panel titles */
+    --bw-font-2xl: 1.5rem;     /* 24px: screen titles */
+    --bw-font-3xl: 2rem;       /* 32px: terminal headline */
+    --bw-leading-tight: 1.2;
+    --bw-leading-ui: 1.35;
+    --bw-leading-copy: 1.5;
+    --bw-weight-regular: 400;
+    --bw-weight-medium: 600;
+    --bw-weight-bold: 750;
+    --bw-tracking-label: 0.075em;
+    --bw-tracking-brand: 0.16em;
+
+    /* Spacing: only use this scale */
+    --bw-space-1: 0.25rem;   /* 4 */
+    --bw-space-2: 0.5rem;    /* 8 */
+    --bw-space-3: 0.75rem;   /* 12 */
+    --bw-space-4: 1rem;      /* 16 */
+    --bw-space-5: 1.25rem;   /* 20 */
+    --bw-space-6: 1.5rem;    /* 24 */
+    --bw-space-8: 2rem;      /* 32 */
+
+    /* Shape and depth */
+    --bw-radius-xs: 0.1875rem;
+    --bw-radius-sm: 0.3125rem;
+    --bw-radius-md: 0.5rem;
+    --bw-radius-lg: 0.75rem;
+    --bw-shadow-card: 0 2px 5px rgb(13 27 40 / 10%);
+    --bw-shadow-stack: 0 3px 0 -1px var(--bw-paper),
+      0 5px 0 -2px var(--bw-border), 0 8px 12px rgb(13 27 40 / 11%);
+    --bw-shadow-modal: 0 20px 52px rgb(13 27 40 / 25%);
+
+    /* Controls */
+    --bw-control-height-sm: 2rem;
+    --bw-control-height: 2.375rem;
+    --bw-control-height-touch: 2.75rem;
+    --bw-focus-ring: 0 0 0 3px rgb(18 102 177 / 28%);
+
+    /* Shell dimensions */
+    --bw-header-row-height: 3.25rem;
+    --bw-metric-row-height: 4.5rem;
+    --bw-action-strip-height: 2.75rem;
+    --bw-inspector-width: 21.5rem;
+    --bw-lane-gap: 0.5rem;
+    --bw-card-target-height: 4.65rem;
+    --bw-delete-height: 4.1rem;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 02. BASE AND TYPOGRAPHY                                                     */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.base {
+  .bw-app,
+  .bw-app *,
+  .bw-app *::before,
+  .bw-app *::after {
+    box-sizing: border-box;
+  }
+
+  .bw-app {
+    min-width: 20rem;
+    min-height: 100%;
+    margin: 0;
+    background: var(--bw-board);
+    color: var(--bw-text);
+    font-family: var(--bw-font-family);
+    font-size: var(--bw-font-md);
+    line-height: var(--bw-leading-ui);
+    text-rendering: optimizeLegibility;
+  }
+
+  .bw-app button,
+  .bw-app input,
+  .bw-app select {
+    color: inherit;
+    font: inherit;
+  }
+
+  .bw-app h1,
+  .bw-app h2,
+  .bw-app h3,
+  .bw-app p {
+    margin-block-start: 0;
+  }
+
+  .bw-brand {
+    color: var(--bw-text-on-dark);
+    font-size: var(--bw-font-xl);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-brand);
+    line-height: 1;
+  }
+
+  .bw-screen-title {
+    margin-block-end: var(--bw-space-2);
+    color: var(--bw-navy-900);
+    font-size: clamp(var(--bw-font-xl), 1rem + 1vw, var(--bw-font-2xl));
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: -0.02em;
+    line-height: var(--bw-leading-tight);
+  }
+
+  .bw-card-title,
+  .bw-panel-title {
+    color: var(--bw-text);
+    font-size: var(--bw-font-lg);
+    font-weight: var(--bw-weight-bold);
+    line-height: var(--bw-leading-tight);
+  }
+
+  .bw-label {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    line-height: var(--bw-leading-tight);
+    text-transform: uppercase;
+  }
+
+  .bw-copy {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-sm);
+    line-height: var(--bw-leading-copy);
+  }
+
+  .bw-data {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * 10px may be used only for decorative stamps or redundant eyebrow labels.
+   * It may not contain a rule, cost, timer, consequence, stat, or instruction.
+   */
+  .bw-decorative-label {
+    font-size: var(--bw-font-2xs);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 03. APPLICATION SHELL AND HEADER                                            */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.layout {
+  .bw-app-shell {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr);
+    overflow: hidden;
+  }
+
+  .bw-header {
+    color: var(--bw-text-on-dark);
+    background: linear-gradient(180deg, var(--bw-navy-950), var(--bw-navy-900));
+    border-bottom: 1px solid #07121d;
+  }
+
+  .bw-header-primary {
+    min-height: var(--bw-header-row-height);
+    display: grid;
+    grid-template-columns: minmax(14rem, 1fr) auto auto;
+    align-items: center;
+    gap: var(--bw-space-3);
+    padding: var(--bw-space-2) var(--bw-space-4);
+    border-bottom: 1px solid rgb(255 255 255 / 12%);
+  }
+
+  .bw-run-controls,
+  .bw-day-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--bw-space-2);
+  }
+
+  .bw-day-controls {
+    justify-self: start;
+  }
+
+  .bw-run-controls {
+    justify-self: end;
+  }
+
+  .bw-day-timer,
+  .bw-run-log-trigger {
+    min-height: var(--bw-control-height);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--bw-space-2);
+    border: 1px solid #496177;
+    border-radius: var(--bw-radius-sm);
+    background: rgb(255 255 255 / 3%);
+    padding-inline: var(--bw-space-3);
+    color: var(--bw-text-on-dark);
+  }
+
+  .bw-day-timer strong {
+    font-size: var(--bw-font-md);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * Run Log owns both the prior Company Log dropdown behavior and the former
+   * "View run log" action. Do not duplicate those controls elsewhere.
+   */
+  .bw-run-log-trigger {
+    cursor: pointer;
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-medium);
+  }
+
+  .bw-header-metrics {
+    min-height: var(--bw-metric-row-height);
+    display: grid;
+    grid-template-columns: 1.05fr 1.05fr 1.6fr 1.15fr minmax(9rem, 0.9fr);
+    gap: 0;
+    align-items: stretch;
+    padding-inline: var(--bw-space-4);
+  }
+
+  .bw-header-metric {
+    min-width: 0;
+    display: grid;
+    align-content: center;
+    gap: 0.15rem;
+    padding: var(--bw-space-2) var(--bw-space-4);
+    border-left: 1px solid rgb(255 255 255 / 13%);
+  }
+
+  .bw-header-metric:first-child {
+    border-left: 0;
+  }
+
+  /*
+   * No decorative metric icons. The value, state word, delta, and audit detail
+   * carry the hierarchy.
+   */
+  .bw-header-metric-icon {
+    display: none !important;
+  }
+
+  .bw-header-metric .bw-label {
+    color: var(--bw-text-on-dark-muted);
+  }
+
+  .bw-header-value {
+    color: var(--bw-text-on-dark);
+    font-size: var(--bw-font-xl);
+    font-weight: var(--bw-weight-bold);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bw-header-detail {
+    overflow: hidden;
+    color: var(--bw-text-on-dark-muted);
+    font-size: var(--bw-font-xs);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bw-header-metric[data-metric="audit"] .bw-header-value {
+    color: #f4b25e;
+  }
+
+  .bw-audit-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--bw-space-2);
+    flex-wrap: wrap;
+  }
+
+  .bw-severity-rail {
+    display: inline-grid;
+    grid-template-columns: repeat(5, 0.625rem);
+    align-items: center;
+    gap: 0.25rem;
+    position: relative;
+  }
+
+  .bw-severity-rail::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0.25rem;
+    block-size: 1px;
+    background: #9b555c;
+  }
+
+  .bw-severity-pip {
+    z-index: 1;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    border: 1px solid #cb868b;
+    border-radius: 50%;
+    background: var(--bw-navy-900);
+  }
+
+  .bw-severity-pip[data-reached="true"] {
+    background: #d2555c;
+  }
+
+  .bw-next-action {
+    min-height: var(--bw-action-strip-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--bw-space-3);
+    padding: var(--bw-space-2) var(--bw-space-4);
+    border-bottom: 1px solid var(--bw-border);
+    background: var(--bw-paper);
+  }
+
+  .bw-next-action-copy {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--bw-space-4);
+  }
+
+  .bw-workspace {
+    min-height: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--bw-inspector-width);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 04. KANBAN BOARD AND LANES                                                  */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.layout {
+  .bw-board {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    /*
+     * Inbox is deliberately dominant. Done remains a narrow ledger.
+     * At narrow desktop widths, allow horizontal board scrolling rather than
+     * compressing text below the legibility floor.
+     */
+    grid-template-columns:
+      minmax(17.5rem, 1.45fr)
+      minmax(13.5rem, 0.95fr)
+      minmax(16rem, 1.15fr)
+      minmax(14.5rem, 1fr)
+      minmax(8.5rem, 0.55fr);
+    gap: var(--bw-lane-gap);
+    padding: var(--bw-space-2);
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: var(--bw-board);
+    scrollbar-width: thin;
+  }
+
+  .bw-lane {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    overflow: hidden;
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-md);
+    background: var(--bw-lane);
+  }
+
+  .bw-lane-header {
+    min-height: 3.2rem;
+    padding: var(--bw-space-2) var(--bw-space-3);
+    border-bottom: 1px solid var(--bw-border);
+    background: rgb(255 255 255 / 58%);
+  }
+
+  .bw-lane-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--bw-space-2);
+    align-items: baseline;
+  }
+
+  .bw-lane-heading h2 {
+    margin: 0;
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-lane-subtitle,
+  .bw-lane-count {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  .bw-lane-body {
+    min-height: 0;
+    padding: var(--bw-space-2);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  /*
+   * No persistent empty drop-zone panels outside Inbox.
+   * During a drag, tint the lane itself and show one compact hint label.
+   */
+  .bw-lane:not([data-lane="inbox"]) .bw-empty-drop-zone {
+    display: none;
+  }
+
+  .bw-lane[data-drop-state="valid"] {
+    background: color-mix(in srgb, var(--bw-action-soft) 72%, var(--bw-lane));
+    box-shadow: inset 0 0 0 2px var(--bw-action);
+  }
+
+  .bw-lane[data-drop-state="invalid"] {
+    background: color-mix(in srgb, var(--bw-danger-soft) 72%, var(--bw-lane));
+    box-shadow: inset 0 0 0 2px var(--bw-danger);
+  }
+
+  .bw-drop-hint {
+    position: sticky;
+    bottom: var(--bw-space-1);
+    z-index: 5;
+    margin-top: var(--bw-space-2);
+    border-radius: var(--bw-radius-sm);
+    padding: var(--bw-space-2);
+    background: var(--bw-navy-900);
+    color: var(--bw-text-on-dark);
+    font-size: var(--bw-font-xs);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .bw-delete-zone {
+    min-height: var(--bw-delete-height);
+    display: grid;
+    place-content: center;
+    gap: var(--bw-space-1);
+    margin-top: var(--bw-space-2);
+    border: 1px dashed #d36b70;
+    border-radius: var(--bw-radius-sm);
+    background: #fff6f5;
+    color: var(--bw-danger);
+    text-align: center;
+  }
+
+  .bw-delete-zone strong {
+    font-size: var(--bw-font-sm);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-delete-zone span {
+    color: #86575a;
+    font-size: var(--bw-font-xs);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 05. BUTTONS, TOKENS, AND SHARED PRIMITIVES                                  */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.components {
+  .bw-button {
+    min-height: var(--bw-control-height-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--bw-space-2);
+    border: 1px solid var(--bw-border-strong);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface);
+    padding: 0.4rem 0.7rem;
+    color: var(--bw-text);
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-medium);
+    line-height: 1.15;
+    cursor: pointer;
+  }
+
+  .bw-button:hover {
+    border-color: var(--bw-action);
+    background: var(--bw-action-soft);
+  }
+
+  .bw-button[data-variant="primary"] {
+    border-color: var(--bw-action);
+    background: var(--bw-action);
+    color: #fff;
+  }
+
+  .bw-button[data-variant="primary"]:hover {
+    background: var(--bw-action-hover);
+  }
+
+  .bw-button[data-variant="danger"] {
+    border-color: #d5a4a7;
+    color: var(--bw-danger);
+  }
+
+  .bw-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .bw-token {
+    min-height: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    max-width: 100%;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.15rem 0.42rem;
+    color: var(--bw-neutral);
+    background: var(--bw-neutral-soft);
+    font-size: var(--bw-font-2xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: 0.045em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .bw-token[data-tone="task"],
+  .bw-token[data-state="urgent"],
+  .bw-token[data-state="low-value"] {
+    color: var(--bw-kind-task);
+    background: var(--bw-kind-task-soft);
+  }
+
+  .bw-token[data-tone="resource"],
+  .bw-token[data-state="juiced"] {
+    color: var(--bw-resource);
+    background: var(--bw-resource-soft);
+  }
+
+  .bw-token[data-tone="success"],
+  .bw-token[data-state="sweet-spot"] {
+    color: var(--bw-success);
+    background: var(--bw-success-soft);
+  }
+
+  .bw-token[data-tone="danger"],
+  .bw-token[data-state="stressed"],
+  .bw-token[data-state="review-required"] {
+    color: var(--bw-danger);
+    background: var(--bw-danger-soft);
+  }
+
+  .bw-token[data-tone="warning"],
+  .bw-token[data-state="underloaded"],
+  .bw-token[data-state="covering"] {
+    color: var(--bw-warning);
+    background: var(--bw-warning-soft);
+  }
+
+  .bw-token[data-tone="action"],
+  .bw-token[data-state="processing"] {
+    color: var(--bw-action);
+    background: var(--bw-action-soft);
+  }
+
+  /*
+   * Use compact line icons only for:
+   * - card kind/subtype identity,
+   * - explicit controls such as Assign employee,
+   * - overnight choice art,
+   * - terminal state explanations.
+   * Never put decorative icons inside header metric blocks.
+   */
+  .bw-icon {
+    inline-size: 1em;
+    block-size: 1em;
+    flex: 0 0 auto;
+    stroke-width: 1.8;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 06. COMPACT SINGLE CARDS                                                    */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.components {
+  .bw-card {
+    --bw-card-edge: var(--bw-neutral);
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    gap: var(--bw-space-1);
+    margin-bottom: var(--bw-space-2);
+    border: 1px solid var(--bw-border);
+    border-left: 3px solid var(--bw-card-edge);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-paper);
+    padding: 0.5rem 0.625rem;
+    box-shadow: var(--bw-shadow-card);
+    color: var(--bw-text);
+  }
+
+  .bw-card[data-kind="task"] {
+    --bw-card-edge: var(--bw-kind-task);
+  }
+
+  .bw-card[data-kind="resource"] {
+    --bw-card-edge: var(--bw-kind-resource);
+  }
+
+  .bw-card[data-kind="employee"] {
+    --bw-card-edge: var(--bw-kind-employee);
+  }
+
+  .bw-card[data-kind="workflow"] {
+    --bw-card-edge: var(--bw-kind-workflow);
+  }
+
+  .bw-card[data-kind="review"] {
+    --bw-card-edge: var(--bw-kind-review);
+  }
+
+  .bw-card[data-kind="policy"] {
+    --bw-card-edge: var(--bw-kind-policy);
+  }
+
+  /*
+   * Landscape contract:
+   * - normal cards target 70–78px at desktop density;
+   * - descriptions clamp to one line;
+   * - never add a decorative footer or control-number row.
+   */
+  .bw-card:not(.bw-work-order) {
+    min-block-size: var(--bw-card-target-height);
+    max-block-size: 5.25rem;
+  }
+
+  .bw-card-header,
+  .bw-card-identity,
+  .bw-card-footer,
+  .bw-card-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--bw-space-2);
+    min-width: 0;
+  }
+
+  .bw-card-header {
+    justify-content: space-between;
+  }
+
+  .bw-card-kind {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--bw-card-edge);
+    font-size: var(--bw-font-2xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-subtype-badge {
+    inline-size: 1.6rem;
+    block-size: 1.6rem;
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--bw-card-edge) 45%, var(--bw-border));
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--bw-card-edge) 7%, var(--bw-paper));
+    color: var(--bw-card-edge);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-card-name {
+    min-width: 0;
+    overflow: hidden;
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-bold);
+    line-height: var(--bw-leading-tight);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /*
+   * One randomized corporate-jargon clue line.
+   * It may hint at subtype, compatibility, or spam/junk status.
+   */
+  .bw-card-flavor {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    line-height: var(--bw-leading-ui);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bw-card-footer {
+    justify-content: space-between;
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bw-card-payout {
+    color: var(--bw-kind-task);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-card-timer[data-urgency="high"] {
+    color: var(--bw-danger);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-card-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bw-card-stats span {
+    min-width: 0;
+    border-bottom: 2px solid var(--bw-action);
+    padding-bottom: 0.1rem;
+  }
+
+  .bw-card[data-state="selected"] {
+    border-color: var(--bw-action);
+    box-shadow: var(--bw-focus-ring), var(--bw-shadow-card);
+  }
+
+  .bw-done-entry {
+    min-height: 2.8rem;
+    max-height: none;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    font-size: var(--bw-font-xs);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 07. STORAGE STACKS AND FIVE-SLOT TOKEN RAIL                                 */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.components {
+  .bw-folder-stack {
+    --bw-folder-color: var(--bw-neutral);
+    position: relative;
+    min-height: 4.65rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--bw-space-3);
+    margin-top: 0.625rem;
+    margin-bottom: var(--bw-space-2);
+    border: 1px solid var(--bw-folder-color);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-paper);
+    padding: 0.75rem 0.7rem 0.55rem;
+    box-shadow: var(--bw-shadow-stack);
+  }
+
+  .bw-folder-stack::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: -0.7rem;
+    inline-size: min(42%, 8.5rem);
+    block-size: 0.75rem;
+    border: 1px solid var(--bw-folder-color);
+    border-bottom: 0;
+    border-radius: var(--bw-radius-sm) var(--bw-radius-sm) 0 0;
+    background: var(--bw-paper);
+    clip-path: polygon(0 0, 72% 0, 82% 100%, 100% 100%, 100% 100%, 0 100%);
+  }
+
+  .bw-folder-stack[data-kind="task"] {
+    --bw-folder-color: var(--bw-kind-task);
+  }
+
+  .bw-folder-stack[data-kind="resource"] {
+    --bw-folder-color: var(--bw-kind-resource);
+  }
+
+  .bw-folder-identity {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--bw-space-2);
+  }
+
+  /*
+   * Stack cards do not repeat TASK / RESOURCE text. The kind icon, card name,
+   * Folder label, folder color, and five-slot rail already communicate identity.
+   * The rail includes the active top card first, followed by covered cards, and
+   * uses empty rectangular slots for remaining capacity. A one-card remainder
+   * must render as a normal card rather than an empty-looking folder.
+   */
+  .bw-folder-stack .bw-card-kind {
+    font-size: 0;
+  }
+
+  .bw-folder-stack .bw-card-kind .bw-icon {
+    inline-size: 1rem;
+    block-size: 1rem;
+  }
+
+  .bw-stack-slots {
+    display: grid;
+    grid-template-columns: repeat(5, 1rem);
+    gap: 0.32rem;
+    align-items: center;
+    margin-top: var(--bw-space-1);
+  }
+
+  /*
+   * Defensive rendering: extra slots are hidden, but producers must still
+   * create exactly five DOM children for correct accessible counts.
+   */
+  .bw-stack-slots > :nth-child(n + 6) {
+    display: none !important;
+  }
+
+  .bw-stack-slot {
+    position: relative;
+    inline-size: 1rem;
+    block-size: 1rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--bw-folder-color);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    font-size: 0.48rem;
+    font-weight: var(--bw-weight-bold);
+    cursor: grab;
+  }
+
+  .bw-stack-slot[data-filled="true"] {
+    background: var(--bw-folder-color);
+  }
+
+  .bw-stack-slot[data-status]::after {
+    content: attr(data-status);
+    position: absolute;
+    right: -0.28rem;
+    top: -0.36rem;
+    min-inline-size: 0.65rem;
+    block-size: 0.65rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    background: var(--bw-paper);
+    color: var(--bw-warning);
+    font-size: 0.42rem;
+    line-height: 1;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 08. TASK STACKS / WORK ORDERS                                               */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.components {
+  .bw-work-order {
+    --bw-card-edge: var(--bw-kind-task);
+    min-height: 9.4rem;
+    max-height: 12rem;
+    gap: var(--bw-space-2);
+    padding: var(--bw-space-3);
+  }
+
+  .bw-work-order-heading {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--bw-space-2);
+    align-items: start;
+  }
+
+  .bw-assignment {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  .bw-requirement-slots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-requirement-slot {
+    min-height: 3rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--bw-space-2);
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface);
+    padding: 0.4rem 0.5rem;
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  .bw-requirement-slot[data-filled="false"] {
+    border-style: dashed;
+    color: var(--bw-warning);
+    background: var(--bw-warning-soft);
+  }
+
+  .bw-work-status {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--bw-space-2);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  .bw-assist-progress {
+    min-height: var(--bw-control-height-sm);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--bw-space-2);
+    border: 0;
+    border-radius: var(--bw-radius-sm);
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .bw-progress-track {
+    position: relative;
+    block-size: 0.5rem;
+    overflow: hidden;
+    border: 1px solid #9fb7c9;
+    border-radius: 999px;
+    background: #dbe6ee;
+  }
+
+  .bw-progress-track::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    inline-size: var(--bw-progress, 0%);
+    background: var(--bw-action);
+  }
+
+  .bw-work-estimates {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .bw-work-estimate {
+    padding: 0.38rem var(--bw-space-2) 0;
+    border-left: 1px solid var(--bw-rule);
+    text-align: center;
+  }
+
+  .bw-work-estimate:first-child {
+    border-left: 0;
+  }
+
+  .bw-work-estimate span,
+  .bw-work-estimate strong {
+    display: block;
+  }
+
+  .bw-work-estimate span {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-2xs);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-work-estimate strong {
+    margin-top: 0.1rem;
+    font-size: var(--bw-font-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bw-work-order[data-state="awaiting-release"] {
+    --bw-card-edge: var(--bw-warning);
+    background: color-mix(in srgb, var(--bw-warning-soft) 45%, var(--bw-paper));
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 09. INSPECTOR / CONTEXTUAL ACTION PANEL                                     */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.components {
+  .bw-inspector {
+    min-width: 0;
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    border-left: 1px solid var(--bw-border);
+    background: var(--bw-surface);
+  }
+
+  .bw-inspector-header {
+    padding: var(--bw-space-3);
+    border-bottom: 1px solid var(--bw-border);
+    background: var(--bw-paper);
+  }
+
+  .bw-inspector-body {
+    min-height: 0;
+    padding: var(--bw-space-3);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .bw-inspector-section {
+    padding-block: var(--bw-space-3);
+    border-top: 1px solid var(--bw-rule);
+  }
+
+  .bw-inspector-section:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .bw-inspector-section > h3 {
+    margin: 0 0 var(--bw-space-2);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-employee-options {
+    display: grid;
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+  }
+
+  .bw-employee-option {
+    min-height: 2.85rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--bw-space-2);
+    border: 0;
+    border-top: 1px solid var(--bw-rule);
+    background: var(--bw-surface);
+    padding: 0.35rem 0.45rem;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .bw-employee-option:first-child {
+    border-top: 0;
+  }
+
+  .bw-employee-option:hover,
+  .bw-employee-option[data-best-fit="true"] {
+    background: var(--bw-action-soft);
+  }
+
+  .bw-employee-option-name {
+    display: block;
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-employee-option-detail {
+    display: block;
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  .bw-other-actions {
+    display: grid;
+    gap: var(--bw-space-2);
+  }
+
+  .bw-other-actions .bw-button {
+    justify-content: flex-start;
+    inline-size: 100%;
+  }
+
+  .bw-reference-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--bw-border);
+    background: var(--bw-paper);
+    padding: var(--bw-space-2);
+  }
+
+  .bw-reference-tab {
+    min-height: var(--bw-control-height);
+    border: 0;
+    border-left: 1px solid var(--bw-rule);
+    background: transparent;
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-medium);
+    cursor: pointer;
+  }
+
+  .bw-reference-tab:first-child {
+    border-left: 0;
+  }
+
+  .bw-reference-tab[aria-selected="true"] {
+    color: var(--bw-action);
+    box-shadow: inset 0 -2px 0 var(--bw-action);
+  }
+
+  /*
+   * Labels are exactly Policies, Recipes, Log.
+   * The opened panel may retain the fuller "Company log" heading.
+   * Policies means all active policies. Do not label it "Related policies."
+   */
+}
+
+/* -------------------------------------------------------------------------- */
+/* 10. NEUTRAL WORK PRODUCT REVIEW                                             */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-review-sheet {
+    display: grid;
+    gap: var(--bw-space-3);
+    background: var(--bw-paper);
+    color: var(--bw-text);
+  }
+
+  .bw-work-product-summary,
+  .bw-work-product-fields,
+  .bw-relevant-policies {
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-paper);
+    padding: var(--bw-space-3);
+  }
+
+  .bw-field-list {
+    margin: 0;
+  }
+
+  .bw-field-list > div {
+    display: grid;
+    grid-template-columns: minmax(8rem, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--bw-space-3);
+    padding: 0.35rem 0;
+    border-bottom: 1px dotted var(--bw-rule-dotted);
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-field-list dt {
+    color: var(--bw-text-muted);
+  }
+
+  .bw-field-list dd {
+    margin: 0;
+    font-weight: var(--bw-weight-medium);
+  }
+
+  .bw-policy-excerpt {
+    padding: var(--bw-space-2) 0;
+    border-bottom: 1px solid var(--bw-rule);
+  }
+
+  .bw-policy-excerpt:last-child {
+    border-bottom: 0;
+  }
+
+  .bw-policy-excerpt strong,
+  .bw-policy-excerpt span {
+    display: block;
+  }
+
+  .bw-policy-excerpt span {
+    margin-top: var(--bw-space-1);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-sm);
+    line-height: var(--bw-leading-copy);
+  }
+
+  .bw-ruling-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-ruling-action {
+    min-height: 4.25rem;
+    display: grid;
+    place-content: center;
+    gap: var(--bw-space-1);
+    border: 1px solid var(--bw-border-strong);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface);
+    color: var(--bw-text);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .bw-ruling-action strong {
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-ruling-action small {
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+  }
+
+  /*
+   * Deliberate neutrality:
+   * - no primary variant before the player chooses;
+   * - no pass/fail/blocked badges;
+   * - no recommendation box;
+   * - no color-coded connection between fields and policies.
+   */
+  .bw-review-sheet
+    :is(
+      [data-evaluation="pass"],
+      [data-evaluation="fail"],
+      [data-evaluation="blocked"],
+      .bw-recommended-ruling
+    ) {
+    color: inherit;
+    background: inherit;
+    border-color: var(--bw-border);
+  }
+
+  .bw-review-sheet .bw-recommended-ruling {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 11. ALL POLICIES LEDGER                                                     */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-policy-ledger {
+    inline-size: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background: var(--bw-paper);
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-policy-ledger th,
+  .bw-policy-ledger td {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--bw-rule);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .bw-policy-ledger th {
+    color: var(--bw-text-muted);
+    background: var(--bw-surface-subtle);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-policy-code {
+    font-family: var(--bw-font-mono);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-policy-ledger [data-change="new"]::after,
+  .bw-policy-ledger [data-change="changed"]::after {
+    display: inline-flex;
+    margin-left: var(--bw-space-1);
+    border: 1px solid currentColor;
+    border-radius: var(--bw-radius-xs);
+    padding: 0.05rem 0.25rem;
+    font-family: var(--bw-font-family);
+    font-size: var(--bw-font-2xs);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .bw-policy-ledger [data-change="new"]::after {
+    content: "New";
+    color: var(--bw-success);
+  }
+
+  .bw-policy-ledger [data-change="changed"]::after {
+    content: "Changed";
+    color: var(--bw-action);
+  }
+
+  /*
+   * Do not show affected-item counts or visually cross-link policies to cards in
+   * the All Policies reference. Those would leak review answers.
+   */
+}
+
+/* -------------------------------------------------------------------------- */
+/* 12. END-OF-SHIFT SHARED SHELL                                               */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-shift-screen {
+    min-height: min(46rem, calc(100dvh - 2rem));
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    overflow: hidden;
+    border: 1px solid var(--bw-border-strong);
+    border-radius: var(--bw-radius-lg);
+    background: var(--bw-paper);
+    box-shadow: var(--bw-shadow-modal);
+  }
+
+  .bw-shift-header,
+  .bw-shift-footer {
+    padding: var(--bw-space-3) var(--bw-space-4);
+  }
+
+  .bw-shift-header {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--bw-space-4);
+    border-bottom: 1px solid var(--bw-rule);
+  }
+
+  .bw-shift-progress {
+    color: var(--bw-navy-700);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-shift-stamp {
+    min-width: 5.5rem;
+    display: grid;
+    place-content: center;
+    gap: var(--bw-space-1);
+    border: 1px solid var(--bw-border-strong);
+    border-radius: var(--bw-radius-xs);
+    padding: var(--bw-space-2);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-align: center;
+    text-transform: uppercase;
+    transform: rotate(-1deg);
+  }
+
+  .bw-shift-body {
+    min-height: 0;
+    padding: var(--bw-space-4);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  .bw-shift-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--bw-space-2);
+    border-top: 1px solid var(--bw-rule);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 13. INVEST TODAY'S REWARD                                                   */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-invest-layout {
+    display: grid;
+    grid-template-columns:
+      minmax(17rem, 1fr)
+      minmax(13rem, 0.72fr)
+      3.5rem
+      minmax(20rem, 1.25fr);
+    gap: var(--bw-space-3);
+    align-items: stretch;
+  }
+
+  .bw-invest-or {
+    display: grid;
+    place-items: center;
+    border-inline: 1px solid var(--bw-rule);
+    color: var(--bw-navy-900);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: var(--bw-font-2xl);
+    font-weight: var(--bw-weight-bold);
+  }
+
+  .bw-system-tree,
+  .bw-upgrade-explainer,
+  .bw-development-shop {
+    min-width: 0;
+  }
+
+  .bw-system-row {
+    min-height: 3.35rem;
+    display: grid;
+    grid-template-columns: minmax(7rem, 0.9fr) auto minmax(8rem, 1fr) auto;
+    align-items: center;
+    gap: var(--bw-space-2);
+    border-bottom: 1px solid var(--bw-rule);
+    padding: var(--bw-space-2) 0;
+  }
+
+  .bw-system-row[data-selected="true"] {
+    margin-inline: calc(var(--bw-space-2) * -1);
+    border: 1px solid var(--bw-action);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-action-soft);
+    padding-inline: var(--bw-space-2);
+  }
+
+  .bw-upgrade-explainer {
+    border-inline: 1px solid var(--bw-rule);
+    padding-inline: var(--bw-space-3);
+  }
+
+  .bw-development-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-development-card {
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface);
+    padding: var(--bw-space-2);
+  }
+
+  .bw-stat-purchase {
+    min-height: 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: var(--bw-space-2);
+    align-items: center;
+    border-top: 1px solid var(--bw-rule);
+    font-size: var(--bw-font-xs);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 14. OVERNIGHT ACTION                                                       */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-overnight-rule {
+    border: 1px solid #e2c79e;
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-warning-soft);
+    padding: var(--bw-space-2) var(--bw-space-3);
+    color: #6f4c19;
+    font-size: var(--bw-font-sm);
+    font-weight: var(--bw-weight-medium);
+    text-align: center;
+  }
+
+  .bw-overnight-choices {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bw-space-3);
+  }
+
+  .bw-overnight-choice {
+    min-height: 11.5rem;
+    display: grid;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    gap: var(--bw-space-2);
+    border: 1px solid var(--bw-border-strong);
+    border-top: 3px solid var(--bw-warning);
+    border-radius: var(--bw-radius-md);
+    background: var(--bw-paper);
+    padding: var(--bw-space-3);
+  }
+
+  .bw-choice-icon {
+    inline-size: 3.25rem;
+    block-size: 3.25rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    color: var(--bw-warning);
+    background: var(--bw-warning-soft);
+  }
+
+  .bw-effect-table {
+    display: grid;
+    gap: var(--bw-space-1);
+    padding-top: var(--bw-space-2);
+    border-top: 1px solid var(--bw-rule);
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-effect-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--bw-space-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .bw-or-divider {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--bw-space-3);
+    color: var(--bw-navy-900);
+    font-weight: var(--bw-weight-bold);
+    text-transform: uppercase;
+  }
+
+  .bw-or-divider::before,
+  .bw-or-divider::after {
+    content: "";
+    block-size: 1px;
+    background: var(--bw-rule);
+  }
+
+  /*
+   * Exactly one randomized recruit card appears per overnight screen.
+   */
+  .bw-recruit-offer {
+    max-width: 40rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--bw-space-3);
+    align-items: center;
+    margin-inline: auto;
+    border: 1px solid var(--bw-resource);
+    border-radius: var(--bw-radius-md);
+    background: var(--bw-resource-soft);
+    padding: var(--bw-space-3);
+  }
+
+  .bw-recruit-offer ~ .bw-recruit-offer {
+    display: none;
+  }
+
+  .bw-supporting-evidence {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-evidence-stat {
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface-subtle);
+    padding: var(--bw-space-2);
+    text-align: center;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 15. MORNING BRIEF                                                          */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-morning-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 1.2rem + 2vw, 2.75rem);
+    font-weight: var(--bw-weight-bold);
+    line-height: 1;
+  }
+
+  .bw-morning-title strong {
+    letter-spacing: 0.035em;
+  }
+
+  .bw-overnight-deltas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-delta-stat {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--bw-space-2);
+    border-right: 1px solid var(--bw-rule);
+    padding: var(--bw-space-2);
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-delta-stat:last-child {
+    border-right: 0;
+  }
+
+  .bw-operating-plan-reserved {
+    min-height: 10rem;
+    display: grid;
+    place-items: center;
+    border: 1px dashed var(--bw-border-strong);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-paper-warm);
+    color: var(--bw-text-faint);
+    text-align: center;
+  }
+
+  .bw-operating-plan-reserved::before {
+    content: "Today's operating plan";
+    position: absolute;
+    align-self: start;
+    justify-self: start;
+    margin: var(--bw-space-3);
+    color: var(--bw-text-muted);
+    font-size: var(--bw-font-xs);
+    font-weight: var(--bw-weight-bold);
+    letter-spacing: var(--bw-tracking-label);
+    text-transform: uppercase;
+  }
+
+  .bw-policy-changes {
+    display: grid;
+    gap: var(--bw-space-2);
+  }
+
+  .bw-policy-change {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--bw-space-2);
+    border: 1px solid var(--bw-border);
+    border-radius: var(--bw-radius-sm);
+    background: var(--bw-surface);
+    padding: var(--bw-space-2) var(--bw-space-3);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 16. TERMINATED RUN                                                         */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.screens {
+  .bw-run-end[data-result="terminated"] {
+    --bw-run-accent: var(--bw-danger);
+    overflow: hidden;
+    border: 1px solid #b94d54;
+    border-radius: var(--bw-radius-lg);
+    background: var(--bw-paper);
+    box-shadow: var(--bw-shadow-modal);
+  }
+
+  .bw-terminal-hero {
+    position: relative;
+    padding: var(--bw-space-5);
+    color: #fff;
+    background: linear-gradient(135deg, #6f151b, #8d1e25);
+  }
+
+  .bw-terminal-hero::after {
+    content: "TERMINATED";
+    position: absolute;
+    right: var(--bw-space-4);
+    bottom: -0.25rem;
+    color: rgb(255 255 255 / 8%);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    pointer-events: none;
+  }
+
+  .bw-terminal-cause,
+  .bw-what-you-keep,
+  .bw-failure-drivers,
+  .bw-key-lesson {
+    margin: var(--bw-space-3) var(--bw-space-4);
+    border: 1px solid #e1c0c3;
+    border-radius: var(--bw-radius-sm);
+    background: #fffafa;
+    padding: var(--bw-space-3);
+  }
+
+  .bw-keep-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bw-space-2);
+  }
+
+  .bw-keep-stat {
+    padding: var(--bw-space-2);
+    border-left: 1px solid var(--bw-rule);
+    text-align: center;
+  }
+
+  .bw-keep-stat:first-child {
+    border-left: 0;
+  }
+
+  .bw-failure-driver-list {
+    counter-reset: driver;
+    display: grid;
+    gap: var(--bw-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bw-failure-driver-list > li {
+    counter-increment: driver;
+    display: grid;
+    grid-template-columns: auto auto minmax(2rem, 1fr) auto;
+    gap: var(--bw-space-2);
+    align-items: baseline;
+    font-size: var(--bw-font-sm);
+  }
+
+  .bw-failure-driver-list > li::before {
+    content: counter(driver);
+    color: var(--bw-text-muted);
+  }
+
+  .bw-failure-driver-list > li::after {
+    content: "";
+    grid-column: 3;
+    border-bottom: 1px dotted var(--bw-rule-dotted);
+  }
+
+  /*
+   * Only the top three failure drivers render in the summary. The full run log
+   * owns the complete incident history.
+   */
+  .bw-failure-driver-list > :nth-child(n + 4) {
+    display: none;
+  }
+
+  .bw-run-end-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--bw-space-2);
+    padding: var(--bw-space-3) var(--bw-space-4);
+    border-top: 1px solid #e1c0c3;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 17. STATE CONTRACTS                                                        */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.states {
+  [data-state="urgent"] {
+    --bw-state-color: var(--bw-danger);
+  }
+
+  [data-state="processing"] {
+    --bw-state-color: var(--bw-action);
+  }
+
+  [data-state="sweet-spot"] {
+    --bw-state-color: var(--bw-success);
+  }
+
+  [data-state="underloaded"],
+  [data-state="needs-input"],
+  [data-state="awaiting-release"] {
+    --bw-state-color: var(--bw-warning);
+  }
+
+  [data-state="stressed"],
+  [data-state="review-required"] {
+    --bw-state-color: var(--bw-danger);
+  }
+
+  /*
+   * Every status requires visible text. This pseudo-element is a fallback,
+   * not a substitute for an authored accessible label.
+   */
+  [data-state][data-state-label]::after {
+    content: attr(data-state-label);
+    color: var(--bw-state-color, var(--bw-neutral));
+  }
+
+  .bw-stamp {
+    display: inline-flex;
+    border: 2px solid currentColor;
+    border-radius: var(--bw-radius-xs);
+    padding: 0.18rem 0.4rem;
+    font-size: var(--bw-font-xs);
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-transform: uppercase;
+    transform: rotate(-2deg);
+  }
+
+  /*
+   * Stamps are for completed outcomes and official phase labels.
+   * Pre-decision Review uses neutral tokens, not APPROVED/REJECTED stamps.
+   */
+}
+
+/* -------------------------------------------------------------------------- */
+/* 18. RESPONSIVE CONTRACT                                                     */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.responsive {
+  @media (max-width: 87.5rem) {
+    :root {
+      --bw-inspector-width: 20rem;
+    }
+
+    .bw-header-metrics {
+      grid-template-columns: 0.9fr 0.9fr 1.4fr 1fr 0.85fr;
+    }
+
+    .bw-board {
+      grid-template-columns:
+        minmax(16rem, 1.4fr)
+        minmax(12.75rem, 0.95fr)
+        minmax(15rem, 1.15fr)
+        minmax(13.5rem, 1fr)
+        minmax(8rem, 0.52fr);
+    }
+  }
+
+  @media (max-width: 70rem) {
+    .bw-app-shell {
+      overflow: auto;
+    }
+
+    .bw-header-primary {
+      grid-template-columns: minmax(12rem, 1fr) auto;
+    }
+
+    .bw-day-controls {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .bw-header-metrics {
+      overflow-x: auto;
+      grid-template-columns: 10rem 10rem 15rem 11rem 11rem;
+    }
+
+    .bw-workspace {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .bw-inspector {
+      position: fixed;
+      z-index: 50;
+      inset: var(--bw-space-3) var(--bw-space-3) var(--bw-space-3) auto;
+      inline-size: min(var(--bw-inspector-width), calc(100vw - 1.5rem));
+      box-shadow: var(--bw-shadow-modal);
+      transform: translateX(calc(100% + var(--bw-space-4)));
+      transition: transform 160ms ease;
+    }
+
+    .bw-inspector[data-open="true"] {
+      transform: translateX(0);
+    }
+
+    .bw-invest-layout {
+      grid-template-columns: minmax(17rem, 1fr) minmax(13rem, 0.8fr);
+    }
+
+    .bw-invest-or {
+      grid-column: 1 / -1;
+      min-height: 2.5rem;
+      border: 0;
+      border-block: 1px solid var(--bw-rule);
+    }
+
+    .bw-development-shop {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 56.25rem) {
+    .bw-header-primary {
+      grid-template-columns: 1fr;
+    }
+
+    .bw-run-controls,
+    .bw-day-controls {
+      justify-self: stretch;
+      flex-wrap: wrap;
+    }
+
+    .bw-next-action-copy {
+      display: grid;
+      gap: var(--bw-space-1);
+    }
+
+    .bw-board {
+      scroll-snap-type: x proximity;
+      grid-template-columns:
+        minmax(17rem, 78vw)
+        minmax(14rem, 72vw)
+        minmax(16rem, 78vw)
+        minmax(15rem, 75vw)
+        minmax(10rem, 52vw);
+    }
+
+    .bw-lane {
+      scroll-snap-align: start;
+    }
+
+    .bw-ruling-actions,
+    .bw-overnight-choices,
+    .bw-supporting-evidence,
+    .bw-overnight-deltas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .bw-recruit-offer {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .bw-recruit-cost {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 35rem) {
+    :root {
+      --bw-font-md: 0.875rem;
+      --bw-control-height-sm: 2.5rem;
+      --bw-control-height: 2.75rem;
+    }
+
+    .bw-brand {
+      font-size: var(--bw-font-lg);
+    }
+
+    .bw-next-action {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .bw-board {
+      grid-template-columns: calc(100vw - 2rem);
+    }
+
+    .bw-board > .bw-lane:not([data-current="true"]) {
+      display: none;
+    }
+
+    .bw-ruling-actions,
+    .bw-overnight-choices,
+    .bw-supporting-evidence,
+    .bw-overnight-deltas,
+    .bw-development-grid,
+    .bw-keep-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .bw-requirement-slots {
+      grid-template-columns: 1fr;
+    }
+
+    .bw-reference-tab {
+      font-size: var(--bw-font-sm);
+    }
+
+    .bw-run-end-actions {
+      flex-direction: column;
+    }
+
+    .bw-run-end-actions .bw-button {
+      inline-size: 100%;
+    }
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* 19. ACCESSIBILITY AND MOTION                                                */
+/* -------------------------------------------------------------------------- */
+
+@layer busywork.accessibility {
+  .bw-app :is(button, [href], [tabindex]):focus-visible {
+    outline: 2px solid var(--bw-action);
+    outline-offset: 2px;
+    box-shadow: var(--bw-focus-ring);
+  }
+
+  .bw-sr-only {
+    position: absolute !important;
+    inline-size: 1px !important;
+    block-size: 1px !important;
+    overflow: hidden !important;
+    clip: rect(0 0 0 0) !important;
+    white-space: nowrap !important;
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --bw-border: #8796a4;
+      --bw-border-strong: #5f7180;
+      --bw-text-muted: #455764;
+    }
+
+    .bw-card,
+    .bw-folder-stack,
+    .bw-lane,
+    .bw-button {
+      box-shadow: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bw-app *,
+    .bw-app *::before,
+    .bw-app *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .bw-button,
+    .bw-employee-option,
+    .bw-reference-tab,
+    .bw-assist-progress {
+      min-height: var(--bw-control-height-touch);
+    }
+  }
+}

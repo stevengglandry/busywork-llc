@@ -540,7 +540,7 @@ Training Budget gives each future Juiced Hire one additional seeded pip. Staff-s
 - Each deterministic ten-card arrival bag contains three distinct junk templates: three draws from the 12-card junk pool, or 30% of ordinary pulls.
 - Junk is internally marked as a distraction but visually uses its task/resource disguise. Each template has registered textual clue IDs and one of two deterministic print-glitch families.
 - Correctly deleting junk records its clue IDs permanently and advances the daily phishing threshold. Deleting legitimate cards never advances it.
-- The base threshold is three correct deletions. Persistent Security Liaison lowers it to two; Security Awareness rank 1 lowers it by one more, never below one.
+- The base threshold is four correct deletions. Persistent Security Liaison lowers it to two; Security Awareness rank 1 lowers the active threshold by one more, never below one.
 - Reaching the threshold produces exactly one BUSYWORK-IT reward notice for that day in the slot freed by the triggering deletion. Deleting the notice awards $125 and one persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200.
 - Security Awareness rank 3 also lowers Audit Chance by 2 for each correctly deleted junk card.
 - A reward notice displaced by Inbox overflow is forfeited. Partial junk progress resets the next morning.
@@ -558,11 +558,11 @@ The header projection is a task-performance view rather than a complete Cash led
 | Currency | Earned from | Card-system use |
 |---|---|---|
 | Cash | Starting funds, approved task payouts, phishing rewards | Hiring, per-employee stat pips, check-ins, operating choices, payroll, and penalties. |
-| Run Process Points | One after each successful daily close | Invest immediately in one of five three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, or nightly Audit Chance reduction. Unspent points and purchased ranks expire when the run ends. |
+| Run Process Points | One after each successful daily close | Invest immediately in one of six three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, nightly Audit Chance reduction, or Board Confidence restoration. Unspent points and purchased ranks expire when the run ends. |
 | Process XP | Once whenever a run ends, including an early failure: `5 + floor(correct rulings / 3) − incorrect rulings − floor(expired tasks / 2)`, minimum 0 | Persistent Inbox Shelf, Known Sender Registry, Training Budget, and Better Benefits upgrades. |
 | Compliance Tokens | One per claimed BUSYWORK-IT reward after deleting the daily junk threshold and then deleting the delivered reward notice | Buy Security Liaison or Employee Assistance for two tokens after prerequisites. A held token is also automatically consumed if a failed audit would newly cause Insolvency, Board Confidence Lost, or Critical Audit Failure; Cash/Confidence are stabilized at 1 where needed, but other audit penalties remain. |
 
-The five daily Run Process Point choices are fixed for the run:
+The six daily Run Process Point choices are fixed for the run:
 
 | Specialization | Rank 1 / 2 / 3 bonus |
 |---|---|
@@ -571,6 +571,7 @@ The five daily Run Process Point choices are fixed for the run:
 | Revenue Assurance | Approved task payouts +5% / +10% / +15% |
 | Restorative Controls | Overnight employee recovery +3 / +6 / +9 |
 | Audit Dampening | Nightly Audit Chance −5 / −10 / −15 |
+| Grease the Wheels | Immediately restores Board Confidence +5 / +10 / +15 total, capped at 100 |
 
 The between-quarter persistent branches are:
 
@@ -578,7 +579,7 @@ The between-quarter persistent branches are:
 |---|---|---|
 | Inbox Shelf | 4 Process XP | +1 Inbox capacity. |
 | Known Sender Registry | 5 Process XP; requires Inbox Shelf | Previously discovered junk patterns gain a faint source-line clue. |
-| Security Liaison | 2 Compliance Tokens; requires Known Sender Registry | Base phishing threshold becomes two instead of three. |
+| Security Liaison | 2 Compliance Tokens; requires Known Sender Registry | Base phishing threshold becomes two instead of four. |
 | Training Budget | 5 Process XP | Every future Juiced Hire gains one additional seeded stat pip. |
 | Better Benefits | 5 Process XP; requires Training Budget | Backlog stress recovery +10%. |
 | Employee Assistance | 2 Compliance Tokens; requires Better Benefits | First private Manager check-in each day costs $0. |
@@ -640,10 +641,11 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 | Wait for an arrival | The next seeded card enters Inbox when the visible countdown reaches zero. | The automatic interval scales by day. If Inbox is full, the automatic arrival displaces the oldest stack and applies the documented overflow consequences. |
 | Select **Pull next item** | The next seeded card enters immediately and the automatic-arrival clock resets. | Disabled while Inbox is full. Each ten-card bag preserves the 30% task, 40% resource, and 30% junk composition above. |
 | Click a visible card | Opens that card or stack in the Inspector. | Review output arriving later does not replace this selection. |
+| Drop a card or stack into a visible gap in its current lane | Reorders that entire lane item at the chosen position. | Folder contents, active job state, employee rhythms, timers, and unrelated runtime workflows are unchanged. |
 | Drag a visible top card to empty lane space | Extracts that card into a new stack in the destination lane. | Lane capacity and movement restrictions still apply. |
 | Drag one stack onto another | Merges the complete source stack atomically. | The result must contain no more than five cards. Matching resources or matching tasks may form homogeneous storage piles; otherwise a workflow stack accepts at most one employee, task-like card, document, and resource. The exact two-resource Juiced recipe is the only mixed-resource exception. Active and locked workflows reject merges. |
-| Click a covered-card pip | Opens that specific buried card in the Inspector. | The top card has no pip because it is already visible. |
-| Drag a covered-card pip | Pulls only that buried card into its own stack. | Its paused deadline resumes only when it becomes a physical top card. Pip shape, abbreviation, color, and decoration identify the referent and relevant timer, Juiced, low-value, glitch, or employee state. |
+| Click a folder token or covered-card token | Opens that represented card in the Inspector. | Homogeneous folders show every card top-first in a five-slot rail; mixed stacks show only genuinely covered cards. |
+| Drag a folder token or covered-card token | Pulls only that represented card into its own stack. | A covered card's paused deadline resumes only when it becomes a physical top card. Rectangular token shape, abbreviation, color, and decoration identify the referent and relevant timer, Juiced, low-value, glitch, or employee state. A two-card folder dissolves into one ordinary card when either card is removed. |
 | Drag an In Progress resource chip | Removes only that staged resource from the composite workflow. | In Progress does not show covered pips because the employee, task, and resources are represented directly. |
 | Drag an assigned employee header to Backlog | Cancels active work, dismantles the composite workflow, and releases every card into its own stack. | The stack under the pointer is ignored, so release can never combine the employee or task with it. Backlog must have room for the employee; each remaining card fills another Backlog slot, then an Inbox slot, or is deleted with its normal consequences when both lanes are full. |
 | Complete a workflow | Consumes every staged resource, sends the document to Review, and leaves the employee in In Progress. | No resource is retained. A matching disguised junk input is accepted as supplied but guarantees Source Integrity Failure. |
@@ -662,10 +664,10 @@ Card faces pair a stable type color and shape with a specific abbreviation such 
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
 - Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels. Every recruit is a Juiced Hire: at least two total stat pips above the opening same-role worker where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. Training Budget adds one further pip.
-- The end-of-day Process Reward talent-tree page sells one permanent base-stat pip at a time to a selected employee. Each stat caps at six; the price depends on the stat, its current value, and the employee’s total prior purchases.
+- The End of Shift Process Award page places the six Run Systems beside a read-only selected-upgrade explanation, a strong `OR` divider, and the Employee Development shop. It sells one permanent base-stat pip at a time to a selected employee. Each stat caps at six; the price depends on the stat, its current value, and the employee’s total prior purchases.
 - Standalone employee cards always display their current Accuracy, Speed, and Resilience values in a compact three-column strip; no hover is required.
 - Matching resource cards and matching task cards can share homogeneous storage piles. Other stacks allow at most one employee, task-like card, document, and resource card; resource-disguised junk occupies the resource slot, and a Juiced task may carry its exact two-resource recipe pair. Compatible stacks can be combined atomically up to five total cards. Active or locked stacks cannot be merged, and legacy incompatible stacks are split when loaded.
-- Only the physical top card advances its deadline. Genuinely covered cards use compact card-shaped identity/status pips with name-specific abbreviations while their timers pause; each pip can be clicked for inspection or dragged to pull that individual card out. Composite In Progress workflows omit the pips because all participating cards are already represented directly.
+- Only the physical top card advances its deadline. Homogeneous folders use a compact filing-folder face and five rectangular slots containing every card top-first, including an active-state marker on the first token; unused slots remain empty. The folder appearance disappears when only one card remains. Mixed stacks use compact identity/status tokens only for genuinely covered cards while their timers pause. Every populated token can be clicked for inspection or dragged to pull that individual card out. Composite In Progress workflows omit the tokens because all participating cards are already represented directly.
 - The opening Data Entry Request and every legitimate card/action that can advance it are eligible for the first-workflow sparkle guide.
 - Work products entering Review do not replace the current card or panel selection.
 - Policy, progression, and operating systems are summarized here only where they change card generation, card state, workflow outcomes, or card-facing decisions; they are not counted as card templates.
