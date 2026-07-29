@@ -10,10 +10,10 @@ This expansion adds a mail-triage pressure loop, makes the Manager the source of
 
 ### Current shipped extensions
 
-- The corporate org-chart/Gantt roadmap is now the authoritative overnight/progression surface. It provides a three-choice starting location, adjacent route movement, real 3/5/10-minute days, route-specific events, and a Day 5 Board Review gate for permanent purchases.
+- The corporate org-chart/Gantt roadmap is now the authoritative location surface. It provides a three-choice starting location, adjacent route movement, real 3/5/10-minute days, route-specific events, and a final Day 5 Board Review.
 - Roadmap inspectors separate route setup from one stacked end-of-day payout list. Payouts apply exactly once after the workday and before the nightly audit.
 - The five Liability bands are Consent Decree, Cash Fine, Compliance Check, Bad Vibes, and Termination. Level 3 distributes four unpaid Compliance Check tasks through the next day; missing or deleting one creates a Liability.
-- Every end of day reached banks +1 persistent Process XP and +1 run-only Talent Point. Workshops spend Talent Points on employee stats. Long-day completion and phishing rewards grant Compliance Tokens; every held token reduces Audit Chance by 5 points without being consumed.
+- Every survived day close banks +1 persistent XP and opens the Talent Tree as overnight phase 1, where XP can be spent immediately on permanent upgrades. Completing an Employee Development Workshop location inserts a separate Cash-funded employee stat shop after the tree for that night. Long-day completion and claimed five-junk phishing rewards grant Compliance Tokens; every held token reduces Audit Chance by 5 points and offsets one Liability before finding chance and Severity are calculated, without being consumed.
 - The permanent upgrade office has seven visible, testable effects: stronger spam glitches (including covered tokens), +1 In Progress, +2 Inbox, 20% junk intake, +3 Review, six-card folders, and automatic Manager stress targeting. Browser storage persists them on that device until Settings → Reset all data.
 - The active policy pool contains 34 controls, including four always-applicable purchase controls plus ten later corporate controls for payout floors/increments, Net 45 terms, record normalization, Revenue Operations sourcing, stress ceilings, and specialist-only output.
 - Ordinary arrivals now include Approve Purchase Request. Accountant + Receipt produces a Review document with Item Description, Reason, Country of Origin, and Compliance Paperwork Filed.
@@ -270,7 +270,7 @@ game.phishing = {
 Rules:
 
 1. Only correctly deleting `distractionType === 'junk'` increments `junkDeletedToday`.
-2. The first three correct junk deletions each day trigger exactly one phishing reward email for that day.
+2. The first five correct junk deletions each day trigger exactly one phishing reward email for that day.
 3. Deliver the email immediately into the Inbox slot freed by deleting the third junk card, so a full Inbox cannot hide or delay the reward.
 4. The visible sender is `BUSYWORK-IT`.
 5. Body copy: `Congratulations for passing the company phishing test.`
@@ -283,7 +283,7 @@ Rules:
 
 The reward toast should be satisfyingly explicit: `PHISHING TEST PASSED · Compliance award +$125`.
 
-The shipped reward grants one persistent `Compliance Token` in addition to Cash. Each held token automatically subtracts 5 percentage points from effective nightly Audit Chance and is not consumed.
+The shipped reward grants one persistent `Compliance Token` in addition to Cash after five correct JUNK SPAM deletions in one day. Each held token automatically subtracts 5 percentage points from effective nightly Audit Chance, offsets one Liability before finding chance and Severity are calculated, and is not consumed.
 
 ---
 
@@ -522,17 +522,16 @@ The shipped progression system is **Process Maturity**: the player converts dail
 ### 12.1 Three progression horizons
 
 1. **During a day:** cash projection, junk-deletion streak, employee Stress, preferred workload, and active work.
-2. **Between days:** one progression receipt followed by one connected corporate-roadmap destination. Employee development, hiring, and special events appear only when the chosen location provides them.
-3. **Between quarters:** persistent Process XP, Compliance Tokens, and purchased office upgrades stored on that browser/device.
+2. **Between days:** a guaranteed phase-1 Talent Tree followed by any completed-location reward and one connected corporate-roadmap destination. Employee development, hiring, and special events appear only when the completed location provides them.
+3. **Between quarters:** persistent XP, Compliance Tokens, and purchased Talent Tree upgrades stored on that browser/device.
 
 ### 12.2 Recommended currencies
 
-- `Cash`: run currency; pays costs and hiring.
-- `Talent Points`: +1 at every end of day reached; spend only at Employee Development Workshop nodes on a stat pip for a current employee. They expire with the run.
-- `Process XP`: +1 banked at every end of day reached; spend on permanent upgrades only after completing the Day 5 Board Review.
-- `Compliance Tokens`: earned from claimed phishing-test rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token reduces Audit Chance by 5 points and is not consumed.
+- `Cash`: run currency; pays costs, hiring, and current-employee stat pips in the one-night shop inserted after a completed Employee Development Workshop day.
+- `XP`: +1 banked at every survived day close; spend on permanent upgrades in that night's guaranteed Talent Tree or save for a later night.
+- `Compliance Tokens`: earned from claimed five-junk phishing-test rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token reduces Audit Chance by 5 points and offsets one Liability for finding chance and Severity; it is not consumed.
 
-Cash and Talent Points are run resources. Process XP, Compliance Tokens, and purchased upgrades persist in device-local browser `localStorage` until **Reset all data** is confirmed in Settings.
+Cash and employee stat gains are run resources. XP, Compliance Tokens, and purchased Talent Tree upgrades persist in device-local browser `localStorage` until **Reset all data** is confirmed in Settings.
 
 ### 12.3 Permanent upgrade office
 
@@ -553,7 +552,7 @@ These upgrades make future quarters easier and more expressive without auto-play
 The Slay the Spire/Darkest Dungeon-style route is presented as a deliberately boring corporate org chart/Gantt chart. The player chooses one of three starting workstreams, then selects only the same or an adjacent destination at the final overnight phase. All paths converge on the Day 5 Quarterly Board Review.
 
 - Short, medium, and long bars create real 3-, 5-, and 10-minute days. Completing a long day grants +1 Compliance Token.
-- The progression receipt and Talent Point award are guaranteed every night. Employee Development Workshop, new hires, temporary staff, and other events are not separate nightly menus; they appear only at their route locations.
+- The +1 XP award and interactive Talent Tree are guaranteed as phase 1 of every survived night's rewards. Employee Development Workshop adds its Cash stat shop only after completing that location; new hires, temporary staff, and other events likewise appear only through their route locations.
 - Vendor Exception creates an Accounting-heavy intake day and one random non-Manager callout. Other nodes can create staffing or task-mix side effects.
 
 | Route program | Current location effect |
@@ -562,7 +561,7 @@ The Slay the Spire/Darkest Dungeon-style route is presented as a deliberately bo
 | Targeted Stress Reset | Reset the most stressed available worker to 0 stress. |
 | Report Defect | +2 Compliance Tokens; Board Confidence −5, plus the long-day token. |
 | Accounting Surge | Accounting work dominates intake; one random non-Manager calls out sick. |
-| Employee Development | Spend saved Talent Points on a current employee's Accuracy, Speed, or Resilience. |
+| Employee Development | After completing the location, spend Cash on current-employee Accuracy, Speed, or Resilience pips in a one-night shop after the Talent Tree. |
 | Grease the Wheels | Remove one open Liability; Board Confidence −5, plus the long-day token. |
 | Stage a Demo | Staff Morale +10; Board Confidence +15; +1 Liability, plus the long-day token. |
 | Two New Interns | Add two Interns at no recruiting cost if Backlog has room; normal payroll still applies. |
@@ -699,12 +698,12 @@ Exit criteria: telemetry does not trigger board rerenders and remains bounded af
 
 ### Phase 7 — Progression vertical slice
 
-- Completed: add +1 Process XP and +1 Talent Point at each end of day reached.
-- Completed: add persistent Compliance Tokens with a visible −5 Audit Chance effect per held token.
+- Completed: add +1 persistent XP and the interactive Talent Tree at each survived day close.
+- Completed: add persistent Compliance Tokens with visible −5 Audit Chance and −1 effective Liability effects per held token.
 - Completed: replace the overnight catalog with a connected 3/5/10-minute corporate roadmap and location-gated rewards.
-- Completed: add seven permanent upgrades, Day 5 purchase gating, device-local persistence, and Settings reset.
+- Completed: add seven permanent upgrades, nightly Talent Tree purchasing, device-local persistence, and Settings reset.
 
-Exit criteria: a completed quarter can purchase an upgrade that materially changes the next quarter without bypassing mail triage; early failure retains already-earned XP and tokens but cannot purchase.
+Exit criteria: a survived day can purchase an upgrade that materially changes the current or next quarter without bypassing mail triage; early failure retains already-earned XP, tokens, and prior upgrades.
 
 ---
 
@@ -770,11 +769,11 @@ Playtesters should be asked two direct questions:
 1. **Faster arrivals:** every day draws all item types more frequently than the current schedule without unbounded deck exhaustion.
 2. **Junk class:** junk is internally distinct, visually disguised, seeded, and identifiable through curated subtle errors.
 3. **Trash can:** Inbox displays a labeled `DELETE` drop target with drag and keyboard support.
-4. **Phishing reward:** the first three correct junk deletions produce one BUSYWORK-IT email on both Day 1 and Day 2, and deleting that email grants a noteworthy reward.
+4. **Phishing reward:** the first five correct junk deletions produce one BUSYWORK-IT email each day, and deleting that email grants Cash and one Compliance Token.
 5. **Delete anything:** unlocked legitimate cards and employees can be removed with explicit, deterministic consequences.
 6. **Manager healer:** private check-ins require the Manager and target worker to be in Backlog and affect both stress states.
 7. **Policy variety:** at least 20 policies exist and a conflict-free seeded subset is sampled each day.
-8. **Incremental direction:** Talent Points, Process XP, Compliance Tokens, the corporate roadmap, and seven permanent upgrades have visible earning, spending, persistence, and guardrail rules.
+8. **Incremental direction:** XP, Cash-funded Workshop development, Compliance Tokens, the corporate roadmap, and seven permanent upgrades have visible earning, spending, persistence, and guardrail rules.
 9. **Cash charts:** bounded task-revenue projection events appear in the header, nightly close, and quarterly review; idle time and non-task cash changes add no graph points.
 10. **Worker stats:** Accuracy, Speed, and Resilience display as 1–6 pips with complete high- and low-extreme abilities.
 

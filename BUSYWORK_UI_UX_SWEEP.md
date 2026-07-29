@@ -16,9 +16,9 @@ Implemented in `index.html`:
 - Filing-folder treatment for homogeneous task/resource piles. The four-slot rectangular rail represents covered cards only, nearest to the top first; the full-size folder face represents the active top card, unused capacity stays visibly empty, and the folder becomes a normal card when only one item remains.
 - Drag insertion targets between lane items. Reordering moves a whole card/stack without recreating it or disturbing active jobs, employee Stress state, card deadlines, or unrelated runtime timers.
 - Cleaner Inspector copy and navigation, including the compact `Log` tab, assignment choices, review ruling heading, and active-workflow employee/stress band.
-- Updated phishing reward baseline of four correctly deleted junk cards.
+- Updated phishing reward baseline of five correctly deleted JUNK SPAM cards.
 - The roadmap-based **Grease the Wheels** reward removes one open Liability and costs five Board Confidence.
-- The approved Process Award composition: `End of Shift` crescent stamp, budget rail, directly actionable Run Systems, `&` divider, and Employee Development shop in two equal panels. It fits the 1280×720 baseline without modal scrolling.
+- The overnight progression flow now separates the guaranteed phase-1 Talent Tree from the location-gated Employee Development shop. The Talent Tree spends persistent XP every survived night; completing the Workshop inserts a Cash-funded stat shop as the following phase.
 - Operating Close retains its existing company, cash, action, and recruitment content in three equal panels; a circular `OR` divider now makes the action-versus-hire choice explicit.
 - The third page uses the fixed `Morning Brief` title and three equal read-only panels while retaining the existing day-specific briefing sentence and data. Its first panel is `Changes overnight`, showing signed Cash, Staff Morale, Audit Chance, and Board Confidence deltas from the prior close.
 - Capability-based mobile detection now uses coarse-pointer support and the short viewport dimension rather than a user-agent string. Portrait phones receive a landscape prompt that safely pauses and restores a running workday, with an explicit continue-in-portrait escape hatch.
@@ -92,10 +92,11 @@ The recommended direction is **“regional operations console”: readable 12–
 | Workday | Paused | Stop runtime while preserving context | board veil, pause card |
 | Workday | Settings | Adjust display and storage behavior | compact, motion, contrast, reset |
 | Workday | Toasts | Report feedback and incidents | ordinary, harmful, and security notices |
-| Night 1 | Progression receipt | Understand the guaranteed awards | +1 Process XP, +1 Talent Point, long-day Compliance Token |
-| Night 2 | Corporate roadmap | Choose one connected next-day location | duration, setup, payout, development/hire/event access |
-| Night 3 | Morning briefing | Understand the opening state | company position, operating brief, active policies |
-| Run end | Quarterly review | Summarize a successful run and spend Process XP | company position, charts, permanent upgrades |
+| Night 1 | Talent Tree | Understand the guaranteed award and spend or save | +1 XP, permanent upgrades, long-day Compliance Token |
+| Night 2, when earned | Employee Development | Improve current employees | Cash-funded stat pips after completing the Workshop location |
+| Next phase | Corporate roadmap | Choose one connected next-day location | duration, setup, payout, development/hire/event access |
+| Final phase | Morning briefing | Understand the opening state | company position, operating brief, active policies |
+| Run end | Quarterly review | Summarize a successful run | company position, charts, retained permanent upgrades |
 | Run end | Terminated run | Explain failure and retained progress | terminal cause, factors, incidents, carryover |
 
 ## Cross-system findings
@@ -494,41 +495,31 @@ Improve it by making each step answer one question:
 
 The current progress pips should remain. Add short future labels on desktop and keep the compact `2 of 3` treatment on smaller layouts.
 
-## Night 1: Progression receipt
+## Night 1: Talent Tree
 
 ### Current strengths
 
-- Process XP, Talent Points, and Compliance Tokens are clearly distinguished.
-- The receipt states the exact +1 XP and +1 Talent Point awards and any long-day token.
-- It explains that Talent Points wait for Employee Development Workshop nodes.
-- It explains that Process XP waits for a successful Day 5 Board Review.
+- XP and Compliance Tokens are clearly distinguished.
+- The receipt states the exact +1 XP award and any long-day token.
+- The permanent Talent Tree is directly actionable after every survived day.
+- It explains that Employee Development is a separate Cash shop earned only by completing its roadmap location.
 
-### Current problems
+### Implemented structure
 
-- Two dense catalogs are placed side by side, requiring broad scanning.
-- Every upgrade row repeats `Next pip` and `Invest 1`.
-- Employee cards repeat three full purchase buttons, producing twelve equal blue calls to action.
-- The new sixth process option increases left-column density.
-- Benefits are legible only at very small sizes.
-
-### Approved and implemented alternative
-
-Use a simultaneous decision workspace with a persistent budget rail:
+Use a guaranteed Talent Tree page, then insert the Workshop page only when earned:
 
 ```text
-PROCESS AWARD  1 of 3                         END OF SHIFT ☾
-Invest today’s reward                     1 point · $450 cash
+OVERNIGHT REWARDS · PHASE 1                  +1 XP FILED
+TALENT TREE                                  4 XP banked
+Permanent upgrades                        [Buy with XP]
 
-PROGRESSION RECEIPT                      &     EMPLOYEE DEVELOPMENT
-Process XP              +1 banked              Intern
-Talent Point            +1 this run            Junior Analyst
-Compliance Tokens       held balance           Accountant
-Permanent upgrades      Day 5 only             Manager
-
-                    [Keep point and continue]
+IF DEVELOPMENT WORKSHOP WAS COMPLETED:
+EMPLOYEE DEVELOPMENT                         $450 cash
+Intern · Accuracy 3                        [Buy +1 · $36]
+Junior Analyst · Speed 4                   [Buy +1 · $40]
 ```
 
-Run Systems and Employee Development stay visible together in equal panels because they use separate currencies; the `&` marker communicates that both shops are available during the same reward step. Each system row contains the current rank, next effect, and purchase action, so a separate detail panel would only repeat information. At narrower widths the columns reflow while retaining the same hierarchy.
+This separation prevents the two progression systems from appearing to share a currency or availability rule. The Workshop price scales by stat and prior investment, and its shop appears only after the player actually completes that location.
 
 ## Night 2: Operating close and planning
 
@@ -716,7 +707,7 @@ The implemented terminated screen uses the compact incident-report format rather
 Current behavior:
 
 - The exact terminal system and threshold lead the report.
-- `What you keep` immediately follows with Compliance Tokens, awarded Process XP and its award-time wallet balance, and retained permanent upgrades.
+- `What you keep` immediately follows with Compliance Tokens, awarded XP and its award-time wallet balance, and retained permanent upgrades.
 - `What drove the failure` ranks only the three highest-impact negative drivers; zero-impact and positive ledger entries cannot displace them.
 - A cause-specific `Key lesson` summarizes the terminal pattern.
 - `Review incidents` and `Review upgrades` expand their complete functional sections in place. Both remain collapsed and visually absent until requested.

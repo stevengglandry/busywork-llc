@@ -17,8 +17,8 @@ The current build contains 32 card templates, 52 standard and Juiced production 
 | Employee Stress | New employees start at 0 on a 0–100 meter. Stress affects task duration and Accuracy: strained workers take longer, fractured workers take substantially longer, and extreme Stress can cause burnout. Burnout may produce employee growth, company learning, resignation, or death. Exact bands, modifiers, and outcome probabilities are in the Card Catalog. |
 | Stress sweet spot | Any valid sweet-spot band grants task-speed and Accuracy bonuses and contributes to Staff Morale. |
 | Preferred workload | Separate from the sweet-spot system. Work share versus the employee's preferred target affects Stress accumulation and Backlog recovery. |
-| Audit Chance | Starts at 50%. The effective chance is rolled nightly after subtracting 5 points per held Compliance Token. Accurate approval removes 1 point. |
-| Liability and audit finding | Liability is the number of open policy violations. If a nightly audit occurs, finding chance is `open Liability ÷ elapsed days`, capped at 100%. If oversight finds something, Liability count directly selects Audit Severity. |
+| Audit Chance | Starts at 50%. Each held Compliance Token subtracts 5 points from the nightly roll. Accurate approval removes 1 point; other events may raise or lower Audit Chance independently of Severity. |
+| Liability and audit finding | Liability is the number of open policy violations. Each held Compliance Token offsets one Liability before finding chance and Severity are calculated: `effective Liability = max(0, open Liability − held tokens)`. If an audit occurs, finding chance is `effective Liability ÷ elapsed days`, capped at 100%; effective Liability directly selects Audit Severity. Tokens persist and are not consumed. |
 | Board Confidence | Starts at 75 and represents Trust of the Board. It scales recognized task payouts from 80% at 0 Confidence to 120% at 100. Accurate approvals and clean audits raise it; mistakes, failed audits, staffing decisions, and route tradeoffs can lower it. Confidence at or below 0 ends the run. Sweet-spot time affects Morale, not Confidence directly. |
 
 Recognized task income is:
@@ -38,9 +38,9 @@ All task and resource inputs are consumed when production finishes, before the c
 
 ### Audit Severity
 
-Open Liability directly selects the consequence when the nightly audit occurs:
+After Compliance Token offsets, effective Liability directly selects the consequence when an audit occurs and oversight finds something. For example, three open Liabilities minus one held token produces Severity 2:
 
-| Liability | Level | Consequence |
+| Effective Liability | Level | Consequence |
 |---:|---|---|
 | 0 | Clear | No reportable issue; Board Confidence +2 and base Audit Chance resets to 50%. |
 | 1 | Consent Decree | Add 2 Active Policies the next day. |
@@ -53,22 +53,24 @@ Compliance Checks pay $0, use Intern + Spreadsheet for the specialist workflow, 
 
 ### Run and meta progression
 
-New runs begin on the corporate roadmap: choose one of three starting workstreams, then move only to the same or an adjacent destination at each daily close. Short, medium, and long nodes create real 3-, 5-, and 10-minute shifts; completing a long day awards one Compliance Token. The route replaces the old overnight activity, employee-development, and multi-card hire menus.
+New runs begin on the corporate roadmap: choose one of three starting workstreams, then move only to the same or an adjacent destination at each daily close. Short, medium, and long nodes create real 3-, 5-, and 10-minute shifts; completing a long day awards one Compliance Token.
+
+Every survived day opens overnight phase 1, the **Talent Tree**. The close awards +1 XP and the player may immediately spend banked XP on permanent upgrades or save it. Completing an Employee Development Workshop workday inserts a separate Cash-funded employee stat shop after the Talent Tree and before roadmap routing. Merely selecting or inspecting a future Workshop does not open that shop.
 
 | Resource | Earning and use | Persistence |
 |---|---|---|
-| Talent Points | +1 talent point awarded  at every end of day reached. Spend only at Employee Development Workshop nodes on a current employee's Accuracy, Speed, or Resilience. | Run-only; unspent points expire. |
-| Process XP | +1 at every end of day reached. Spend on permanent upgrades only after completing the Day 5 Board Review. | Persists on this browser/device. |
-| Compliance Tokens | Earned from claimed BUSYWORK-IT phishing rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token automatically subtracts 5 points from Audit Chance and is never consumed by audits. | Persists on this browser/device. |
+| XP | +1 at every survived day close. Spend during the phase-1 Talent Tree available after every survived day. | Persists on this browser/device. |
+| Employee development | Completing the Development Workshop location adds a one-night stat shop. Accuracy, Speed, and Resilience pips are purchased with Cash using the scaling prices detailed in the Card Catalog. | Employee stat gains last for the current run. |
+| Compliance Tokens | Earned from claimed BUSYWORK-IT phishing rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token subtracts 5 Audit Chance points and offsets one Liability when calculating finding chance and Severity. Tokens are never consumed by audits. | Persists on this browser/device. |
 
-Permanent upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
+Talent Tree upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
 
-Process XP, Compliance Tokens, and purchased permanent upgrades use browser `localStorage` until **Settings → Reset all data** is confirmed. They are not HTTP cookies. `Rich Kid` / +1 extra life and a generic single-resource day remain unimplemented plan ideas, not current rewards.
+XP, Compliance Tokens, and purchased Talent Tree upgrades use browser `localStorage` until **Settings → Reset all data** is confirmed. They are not HTTP cookies. `Rich Kid` / +1 extra life and a generic single-resource day remain unimplemented plan ideas, not current rewards.
 
 ## Current card controls
 
 - **Read:** Employees use blue/avatar circles (with executive brown reserved for the Manager), tasks amber/target circles, resources purple/diamonds, and documents green/folded pages. Cards also use a name-specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt. Colored pips carry bonus attributes; Juiced cards add a heavier double edge, layered surface, and lightning mark while retaining their base type identity. Selecting a card does not restyle other cards as possible partners. Task descriptions name the resource they need without repeating consumption boilerplate. Standalone employees show Accuracy, Speed, and Resilience as compact always-visible values and meters.
-- **Pull:** The action bar counts down to the next automatic Inbox arrival. **Pull next item** delivers the next seeded card immediately and resets that clock; it is disabled when Inbox is full. Normal ten-card bags contain three distinct legitimate tasks, four resources, and three junk cards; a level-3 audit inserts four mandatory Compliance Checks at seeded positions throughout the next day.
+- **Pull:** The action bar counts down to the next automatic Inbox arrival. **Pull next item** delivers the next seeded card immediately and resets that clock; it is disabled when Inbox is full. Normal ten-card bags contain three distinct legitimate tasks, four resources, and three junk cards; a level-3 audit inserts four mandatory Compliance Checks at seeded positions throughout the next day. Deleting five JUNK SPAM cards in one day delivers the claimable BUSYWORK-IT reward email, which grants $125 and one Compliance Token when deleted.
 - **Move and stack:** Click a card to inspect it. Drag a visible top card into empty lane space to pull that card into a new stack. Drag one stack onto another to merge the complete source stack when the combination is legal. A normal stack permits at most one employee, one task-like card, one document, and one resource; the sole two-resource exception is the exact pair requested by a Juiced task. Active or locked workflows cannot merge. Matching-card folders hold five cards by default or six after the permanent Six-Tab Folders upgrade.
 - **Use touch:** On a coarse-pointer phone or small tablet, portrait mode prompts for landscape and safely pauses a running shift. In landscape, all five lanes remain horizontally browsable while the full Inspector stays pinned on the right. Tap cards to select them, swipe card bodies vertically to browse a lane, or grab the persistent 22 px blue tracks with 48–64 px thumbs for precise two-axis scrolling. Drag a card header/folder/workflow handle for an unambiguous move.
 - **Reach covered cards:** Only the physical top card's timer advances. Covered cards appear as small card-shaped pips with their own abbreviation and status treatment. Click a pip to inspect that card or drag the pip to pull only that card out. The visible top card does not receive a redundant pip.
