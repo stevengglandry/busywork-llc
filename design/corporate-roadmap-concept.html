@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>BUSYWORK — Corporate Roadmap Concept</title>
+  <style>
+    :root {
+      --navy: #182633;
+      --navy-2: #223543;
+      --paper: #fffdf8;
+      --surface: #fff;
+      --surface-subtle: #f5f7f8;
+      --board: #e7ecf0;
+      --lane: #edf1f4;
+      --border: #c5cfd8;
+      --border-strong: #91a2b0;
+      --text: #24303d;
+      --muted: #687787;
+      --faint: #8996a3;
+      --blue: #356a9a;
+      --blue-soft: #e8f0f7;
+      --green: #3f7d5a;
+      --green-soft: #e9f3ed;
+      --amber: #9b671f;
+      --amber-soft: #faf1e2;
+      --red: #a94747;
+      --red-soft: #f8eaea;
+      --purple: #735b8f;
+      --purple-soft: #f1edf8;
+      --shadow: 0 3px 12px rgb(25 39 52 / 12%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; overflow: hidden; background: var(--board); color: var(--text); }
+    button { color: inherit; font: inherit; }
+    button:focus-visible { outline: 3px solid rgb(53 106 154 / 30%); outline-offset: 2px; }
+
+    .app { height: 100%; display: grid; grid-template-rows: auto 1fr; }
+    .topbar {
+      min-height: 76px;
+      display: grid;
+      grid-template-columns: minmax(240px,1fr) auto;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #0d1922;
+      background: var(--navy);
+      color: #edf3f7;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #587083;
+      border-radius: 7px;
+      background: var(--navy-2);
+      color: #bcd1e1;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: .08em;
+    }
+    .brand h1 { margin: 0; font-size: 15px; line-height: 1; letter-spacing: .18em; }
+    .brand p { margin: 6px 0 0; color: #9fb0bd; font-size: 10px; }
+    .header-metrics { display: flex; gap: 7px; }
+    .metric {
+      min-width: 112px;
+      padding: 8px 11px;
+      border: 1px solid #405361;
+      border-radius: 6px;
+      background: rgb(255 255 255 / 3%);
+    }
+    .metric span { display: block; color: #9fb0bd; font-size: 8px; letter-spacing: .09em; text-transform: uppercase; }
+    .metric strong { display: block; margin-top: 4px; font-size: 12px; }
+
+    .workspace { min-height: 0; display: grid; grid-template-columns: minmax(0,1fr) 310px; }
+    .map-panel { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto auto 1fr; background: var(--board); }
+    .map-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 13px 17px 11px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .eyebrow { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .map-heading h2 { margin: 4px 0 2px; font-size: 18px; }
+    .map-heading p { margin: 0; color: var(--muted); font-size: 11px; }
+    .quarter-stamp {
+      padding: 7px 10px;
+      border: 1px solid #8ba0af;
+      border-radius: 5px;
+      color: #42647b;
+      background: #f2f6f8;
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+    }
+
+    .map-toolbar {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 7px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-subtle);
+    }
+    .route-status { display: flex; align-items: center; gap: 7px; font-size: 10px; }
+    .route-status strong { color: var(--blue); }
+    .route-progress { width: 150px; height: 7px; overflow: hidden; border: 1px solid #a9b6c1; border-radius: 999px; background: #dbe2e8; }
+    .route-progress i { display: block; width: 20%; height: 100%; background: var(--blue); }
+    .map-toolbar small { color: var(--muted); font-size: 9px; }
+
+    .chart-viewport { min-height: 0; overflow: auto; padding: 12px; scrollbar-color: #637f92 #d5dde4; }
+    .chart-canvas {
+      position: relative;
+      width: 1110px;
+      height: 650px;
+      overflow: hidden;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, transparent 0 75px, rgb(255 255 255 / 48%) 75px),
+        repeating-linear-gradient(0deg, transparent 0 107px, rgb(104 119 135 / 10%) 107px 108px),
+        var(--lane);
+      box-shadow: inset 0 1px #fff;
+    }
+    .chart-canvas::after {
+      content: "CONTROL COPY · REGIONAL SERVICES · ROUTE FORECAST SUBJECT TO EXECUTIVE REVISION";
+      position: absolute;
+      right: 18px;
+      bottom: 8px;
+      color: #98a4ae;
+      font: 700 8px/1.2 "SFMono-Regular", Consolas, monospace;
+      letter-spacing: .08em;
+    }
+
+    .day-grid {
+      position: absolute;
+      inset: 0 0 0 75px;
+      display: grid;
+      grid-template-columns: repeat(5,1fr);
+      pointer-events: none;
+    }
+    .day-band { position: relative; border-left: 1px solid #cbd4dc; }
+    .day-band:first-child { border-left: 0; }
+    .day-band:nth-child(odd) { background: rgb(255 255 255 / 22%); }
+    .day-band span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 37px;
+      display: grid;
+      place-items: center;
+      border-bottom: 1px solid #b8c4ce;
+      background: rgb(255 255 255 / 74%);
+      color: #526474;
+      font-size: 9px;
+      font-weight: 850;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .department-label {
+      position: absolute;
+      left: 0;
+      width: 75px;
+      height: 108px;
+      display: grid;
+      place-items: center;
+      border-top: 1px solid #cad3db;
+      color: #617383;
+      background: #e4eaee;
+      font-size: 8px;
+      font-weight: 850;
+      letter-spacing: .09em;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .department-label span { transform: rotate(-90deg); white-space: nowrap; }
+    .department-label.finance { top: 37px; }
+    .department-label.people { top: 145px; }
+    .department-label.operations { top: 253px; }
+    .department-label.compliance { top: 361px; }
+    .department-label.executive { top: 469px; height: 180px; }
+
+    .connections { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .connections path { fill: none; stroke: #8295a4; stroke-width: 2; stroke-dasharray: 5 5; vector-effect: non-scaling-stroke; }
+    .connections path.complete { stroke: var(--green); stroke-dasharray: none; }
+    .connections path.available { stroke: var(--blue); stroke-width: 2.5; stroke-dasharray: none; }
+    .connections circle { fill: var(--surface); stroke: #8295a4; stroke-width: 2; }
+
+    .map-node {
+      position: absolute;
+      width: 154px;
+      min-height: 74px;
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 8px;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid var(--border-strong);
+      border-left: 4px solid var(--node-color,#6b7e8d);
+      border-radius: 7px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      text-align: left;
+      cursor: pointer;
+    }
+    .map-node:hover { border-color: #6d879a; transform: translateY(-1px); }
+    .map-node.selected { outline: 3px dashed #233646; outline-offset: 3px; z-index: 4; }
+    .map-node.completed { background: var(--green-soft); --node-color: var(--green); }
+    .map-node.available { background: #fbfdff; --node-color: var(--blue); box-shadow: 0 0 0 3px rgb(53 106 154 / 13%), var(--shadow); }
+    .map-node.locked { opacity: .72; filter: saturate(.65); box-shadow: none; }
+    .map-node.unknown { --node-color: var(--purple); background: linear-gradient(135deg,#fff 0 70%,var(--purple-soft)); }
+    .map-node.risk { --node-color: var(--red); }
+    .map-node.reward { --node-color: var(--amber); }
+    .map-node.executive { --node-color: #6b4e2f; background: #f8f1e6; border-width: 2px 2px 2px 5px; }
+    .node-token {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in srgb,var(--node-color) 55%,#9aa7b2);
+      border-radius: 5px;
+      color: var(--node-color);
+      background: color-mix(in srgb,var(--node-color) 8%,white);
+      font-size: 12px;
+      font-weight: 900;
+    }
+    .node-copy small { display: block; color: var(--muted); font-size: 7px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
+    .node-copy strong { display: block; margin-top: 3px; font-size: 11px; line-height: 1.18; }
+    .node-copy em { display: block; margin-top: 4px; color: var(--muted); font-size: 8px; font-style: normal; }
+    .node-stamp {
+      position: absolute;
+      top: -7px;
+      right: 7px;
+      padding: 2px 5px;
+      border: 1px solid currentColor;
+      border-radius: 3px;
+      color: var(--node-color);
+      background: var(--surface);
+      font-size: 7px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+    }
+    .node-stamp.rubber-stamp {
+      top: 6px;
+      right: 6px;
+      width: 31px;
+      height: 31px;
+      min-width: 0;
+      padding: 0;
+      overflow: hidden;
+      border: 1.5px dashed #2f7152;
+      border-radius: 50%;
+      color: #2f7152;
+      background: rgb(255 253 248 / 82%);
+      box-shadow: inset 0 0 0 1px rgb(47 113 82 / 25%);
+      font-family: "Arial Narrow", "Roboto Condensed", sans-serif;
+      line-height: 1;
+      text-align: center;
+      text-shadow: .35px 0 currentColor, 0 .35px currentColor;
+      transform: rotate(-6deg);
+      opacity: .9;
+    }
+    .rubber-stamp .stamp-check {
+      position: absolute;
+      z-index: 1;
+      top: 3px;
+      left: 0;
+      right: 0;
+      font-size: 13px;
+      font-weight: 950;
+      line-height: 1;
+    }
+    .node-stamp.rubber-stamp::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      background:
+        repeating-linear-gradient(8deg, transparent 0 5px, rgb(255 253 248 / 82%) 5px 6px),
+        radial-gradient(circle at 18% 35%, rgb(255 253 248 / 88%) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 76% 68%, rgb(255 253 248 / 82%) 0 1.2px, transparent 1.8px);
+      mix-blend-mode: screen;
+      pointer-events: none;
+    }
+    .rubber-stamp b {
+      position: absolute;
+      z-index: 2;
+      right: -3px;
+      bottom: 5px;
+      left: -3px;
+      display: block;
+      padding: 1px 0;
+      border: 1px solid currentColor;
+      background: rgb(255 253 248 / 92%);
+      font-size: 5px;
+      font-weight: 950;
+      letter-spacing: .11em;
+    }
+
+    .n-start { left: 92px; top: 276px; }
+    .n-finance { left: 277px; top: 57px; }
+    .n-people { left: 277px; top: 165px; }
+    .n-policy { left: 277px; top: 381px; }
+    .n-vendor { left: 472px; top: 57px; }
+    .n-recruit { left: 472px; top: 165px; }
+    .n-unknown { left: 472px; top: 273px; }
+    .n-audit { left: 472px; top: 381px; }
+    .n-budget { left: 667px; top: 57px; }
+    .n-reorg { left: 667px; top: 219px; }
+    .n-escalate { left: 667px; top: 435px; }
+    .n-board { left: 892px; top: 273px; width: 170px; min-height: 86px; }
+
+    .inspector {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      border-left: 1px solid var(--border-strong);
+      background: var(--surface);
+    }
+    .inspector-tabs {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 4px;
+      padding: 8px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-subtle);
+    }
+    .tab, .btn {
+      min-height: 34px;
+      border: 1px solid var(--border-strong);
+      border-radius: 5px;
+      background: var(--surface);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tab.active { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+    .inspector-head { padding: 14px 15px 12px; border-bottom: 1px solid var(--border); }
+    .inspector-head h2 { margin: 5px 0 0; font-size: 16px; }
+    .inspector-body { min-height: 0; overflow-y: auto; padding: 13px 15px 24px; }
+    .detail-type { display: flex; align-items: center; gap: 8px; }
+    .detail-type .node-token { flex: 0 0 auto; }
+    .detail-type strong { font-size: 12px; }
+    .detail-type span { display: block; margin-top: 2px; color: var(--muted); font-size: 9px; }
+    .section { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .section h3 { margin: 0 0 8px; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+    .detail-grid { display: grid; grid-template-columns: 1fr auto; gap: 7px 10px; margin: 0; font-size: 10px; }
+    .detail-grid dt { color: var(--muted); }
+    .detail-grid dd { margin: 0; font-weight: 750; text-align: right; }
+    .memo {
+      padding: 9px 10px;
+      border-left: 3px solid var(--node-color,var(--blue));
+      background: var(--surface-subtle);
+      color: #4c5e6d;
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .legend { display: grid; gap: 7px; }
+    .legend-row { display: grid; grid-template-columns: 20px 1fr; gap: 8px; align-items: center; font-size: 9px; }
+    .legend-line { height: 0; border-top: 2px dashed #8295a4; }
+    .legend-line.available { border-color: var(--blue); border-style: solid; }
+    .legend-line.complete { border-color: var(--green); border-style: solid; }
+    .inspector-actions { display: grid; grid-template-columns: 1fr auto; gap: 7px; padding: 10px; border-top: 1px solid var(--border); background: var(--surface-subtle); }
+    .btn { padding: 7px 10px; }
+    .btn.primary { border-color: var(--blue); background: var(--blue); color: white; }
+    .btn:disabled { color: var(--faint); background: #edf0f2; cursor: not-allowed; }
+
+    @media (max-width: 900px) and (orientation: landscape) {
+      .topbar { min-height: 62px; grid-template-columns: minmax(170px,1fr) auto; padding: 6px 8px; }
+      .brand-mark { width: 30px; height: 30px; }
+      .brand h1 { font-size: 12px; }
+      .brand p { font-size: 7px; }
+      .metric { min-width: 82px; padding: 6px; }
+      .workspace { grid-template-columns: minmax(0,1fr) 275px; }
+      .map-heading { padding: 8px 10px; }
+      .map-heading h2 { font-size: 15px; }
+      .map-heading p { display: none; }
+      .map-toolbar { padding: 5px 8px; }
+      .chart-viewport { padding: 6px; }
+      .inspector-body { padding: 10px 12px 20px; }
+      .tab, .btn { min-height: 40px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">SS</div>
+        <div>
+          <h1>BUSYWORK</h1>
+          <p>Synergy Solutions LLC · Organizational Planning Office</p>
+        </div>
+      </div>
+      <div class="header-metrics" aria-label="Roadmap status">
+        <div class="metric"><span>Quarter</span><strong>Q3 · Day 1</strong></div>
+        <div class="metric"><span>Route authority</span><strong>1 decision</strong></div>
+        <div class="metric"><span>Board confidence</span><strong>75</strong></div>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <section class="map-panel" aria-label="Corporate advancement roadmap">
+        <header class="map-heading">
+          <div>
+            <div class="eyebrow">Organizational planning · controlled copy</div>
+            <h2>Quarterly Advancement Roadmap</h2>
+            <p>Select one authorized initiative per reporting period. Future mandates remain provisional until their dependencies are cleared.</p>
+          </div>
+          <div class="quarter-stamp">Route file · Q3-01</div>
+        </header>
+
+        <div class="map-toolbar">
+          <div class="route-status">
+            <strong>Current position</strong>
+            <span>Opening Brief completed</span>
+            <div class="route-progress" role="progressbar" aria-label="Quarter route progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="20"><i></i></div>
+          </div>
+          <small>Swipe or scroll horizontally · reporting rows are not difficulty rankings</small>
+        </div>
+
+        <div class="chart-viewport">
+          <div class="chart-canvas">
+            <div class="day-grid" aria-hidden="true">
+              <div class="day-band"><span>Day 1 · Intake</span></div>
+              <div class="day-band"><span>Day 2 · Triage</span></div>
+              <div class="day-band"><span>Day 3 · Planning</span></div>
+              <div class="day-band"><span>Day 4 · Lock</span></div>
+              <div class="day-band"><span>Day 5 · Board</span></div>
+            </div>
+            <div class="department-label finance"><span>Finance</span></div>
+            <div class="department-label people"><span>People Ops</span></div>
+            <div class="department-label operations"><span>Operations</span></div>
+            <div class="department-label compliance"><span>Compliance</span></div>
+            <div class="department-label executive"><span>Executive</span></div>
+
+            <svg class="connections" viewBox="0 0 1110 650" preserveAspectRatio="none" aria-hidden="true">
+              <path class="complete" d="M246 313 C260 313 262 94 277 94"/>
+              <path class="available" d="M246 313 C260 313 262 202 277 202"/>
+              <path class="available" d="M246 313 C260 313 262 418 277 418"/>
+              <path d="M431 94 C450 94 453 94 472 94"/>
+              <path d="M431 94 C448 94 454 310 472 310"/>
+              <path d="M431 202 C450 202 453 202 472 202"/>
+              <path d="M431 202 C449 202 454 310 472 310"/>
+              <path d="M431 418 C450 418 453 418 472 418"/>
+              <path d="M431 418 C448 418 454 310 472 310"/>
+              <path d="M626 94 C645 94 648 94 667 94"/>
+              <path d="M626 94 C645 94 649 256 667 256"/>
+              <path d="M626 202 C646 202 649 256 667 256"/>
+              <path d="M626 310 C646 310 649 256 667 256"/>
+              <path d="M626 310 C646 310 649 472 667 472"/>
+              <path d="M626 418 C646 418 649 472 667 472"/>
+              <path d="M821 94 C850 94 858 316 892 316"/>
+              <path d="M821 256 C850 256 860 316 892 316"/>
+              <path d="M821 472 C850 472 858 316 892 316"/>
+            </svg>
+
+            <button class="map-node completed n-start selected" data-node="start">
+              <span class="node-token">BR</span>
+              <span class="node-copy"><small>Operations · complete</small><strong>Opening Brief</strong><em>Route baseline filed</em></span>
+              <span class="node-stamp rubber-stamp" aria-label="Filed"><span class="stamp-check" aria-hidden="true">✓</span><b>Filed</b></span>
+            </button>
+            <button class="map-node available reward n-finance" data-node="finance">
+              <span class="node-token">$</span>
+              <span class="node-copy"><small>Finance · available</small><strong>Margin Review</strong><em>Cash-forward route</em></span>
+              <span class="node-stamp">Choose</span>
+            </button>
+            <button class="map-node available n-people" data-node="people">
+              <span class="node-token">HR</span>
+              <span class="node-copy"><small>People Ops · available</small><strong>Team Calibration</strong><em>Staff-forward route</em></span>
+              <span class="node-stamp">Choose</span>
+            </button>
+            <button class="map-node available risk n-policy" data-node="policy">
+              <span class="node-token">§</span>
+              <span class="node-copy"><small>Compliance · available</small><strong>Policy Sweep</strong><em>Risk-forward route</em></span>
+              <span class="node-stamp">Choose</span>
+            </button>
+
+            <button class="map-node locked reward n-vendor" data-node="vendor">
+              <span class="node-token">PO</span>
+              <span class="node-copy"><small>Finance · forecast</small><strong>Vendor Exception</strong><em>Requires Margin Review</em></span>
+            </button>
+            <button class="map-node locked n-recruit" data-node="recruit">
+              <span class="node-token">+</span>
+              <span class="node-copy"><small>People Ops · forecast</small><strong>Talent Pipeline</strong><em>Requires Team Calibration</em></span>
+            </button>
+            <button class="map-node locked unknown n-unknown" data-node="unknown">
+              <span class="node-token">?</span>
+              <span class="node-copy"><small>Operations · obscured</small><strong>Unscheduled Mandate</strong><em>Contents withheld</em></span>
+            </button>
+            <button class="map-node locked risk n-audit" data-node="audit">
+              <span class="node-token">AU</span>
+              <span class="node-copy"><small>Compliance · forecast</small><strong>Audit Readiness</strong><em>Requires Policy Sweep</em></span>
+            </button>
+
+            <button class="map-node locked reward n-budget" data-node="budget">
+              <span class="node-token">$</span>
+              <span class="node-copy"><small>Finance · provisional</small><strong>Budget Lock</strong><em>Resource award</em></span>
+            </button>
+            <button class="map-node locked n-reorg" data-node="reorg">
+              <span class="node-token">OC</span>
+              <span class="node-copy"><small>People Ops · provisional</small><strong>Reorg Proposal</strong><em>Capacity tradeoff</em></span>
+            </button>
+            <button class="map-node locked risk n-escalate" data-node="escalate">
+              <span class="node-token">!</span>
+              <span class="node-copy"><small>Executive · provisional</small><strong>Escalation Review</strong><em>Higher stakes</em></span>
+            </button>
+            <button class="map-node locked executive n-board" data-node="board">
+              <span class="node-token">B</span>
+              <span class="node-copy"><small>Executive · terminal gate</small><strong>Quarterly Board Review</strong><em>All approved routes converge</em></span>
+              <span class="node-stamp">Day 5</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="Roadmap Inspector">
+        <div class="inspector-tabs">
+          <button class="tab active" type="button">Route memo</button>
+          <button class="tab" type="button">Quarter log</button>
+        </div>
+        <header class="inspector-head">
+          <div class="eyebrow">Selected initiative</div>
+          <h2 id="detailTitle">Opening Brief</h2>
+        </header>
+        <div class="inspector-body">
+          <div class="detail-type">
+            <span class="node-token" id="detailToken">BR</span>
+            <div><strong id="detailStatus">Filed · Operations</strong><span id="detailSubtitle">Route baseline filed</span></div>
+          </div>
+          <section class="section">
+            <h3>Planning record</h3>
+            <dl class="detail-grid">
+              <dt>Reporting period</dt><dd id="detailDay">Day 1</dd>
+              <dt>Route state</dt><dd id="detailState">Completed</dd>
+              <dt>Dependencies</dt><dd id="detailDependency">None</dd>
+              <dt>Forecast visibility</dt><dd id="detailVisibility">Full</dd>
+            </dl>
+          </section>
+          <section class="section">
+            <h3>Operating memo</h3>
+            <div class="memo" id="detailMemo">The opening operating brief establishes the quarter baseline and releases three mutually exclusive Day 2 initiatives.</div>
+          </section>
+          <section class="section">
+            <h3>Route legend</h3>
+            <div class="legend">
+              <div class="legend-row"><span class="legend-line complete"></span><span>Filed route</span></div>
+              <div class="legend-row"><span class="legend-line available"></span><span>Authorized next step</span></div>
+              <div class="legend-row"><span class="legend-line"></span><span>Provisional dependency</span></div>
+              <div class="legend-row"><span class="node-token">?</span><span>Obscured mandate</span></div>
+            </div>
+          </section>
+        </div>
+        <div class="inspector-actions">
+          <button class="btn" type="button">Review route history</button>
+          <button class="btn primary" id="authorizeBtn" type="button" disabled>Filed</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const details = {
+      start:{title:'Opening Brief',token:'BR',status:'Filed · Operations',subtitle:'Route baseline filed',day:'Day 1',state:'Completed',dependency:'None',visibility:'Full',memo:'The opening operating brief establishes the quarter baseline and releases three mutually exclusive Day 2 initiatives.',action:'Filed'},
+      finance:{title:'Margin Review',token:'$',status:'Available · Finance',subtitle:'Cash-forward route',day:'Day 2',state:'Authorized',dependency:'Opening Brief',visibility:'Full',memo:'Finance proposes a margin-first operating posture. The route favors immediate liquidity while deferring staff and policy interventions.',action:'Authorize'},
+      people:{title:'Team Calibration',token:'HR',status:'Available · People Ops',subtitle:'Staff-forward route',day:'Day 2',state:'Authorized',dependency:'Opening Brief',visibility:'Full',memo:'People Operations requests a structured calibration cycle. The route emphasizes workforce capability and may expose recruitment or reorganization work.',action:'Authorize'},
+      policy:{title:'Policy Sweep',token:'§',status:'Available · Compliance',subtitle:'Risk-forward route',day:'Day 2',state:'Authorized',dependency:'Opening Brief',visibility:'Full',memo:'Compliance requests a control sweep before further expansion. The route reduces uncertainty but may surface mandatory remediation.',action:'Authorize'},
+      vendor:{title:'Vendor Exception',token:'PO',status:'Forecast · Finance',subtitle:'Procurement variance',day:'Day 3',state:'Locked',dependency:'Margin Review',visibility:'Full',memo:'A controlled purchasing exception with a possible cash benefit and a documented compliance burden.',action:'Locked'},
+      recruit:{title:'Talent Pipeline',token:'+',status:'Forecast · People Ops',subtitle:'Candidate requisition',day:'Day 3',state:'Locked',dependency:'Team Calibration',visibility:'Full',memo:'A single candidate file enters overnight review. Hiring cost and role fit remain visible before authorization.',action:'Locked'},
+      unknown:{title:'Unscheduled Mandate',token:'?',status:'Obscured · Operations',subtitle:'Contents withheld',day:'Day 3',state:'Locked',dependency:'One of two feeder routes',visibility:'Partial',memo:'Executive sponsorship is confirmed. Scope, reward, and operational burden remain sealed until the node becomes reachable.',action:'Locked'},
+      audit:{title:'Audit Readiness',token:'AU',status:'Forecast · Compliance',subtitle:'Control verification',day:'Day 3',state:'Locked',dependency:'Policy Sweep',visibility:'Full',memo:'A readiness review trades operating time for improved confidence in the active control environment.',action:'Locked'},
+      budget:{title:'Budget Lock',token:'$',status:'Provisional · Finance',subtitle:'Resource award',day:'Day 4',state:'Locked',dependency:'Finance or compliance route',visibility:'Full',memo:'Finalizes the quarter operating envelope and converts prior decisions into a bounded resource award.',action:'Locked'},
+      reorg:{title:'Reorg Proposal',token:'OC',status:'Provisional · People Ops',subtitle:'Capacity tradeoff',day:'Day 4',state:'Locked',dependency:'Staff or mandate route',visibility:'Full',memo:'Redistributes operational capacity across reporting lines. Benefits and disruption depend on the preceding route.',action:'Locked'},
+      escalate:{title:'Escalation Review',token:'!',status:'Provisional · Executive',subtitle:'Higher-stakes ruling',day:'Day 4',state:'Locked',dependency:'Mandate or audit route',visibility:'Full',memo:'Moves unresolved exposure to executive review. Consequences are larger, but the route can bypass a blocked operating line.',action:'Locked'},
+      board:{title:'Quarterly Board Review',token:'B',status:'Terminal gate · Executive',subtitle:'Quarter close',day:'Day 5',state:'Locked',dependency:'Any approved Day 4 route',visibility:'Full',memo:'All surviving routes converge on the Board. The final packet evaluates outcomes, retained resources, and unresolved liabilities.',action:'Locked'}
+    };
+
+    const nodes = [...document.querySelectorAll('.map-node')];
+    const fields = {
+      title:document.getElementById('detailTitle'),
+      token:document.getElementById('detailToken'),
+      status:document.getElementById('detailStatus'),
+      subtitle:document.getElementById('detailSubtitle'),
+      day:document.getElementById('detailDay'),
+      state:document.getElementById('detailState'),
+      dependency:document.getElementById('detailDependency'),
+      visibility:document.getElementById('detailVisibility'),
+      memo:document.getElementById('detailMemo'),
+      action:document.getElementById('authorizeBtn')
+    };
+
+    function selectNode(node) {
+      nodes.forEach(candidate=>candidate.classList.toggle('selected',candidate===node));
+      const detail=details[node.dataset.node];
+      Object.entries(fields).forEach(([key,element])=>{
+        if(key==='action'){element.textContent=detail.action;element.disabled=detail.action!=='Authorize';}
+        else element.textContent=detail[key];
+      });
+    }
+    nodes.forEach(node=>node.addEventListener('click',()=>selectNode(node)));
+  </script>
+</body>
+</html>

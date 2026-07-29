@@ -4,7 +4,7 @@
 
 > Current technical implementation: the browser build uses seeded arrival bags rather than the legacy deck/discard proposal below. Run construction and migration, Review rulings, audits, burnout, and day rollover are implemented as separate named state-transition helpers. The legacy design sections remain as historical product direction, not a claim about current runtime fields.
 
-> Current content amendment: the shipped catalog contains 30 card templates, 46 standard and juiced recipes, and 30 policies. It includes three corporate-jargon work requests, per-instance payouts from 20% Low Fee through 5× Windfall, LOW-FEE-free juiced contracts, assignable task-disguised junk, exact compatible-stack rules, per-employee stat investment, Manager team stakes, overflow Audit/Confidence penalties, and a one-time first-workflow sparkle guide. See `BUSYWORK_CARD_CATALOG.md` for exact templates and `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for consequences and balance values.
+> Current content amendment: the shipped catalog contains 32 card templates, 52 standard and Juiced recipes, and 34 policies. It includes Approve Purchase Request, mandatory Compliance Checks, per-instance payouts from 20% Low Fee through 5× Windfall, LOW-FEE-free Juiced contracts, assignable task-disguised junk, exact compatible-stack rules, per-employee stat investment, Manager team stakes, and a one-time first-workflow sparkle guide. See `BUSYWORK_CARD_CATALOG.md` for exact templates and `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for consequences and balance values.
 
 > Current interaction amendment: card faces use name-specific abbreviations and task copy names its required resource. Standalone employee stats are always visible. Pulls come from deterministic ten-card bags and may be requested early from the action bar. Compatible stacks merge as complete units, while covered-card pips and staged resource chips extract one specific card. Only a physical top card's timer advances. In Progress composites show every participant directly, completion consumes all resources, and new Review output does not change selection. These shipped rules supersede conflicting interaction proposals below.
 
@@ -501,19 +501,19 @@ Show the projected end-of-day balance continuously in the header or Cash tooltip
 
 ### 11.3 Audit behavior
 
-Make one seeded roll against the current Audit Chance every night. A new run starts at 25%.
+Make one seeded roll against the current Audit Chance every night. A new run starts at 50%, and each held Compliance Token subtracts 5 percentage points without being consumed.
 
 ```text
-findingChance = min(1, liabilities / elapsedDays) * (1 - confidence / 200)
+findingChance = min(1, openLiabilities / elapsedDays)
 ```
 
-On a failed audit:
+If an audit occurs, roll finding chance. A successful finding uses open Liability to select:
 
-- Fine is based on total liability severity and a multiplier that rises with prior audit failures and missed deadlines.
-- Confidence and prior escalations reduce severity.
-- Confidence loses `6 + 2 × audit fail count`.
-- The next day adds two active policies and two unpaid Regulatory Response tasks.
-- A third failure or a fine of at least $225 is a Critical Audit Failure.
+- 1, Consent Decree: +2 Active Policies next day.
+- 2, Cash Fine: Cash −$50, Audit Chance +10 points, Board Confidence −5.
+- 3, Compliance Check: four unpaid mandatory checks distributed through the next day; each missed or deleted check adds +1 Liability.
+- 4, Bad Vibes: next-day Accuracy −10 points and speed ×0.9, plus Staff Morale −20 and Board Confidence −5.
+- 5+, Termination: end the run.
 
 See `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for the complete formula and balance constants.
 
@@ -521,7 +521,7 @@ See `BUSYWORK_MECHANICS_RETUNE_PLAN.md` for the complete formula and balance con
 
 - Confidence reaches 0: **Board Confidence Lost**
 - Cash reaches 0 after end-of-day settlement: **Insolvency**
-- Third audit failure or a single audit fine of at least $225: **Critical Audit Failure**
+- An audit finding at Severity 5: **Termination**
 
 Pause simulation before showing a failure summary.
 

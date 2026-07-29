@@ -14,16 +14,16 @@ Implemented in `index.html`:
 
 - Compact task, resource, employee, folder, and active-workflow cards with stronger semantic type color, shorter landscape proportions, and clearer status tokens.
 - Filing-folder treatment for homogeneous task/resource piles. The four-slot rectangular rail represents covered cards only, nearest to the top first; the full-size folder face represents the active top card, unused capacity stays visibly empty, and the folder becomes a normal card when only one item remains.
-- Drag insertion targets between lane items. Reordering moves a whole card/stack without recreating it or disturbing active jobs, employee rhythms, card deadlines, or unrelated runtime timers.
+- Drag insertion targets between lane items. Reordering moves a whole card/stack without recreating it or disturbing active jobs, employee Stress state, card deadlines, or unrelated runtime timers.
 - Cleaner Inspector copy and navigation, including the compact `Log` tab, assignment choices, review ruling heading, and active-workflow employee/stress band.
-- Updated phishing reward baseline of four correctly deleted junk cards; Security Liaison still lowers the threshold to two.
-- A sixth Run System, **Grease the Wheels**, which restores five Board Confidence per purchased rank.
+- Updated phishing reward baseline of four correctly deleted junk cards.
+- The roadmap-based **Grease the Wheels** reward removes one open Liability and costs five Board Confidence.
 - The approved Process Award composition: `End of Shift` crescent stamp, budget rail, directly actionable Run Systems, `&` divider, and Employee Development shop in two equal panels. It fits the 1280×720 baseline without modal scrolling.
 - Operating Close retains its existing company, cash, action, and recruitment content in three equal panels; a circular `OR` divider now makes the action-versus-hire choice explicit.
 - The third page uses the fixed `Morning Brief` title and three equal read-only panels while retaining the existing day-specific briefing sentence and data. Its first panel is `Changes overnight`, showing signed Cash, Staff Morale, Audit Chance, and Board Confidence deltas from the prior close.
 - Capability-based mobile detection now uses coarse-pointer support and the short viewport dimension rather than a user-agent string. Portrait phones receive a landscape prompt that safely pauses and restores a running workday, with an explicit continue-in-portrait escape hatch.
 - In mobile landscape the complete five-lane board remains horizontally scrollable while the complete Inspector stays pinned on the right. Lane widths compress to a 210 / 172 / 198 / 174 / 128 px decision hierarchy, lane bodies retain independent vertical scrolling, and no cards, controls, reference tabs, policies, or status metrics are removed.
-- Touch input distinguishes intent: tap selects, vertical card-body movement remains available to scroll a lane, horizontal movement can drag a card, and card headers plus folder/workflow handles provide full-direction grab surfaces. Drop-between slots and controls expand for coarse pointers. Persistent high-contrast rails use 22 px tracks and minimum 48–64 px thumbs, making horizontal board, vertical lane, and Inspector scrolling directly grabbable instead of relying on mobile overlay scrollbars. Rail dragging defers visual rerenders without pausing the shift, deadlines, or employee rhythms.
+- Touch input distinguishes intent: tap selects, vertical card-body movement remains available to scroll a lane, horizontal movement can drag a card, and card headers plus folder/workflow handles provide full-direction grab surfaces. Drop-between slots and controls expand for coarse pointers. Persistent high-contrast rails use 22 px tracks and minimum 48–64 px thumbs, making horizontal board, vertical lane, and Inspector scrolling directly grabbable instead of relying on mobile overlay scrollbars. Rail dragging defers visual rerenders without pausing the shift, deadlines, or employee Stress state.
 
 Still design guidance, not yet implemented:
 
@@ -92,11 +92,10 @@ The recommended direction is **“regional operations console”: readable 12–
 | Workday | Paused | Stop runtime while preserving context | board veil, pause card |
 | Workday | Settings | Adjust display and storage behavior | compact, motion, contrast, reset |
 | Workday | Toasts | Report feedback and incidents | ordinary, harmful, and security notices |
-| Night 1 | Process award | Spend or bank a Run Process Point | process upgrades, employee development |
-| Night 2 | Operating close | Understand the day and choose one overnight action | company position, cash movement, planning, recruitment |
-| Night 2 alt | Strategic planning | Make the mandatory Day 3 choice | strategic options instead of ordinary overnight choices |
+| Night 1 | Progression receipt | Understand the guaranteed awards | +1 Process XP, +1 Talent Point, long-day Compliance Token |
+| Night 2 | Corporate roadmap | Choose one connected next-day location | duration, setup, payout, development/hire/event access |
 | Night 3 | Morning briefing | Understand the opening state | company position, operating brief, active policies |
-| Run end | Quarterly review | Summarize successful run and spend persistent rewards | company position, charts, XP/token upgrades |
+| Run end | Quarterly review | Summarize a successful run and spend Process XP | company position, charts, permanent upgrades |
 | Run end | Terminated run | Explain failure and retained progress | terminal cause, factors, incidents, carryover |
 
 ## Cross-system findings
@@ -489,20 +488,20 @@ Day 5:    Process award → Quarterly review
 
 Improve it by making each step answer one question:
 
-1. **Process award:** What permanent-for-this-run improvement do I want?
-2. **Operating close:** What happened, and what single overnight response should I choose?
+1. **Progression receipt:** What permanent and run-only resources did I earn?
+2. **Corporate roadmap:** Which connected location, duration, and tradeoff should define tomorrow?
 3. **Morning briefing:** What changed, and what matters today?
 
 The current progress pips should remain. Add short future labels on desktop and keep the compact `2 of 3` treatment on smaller layouts.
 
-## Night 1: Process award
+## Night 1: Progression receipt
 
 ### Current strengths
 
-- Run Process Points and cash are clearly distinguished.
-- Upgrade pips communicate a three-rank system.
-- Employee development shows price escalation and caps.
-- The screen offers a clear “keep point” exit.
+- Process XP, Talent Points, and Compliance Tokens are clearly distinguished.
+- The receipt states the exact +1 XP and +1 Talent Point awards and any long-day token.
+- It explains that Talent Points wait for Employee Development Workshop nodes.
+- It explains that Process XP waits for a successful Day 5 Board Review.
 
 ### Current problems
 
@@ -520,13 +519,11 @@ Use a simultaneous decision workspace with a persistent budget rail:
 PROCESS AWARD  1 of 3                         END OF SHIFT ☾
 Invest today’s reward                     1 point · $450 cash
 
-RUN SYSTEMS                               &     EMPLOYEE DEVELOPMENT
-Elastic Intake          Inbox +1 [Invest]       Intern
-Parallel Processing     Active +1 [Invest]      Junior Analyst
-Revenue Assurance       Payout +5% [Invest]     Accountant
-Restorative Controls    Recovery +3 [Invest]    Manager
-Audit Dampening         Audit −5 [Invest]
-Grease the Wheels       Confidence +5 [Invest]
+PROGRESSION RECEIPT                      &     EMPLOYEE DEVELOPMENT
+Process XP              +1 banked              Intern
+Talent Point            +1 this run            Junior Analyst
+Compliance Tokens       held balance           Accountant
+Permanent upgrades      Day 5 only             Manager
 
                     [Keep point and continue]
 ```
@@ -577,7 +574,7 @@ Confidence 77 (+2)         Payroll tomorrow $109
 - Collapse the detailed ledger by default.
 - On Day 3, change the heading and visual stamp to `MANDATORY STRATEGIC REVIEW`; do not show ordinary overnight options.
 
-Current implementation checkpoint: the existing content remains intact in three equal-width panels. Within Night Planning, the three operating actions and the overnight recruitment section are separated by a circular `OR` divider. Recruit cards retain their boosted mechanics but display a `NEW HIRE` token.
+Historical checkpoint: this three-panel overnight catalog was replaced by the current progression receipt, connected roadmap, and location-gated staffing/development rewards.
 
 ## Night 3: Morning briefing
 
@@ -898,7 +895,7 @@ Surfaces
 - Review shows document facts against applicable policy in one visual comparison.
 - Night screens preserve the three-stage logic and make the single required decision unmistakable.
 - The visual language still reads as mock stock corporate, but status and interaction outrank decoration.
-- Drag, keyboard actions, timers, employee rhythms, autosave, and modal sequencing remain mechanically unchanged unless a redesign explicitly calls for behavior changes.
+- Drag, keyboard actions, timers, employee Stress state, autosave, and modal sequencing remain mechanically unchanged unless a redesign explicitly calls for behavior changes.
 
 ## Recommended first implementation slice
 

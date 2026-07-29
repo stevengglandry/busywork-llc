@@ -1,6 +1,6 @@
 # BUSYWORK Card and Task Catalog
 
-Source of truth: the current `Content.cards`, `Content.recipes`, stat/trait pools, balance and progression constants, opening allocation, and runtime rules in `index.html`.
+Documentation ground truth: this catalog is the detailed contract paired with the quick reference in `README.md`. It is reconciled against the current `Content.cards`, `Content.recipes`, stat/trait pools, balance and progression constants, opening allocation, and runtime rules in `index.html`. Historical planning files do not override this catalog.
 
 This file catalogs card **templates** and the systems that modify their runtime instances. Runtime cards receive unique IDs such as `card_17`, and the game may create multiple instances from the same template through arrivals, hiring, rework, and completed workflows.
 
@@ -9,14 +9,14 @@ This file catalogs card **templates** and the systems that modify their runtime 
 | Card type | Templates |
 |---|---:|
 | Employees | 4 |
-| Tasks | 7 |
+| Tasks | 9 |
 | Resources | 3 |
 | Review documents | 3 |
 | Junk distractions | 12 |
 | Phishing reward distractions | 1 |
-| **Total** | **30** |
+| **Total** | **32** |
 
-The game defines 46 task workflows: 23 standard-scope recipes (seven specialist, nine ordinary cross-role coverage, and seven emergency Manager coverage) plus a juiced counterpart for every recipe.
+The game defines 52 task workflows: 27 standard-scope recipes and 25 Juiced counterparts for eligible ordinary/regulatory work. Compliance Check adds an Intern specialist recipe and emergency Manager coverage, but never rolls Juiced scope.
 
 ---
 
@@ -72,7 +72,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Preferred workload | 78% before seeded variation |
 | Stress sweet spot | 10–20% |
 | Hiring cost | $145 |
-| Specialist tasks | Expense Report, Governance Recalibration |
+| Specialist tasks | Expense Report, Approve Purchase Request, Governance Recalibration |
 | Coverage tasks | Invoice Request, Data Entry Request, Revenue Enablement Packet |
 
 ### Manager
@@ -93,7 +93,7 @@ Employee instances receive seeded Accuracy, Speed, and Resilience stats around t
 | Emergency coverage | Every valid task at 2.25× base duration, −70 accuracy, 3.2× work stress, and +30 completion stress |
 | Special functions | Signs qualifying Review documents; conducts Resilience-scaled private check-ins; applies a team-wide stress result after his own tasks |
 
-The Manager begins as a deliberately poor emergency task worker, but Cash investment can turn him into a risky workhorse and stress healer. Each Accuracy pip above baseline adds 12 coverage-chance points on top of the ordinary stat gain; each Speed pip above baseline adds 5% multiplicative processing speed; Resilience raises check-in healing from 20 to as much as 32. Depending on his seeded Resilience, a compliant Manager output relieves every employee by 8–26 stress (10 at the baseline stat), while a noncompliant or junk-tainted output stresses everyone by 18–8 (16 at baseline). The Staff shop exposes the live values before assignment.
+The Manager begins as a deliberately poor emergency task worker, but Talent Point investment at an Employee Development Workshop can turn him into a risky workhorse and stress healer. Each Accuracy pip above baseline adds 12 coverage-chance points on top of the ordinary stat gain; each Speed pip above baseline adds 5% multiplicative processing speed; Resilience raises check-in healing from 20 to as much as 32. Depending on his seeded Resilience, a compliant Manager output relieves every employee by 8–26 stress (10 at the baseline stat), while a noncompliant or junk-tainted output stresses everyone by 18–8 (16 at baseline). The Workshop roster exposes the live values before assignment.
 
 ---
 
@@ -101,7 +101,7 @@ The Manager begins as a deliberately poor emergency task worker, but Cash invest
 
 Task cards are work requests. A valid In Progress stack combines one task, a compatible employee, and its required resource.
 
-Every natural task or document deadline miss adds 8 Exposure, applies Confidence −6, and adds 30% future audit severity, in addition to any template-specific expiration effect listed below. Deliberately deleting a Review document applies the same global penalty. Ordinary valid task deletion instead rolls 75% no consequence, 12.5% Confidence −2, and 12.5% audit severity +10%; Stakeholder Alignment Memo uses 50% none / 50% Confidence −2, while Governance Recalibration uses 50% none / 50% audit severity +10%. These penalties leave Audit Chance unchanged.
+Every natural task or document deadline miss applies Confidence −6 in addition to any template-specific expiration effect listed below. Deliberately deleting a Review document applies the same global penalty. Ordinary valid task deletion rolls 75% no consequence, 12.5% Confidence −2, and 12.5% +1 Liability; Stakeholder Alignment Memo uses 50% none / 50% Confidence −2, while Governance Recalibration uses 50% none / 50% +1 Liability. These penalties leave Audit Chance unchanged.
 
 Each positive-revenue task instance receives a contract rate when created. Windfall cards (5%) pay exactly 5× the task type's base reward and use a gold treatment; Premium cards (8%) pay 2×; Low Fee cards (25%) pay 20% and use a muted treatment; the remaining 62% pay 0.75×, 0.9×, or 1×. This keeps the long-run expected multiplier near 1× while making individual requests much more consequential. The card and Inspector show the quote before assignment. Confidence scales the quoted value only when the completed document is approved, and correction preserves the original quote. Task-disguised junk receives the same convincing visual/value roll but still pays nothing when exposed.
 
@@ -112,21 +112,24 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope never co
 | Data Entry Request | $35 | $7 | $70 | $175 |
 | Expense Report | $70 | $14 | $140 | $350 |
 | Invoice Request | $75 | $15 | $150 | $375 |
+| Approve Purchase Request | $80 | $16 | $160 | $400 |
 | Stakeholder Alignment Memo | $45 | $9 | $90 | $225 |
 | Revenue Enablement Packet | $85 | $17 | $170 | $425 |
 | Governance Recalibration | $65 | $13 | $130 | $325 |
 | Regulatory Response | $0 fixed | $0 | $0 | $0 |
+| Compliance Check | $0 fixed | Not eligible | Not eligible | Not eligible |
 
 ### Juiced Scope Requirements
 
 | Task type | Standard resource | Added juiced resource | Standard-rate juiced quote |
 |---|---|---|---:|
-| Data Entry Request | Spreadsheet | Client Data | $61 |
-| Expense Report | Receipt | Spreadsheet | $123 |
-| Invoice Request | Spreadsheet | Client Data | $131 |
-| Stakeholder Alignment Memo | Spreadsheet | Client Data | $79 |
-| Revenue Enablement Packet | Client Data | Spreadsheet | $149 |
-| Governance Recalibration | Receipt | Spreadsheet | $114 |
+| Data Entry Request | Spreadsheet | Client Data | $175 |
+| Expense Report | Receipt | Spreadsheet | $350 |
+| Invoice Request | Spreadsheet | Client Data | $375 |
+| Approve Purchase Request | Receipt | Client Data | $400 |
+| Stakeholder Alignment Memo | Spreadsheet | Client Data | $225 |
+| Revenue Enablement Packet | Client Data | Spreadsheet | $425 |
+| Governance Recalibration | Receipt | Spreadsheet | $325 |
 | Regulatory Response | Spreadsheet | Receipt | $0 |
 
 ### Data Entry Request
@@ -176,6 +179,23 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope never co
 | Output | Invoice Document |
 | Specialist | Junior Analyst |
 | Coverage workers | Accountant, Intern |
+
+### Approve Purchase Request
+
+| Field | Value |
+|---|---|
+| Template ID | `approve_purchase_request` |
+| Card code | `PO` |
+| Tags | `task`, `finance`, `procurement` |
+| Description | Review a purchase request and its Receipt for device fit, business purpose, origin, and compliance filing. |
+| Starting deadline | 2:00 |
+| Base reward | $80 |
+| Expiration effect | Executive Confidence −3 |
+| Required resource | Receipt |
+| Output | Verified Expense with Item Description, Reason, Country of Origin, and Compliance Paperwork Filed fields |
+| Specialist | Accountant |
+| Coverage worker | Manager emergency coverage |
+| Always-applicable controls | Apple device ecosystem; valid client-presentation purpose; non-embargoed origin; compliance paperwork filed |
 
 ### Stakeholder Alignment Memo
 
@@ -236,13 +256,29 @@ Eligible task arrivals have an 8% chance to be **Juiced**. Juiced scope never co
 | Required resource | Spreadsheet |
 | Output | Completed Data Entry |
 | Specialist | Intern |
-| Arrival | Two are added the morning after a failed audit |
+| Arrival | Legacy conditional work retained for save/rework compatibility; current audit bands use Compliance Check instead |
+
+### Compliance Check
+
+| Field | Value |
+|---|---|
+| Template ID | `compliance_check` |
+| Card code | `CC` |
+| Tags | `task`, `admin`, `mandatory`, `regulatory` |
+| Description | Complete the mandatory Compliance Check in the approved Spreadsheet. |
+| Starting deadline | 1:15 |
+| Base reward | $0 |
+| Missed/deleted consequence | +1 Liability |
+| Required resource | Spreadsheet |
+| Output | Completed Data Entry |
+| Specialist / coverage | Intern / emergency Manager coverage |
+| Arrival | Four are inserted at seeded positions throughout the day after a level-3 audit |
 
 ### Rework Task Instances
 
 `Request correction` converts a Review document back into the originating task template recorded by its completed workflow. Old saves without that source metadata use this fallback map:
 
-For current workflows, Stakeholder Alignment Memo, Revenue Enablement Packet, and Governance Recalibration all return as themselves with their original quoted payout. Regulatory work likewise keeps its unpaid identity.
+For current workflows, Stakeholder Alignment Memo, Revenue Enablement Packet, and Governance Recalibration all return as themselves with their original quoted payout. Regulatory Response and Compliance Check likewise keep their unpaid identities.
 
 | Review document | Rework task |
 |---|---|
@@ -250,6 +286,7 @@ For current workflows, Stakeholder Alignment Memo, Revenue Enablement Packet, an
 | Verified Expense | Expense Report |
 | Invoice Document | Invoice Request |
 | Regulatory Completed Data Entry | Regulatory Response (`$0` reward retained) |
+| Compliance Check Completed Data Entry | Compliance Check (`$0` reward retained) |
 
 The same card instance is transformed, marked as rework, and returned to Backlog with 60% of its remaining document deadline, never less than 25 seconds.
 
@@ -265,7 +302,7 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Card code | `RS` |
 | Tags | `resource`, `spreadsheet` |
 | Description | Approved workbook copy. Consumed when its workflow completes. |
-| Used by | Data Entry Request, Invoice Request, Stakeholder Alignment Memo, Regulatory Response |
+| Used by | Data Entry Request, Invoice Request, Stakeholder Alignment Memo, Regulatory Response, Compliance Check |
 | Consumption | Consumed when the workflow completes |
 
 ### Receipt
@@ -290,7 +327,7 @@ The same card instance is transformed, marked as rework, and returned to Backlog
 | Used by | Revenue Enablement Packet |
 | Consumption | Consumed when the workflow completes |
 
-Deleting any legitimate resource through the board trash target or Inspector costs `$8` and creates one severity-3 liability with the source `legitimate resource destroyed`. The liability raises Exposure through the discovery formula but does not change Audit Chance. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
+Deleting any legitimate resource through the board trash target or Inspector costs `$8` and creates one Liability with the source `legitimate resource destroyed`. Audit Chance is unchanged. Deleting junk has no waste charge and instead advances the daily phishing-test counter.
 
 ---
 
@@ -306,7 +343,7 @@ Documents are generated by completed workflows and enter Review with a 1:30 ruli
 | Card code | `DC` |
 | Tags | `document`, `routine` |
 | Description | A completed transcription awaiting review. |
-| Produced by | Data Entry Request, Stakeholder Alignment Memo, and Regulatory Response workflows |
+| Produced by | Data Entry Request, Stakeholder Alignment Memo, Regulatory Response, and Compliance Check workflows |
 | Generated fields | `records`, `variance`, `source` |
 | Possible base anomaly | `variance` has a 28% chance to be `Review sample mismatch` before worker-ability adjustments |
 
@@ -344,7 +381,7 @@ Junk uses `kind: distraction` internally but imitates a normal task or resource 
 
 The Inspector's **Add [resource] and begin** shortcut is intentionally unsafe: when a resource-disguised junk card imitates the requested input, the shortcut selects that decoy before legitimate stock. The matching decoy starts a normal-looking contaminated workflow. On activation, a temporary ghost of the selected card visibly travels from its lane into the workflow before dissolving into the task stack; reduced-motion settings suppress this flourish. Manual dragging and close visual inspection remain the explicit safe choices.
 
-Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress and `8` Exposure without changing Audit Chance, and leave the worker waiting in In Progress. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Every task and resource input, legitimate or junk, is consumed when the contaminated workflow completes.
+Task-disguised junk is also operationally dangerous. It inherits the imitated task's deadline, worker qualifications, resource requirement, duration forecast, and apparent payout. Both task-disguised junk and legitimate tasks supplied with a resource-disguised decoy run all the way to completion. They create a document in Review with a guaranteed **Source Integrity Failure**, add `10` worker stress, and leave the worker waiting in In Progress. Audit Chance and Liability remain unchanged until the player rules on the document. A fake task carries `$0` collectible value; a legitimate task contaminated by a junk resource retains its quoted contract value, making an incorrect approval tempting but liable. Every task and resource input, legitimate or junk, is consumed when the contaminated workflow completes.
 
 ### Task Disguises
 
@@ -389,13 +426,13 @@ The `К` in the `WК` code is Cyrillic, not the normal Latin `K`.
 | Trigger | The daily junk-deletion threshold |
 | Effect on arrival | Occupies the Inbox slot freed by the triggering deletion |
 | Reward condition | Reward is granted only when this card is deleted |
-| Reward | $125 and 1 persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200 for the current run. A held token is automatically consumed when a failed audit would otherwise end the run; the audit penalties remain, while lethal Cash or Confidence is stabilized at 1. |
+| Reward | $125 and 1 persistent Compliance Token. Every held token reduces effective nightly Audit Chance by 5 points and is not consumed. |
 
 ---
 
 ## Task Workflow Matrix
 
-The matrix below lists the 23 standard-scope recipes. Every row also has a juiced counterpart using the task-specific added resource above, 1.35× the listed duration, the same worker-fit penalties, and the task card's 5× juiced quote. Durations are base recipe durations before employee Speed, stress, morale, rhythm, coping traits, conditions, or company-development modifiers.
+The matrix below lists the 27 standard-scope recipes. The 25 Juiced-eligible rows also have a counterpart using the task-specific added resource above, 1.35× the listed duration, the same worker-fit penalties, and the task card's 5× juiced quote. Compliance Check and its Manager coverage remain standard-only. Durations are base recipe durations before employee Speed, Stress, Morale, sweet spots, coping traits, conditions, or company-development modifiers.
 
 | Task | Worker | Fit | Resource | Base duration | Accuracy penalty | Work-stress multiplier | Completion stress | Output | Typical payout |
 |---|---|---|---|---:|---:|---:|---:|---|---:|
@@ -405,6 +442,8 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 | Data Entry Request | Manager | Emergency cover | Spreadsheet | 41s | −70 | 3.20× | +30 | Completed Data Entry | $35 |
 | Regulatory Response | Intern | Specialist | Spreadsheet | 24s | 0 | 1.00× | +8 | Completed Data Entry | $0 |
 | Regulatory Response | Manager | Emergency cover | Spreadsheet | 54s | −70 | 3.20× | +30 | Completed Data Entry | $0 |
+| Compliance Check | Intern | Specialist | Spreadsheet | 22s | 0 | 1.00× | +7 | Completed Data Entry | $0 |
+| Compliance Check | Manager | Emergency cover | Spreadsheet | 50s | −70 | 3.20× | +30 | Completed Data Entry | $0 |
 | Expense Report | Accountant | Specialist | Receipt | 22s | 0 | 1.00× | +4 default | Verified Expense | $70 |
 | Expense Report | Junior Analyst | Coverage | Receipt | 32s | −8 | 1.60× | +12 | Verified Expense | $70 |
 | Expense Report | Intern | Coverage | Receipt | 40s | −14 | 2.00× | +18 | Verified Expense | $70 |
@@ -413,6 +452,8 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 | Invoice Request | Accountant | Coverage | Spreadsheet | 29s | −6 | 1.45× | +10 | Invoice Document | $75 |
 | Invoice Request | Intern | Coverage | Spreadsheet | 36s | −12 | 1.80× | +15 | Invoice Document | $75 |
 | Invoice Request | Manager | Emergency cover | Spreadsheet | 45s | −70 | 3.20× | +30 | Invoice Document | $75 |
+| Approve Purchase Request | Accountant | Specialist | Receipt | 23s | 0 | 1.00× | +4 default | Verified Expense | $80 |
+| Approve Purchase Request | Manager | Emergency cover | Receipt | 52s | −70 | 3.20× | +30 | Verified Expense | $80 |
 | Stakeholder Alignment Memo | Intern | Specialist | Spreadsheet | 22s | 0 | 1.00× | +4 default | Completed Data Entry | $45 |
 | Stakeholder Alignment Memo | Junior Analyst | Coverage | Spreadsheet | 30s | −6 | 1.40× | +9 | Completed Data Entry | $45 |
 | Stakeholder Alignment Memo | Manager | Emergency cover | Spreadsheet | 50s | −70 | 3.20× | +30 | Completed Data Entry | $45 |
@@ -429,6 +470,7 @@ The matrix below lists the 23 standard-scope recipes. Every row also has a juice
 |---|---|---|
 | Data Entry | Data Entry Request | Employee, Spreadsheet |
 | Expense verification | Expense Report, Receipt | Employee |
+| Purchase approval | Approve Purchase Request, Receipt | Employee |
 | Invoice preparation | Invoice Request | Employee, Spreadsheet |
 | Stakeholder alignment | Stakeholder Alignment Memo | Employee, Spreadsheet |
 | Revenue enablement | Revenue Enablement Packet, Client Data | Employee |
@@ -441,6 +483,39 @@ After completion, the document enters Review and the worker remains in In Progre
 ## Systems
 
 This section consolidates the pools, modifiers, rarity, progression, and card-state rules that can change a template after it becomes a runtime card. Exact percentages are authoritative. Rarity labels are descriptive: **Common** is at least 20%, **Uncommon** is 8–19.99%, **Rare** is 2–7.99%, and **Very rare** is below 2%. **Conditional** means the effect does not come from an ordinary random roll, and **Guaranteed** means it always applies when its stated trigger occurs.
+
+Systems quick index:
+
+- [Company Resources and Meta Stats](#company-resources-and-meta-stats)
+- [Employee Stat Pool](#employee-stat-pool)
+- [Extreme-Stat Ability Pool](#extreme-stat-ability-pool)
+- [Coping Trait Pool](#coping-trait-pool)
+- [Stress-Condition Pool](#stress-condition-pool)
+- [Workload, Support, and Burnout](#workload-support-and-burnout)
+- [Task Bonus and Rarity Pool](#task-bonus-and-rarity-pool)
+- [Distraction, Clue, and Phishing Systems](#distraction-clue-and-phishing-systems)
+- [Policy Pool and Review Interaction](#policy-pool-and-review-interaction)
+- [Review Decision Pool](#review-decision-pool)
+- [Audit Severity Consequences](#audit-severity-consequences)
+- [Progression Currencies and Persistent Bonuses](#progression-currencies-and-persistent-bonuses)
+- [Corporate Roadmap](#corporate-roadmap)
+- [Arrival and Opening Pools](#arrival-and-opening-pools)
+- [Player Card Interaction Reference](#player-card-interaction-reference)
+
+### Company Resources and Meta Stats
+
+| Meter or resource | Starting value | Current calculation and use | Failure or persistence |
+|---|---:|---|---|
+| Cash | $450 | Cash on hand: opening funds + recognized task payouts and other income − payroll, upkeep, route costs, support costs, fines, and other expenses. Recognized task payout is `quoted payout × (0.8 + 0.4 × Confidence / 100)`, rounded. | Cash at or below $0 after operating close ends the run. Cash is run-only. |
+| Staff Morale | 70 displayed at opening | Recalculated as `clamp(100 − average employee stress + average sweet-spot contribution + event modifier, 0, 100)`. It multiplies processing speed by 1.10 at 80–100, 1.05 at 65–79, 1.00 at 40–64, 0.85 at 20–39, and 0.70 below 20. It also applies Accuracy −10 at 20–39 and −20 below 20; Accuracy 6 specialist output remains guaranteed except during Bad Vibes. | Does not directly end the run. |
+| Employee Stress | 0 per newly created employee | Individual 0–100 meter. Average workflow Stress multiplies task duration by 1.50× at 50–79 and 2.00× at 80+. Resilience scales positive Stress gain. Ordinary employee sweet spots are 10–20%; the Manager's are 0–5% and 50–75%. Any valid band grants speed +15%, Accuracy +8 points, and a +10 contribution to the averaged Morale formula. | Burnout occurs at 100, or 90 for Resilience 1, and rolls a burnout outcome. Stress is run-only. |
+| Audit Chance | 50% | Rolled nightly after subtracting 5 points per held Compliance Token. Accurate approval removes 1 point. If an audit occurs, finding chance is `open Liability ÷ elapsed days`, capped at 100%. A finding uses Liability count to select Severity 1–5. | Severity 5 ends the run. Tokens persist and are not consumed. |
+| Board Confidence | 75 | Trust of the Board. It scales recognized payouts from 80% at 0 to 120% at 100. Accurate approvals and clean audits raise it; failed audits, mistakes, staffing decisions, and route tradeoffs can reduce it. Sweet-spot time affects Morale rather than Confidence directly. | Confidence at or below 0 ends the run. Confidence is run-only. |
+| Talent Points | 0 | +1 at every end of day reached; spend only at Employee Development Workshop nodes on current-employee stat pips. | Unspent points expire at run end. |
+| Process XP | Persistent wallet | +1 at every end of day reached; spend on permanent upgrades only after completing the Day 5 Board Review. | Persists in browser `localStorage` until Settings reset. |
+| Compliance Tokens | Persistent wallet | Earned from claimed phishing-test rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token reduces effective Audit Chance by 5 points. | Persists in browser `localStorage`; audits never consume tokens. |
+
+Stress sweet spots and preferred workload are separate systems. Preferred workload compares working time with idle time and affects Stress accumulation and Backlog recovery.
 
 ### Employee Stat Pool
 
@@ -455,28 +530,28 @@ Every employee card has three independently rolled stats from 1–6. An opening 
 
 Each listed value is **Common within that role** at 33.33%. Across the four-card opening roster, role-exclusive extremes such as Accountant Accuracy 6 or Manager Speed 1 occur on 8.33% of employee cards, but still have a one-third chance on their eligible role.
 
-| Stat | What it controls | Current conversion | Training base |
-|---|---|---|---:|
-| Accuracy | Forecast and generated-document compliance | Starts from `74 + 4 × Accuracy`, then applies coverage, Manager investment, coping, rhythm, sweet-spot, and stress modifiers. Accuracy 2 takes another −8 and Accuracy 1 another −16. Accuracy 6 guarantees worker-caused compliance outside Manager coverage; Accuracy 1 forces a worker-caused violation. | $18 |
-| Speed | Workflow processing rate | Pip multipliers are 0.60×, 0.80×, 1.00×, 1.10×, 1.20×, and 1.35×, multiplied by the role scalar and current state modifiers. Manager Speed above its two-pip baseline adds another multiplicative 5% per pip. | $16 |
-| Resilience | Positive stress gain and Manager support/team stakes | Resilience 1 takes 175% standard positive stress, 2 takes 135%, 3–5 take 100%, and 6 takes 50%. Manager Resilience also scales check-in healing and team-wide success/failure stress. | $14 |
+| Stat | What it controls | Current conversion |
+|---|---|---|
+| Accuracy | Forecast and generated-document compliance | Starts from `74 + 4 × Accuracy`, then applies coverage, Manager investment, coping, sweet-spot, Stress, low-Morale, and Bad Vibes modifiers. Accuracy 2 takes another −8 and Accuracy 1 another −16. Accuracy 6 guarantees worker-caused compliance outside Manager coverage except during Bad Vibes; Accuracy 1 forces a worker-caused violation. |
+| Speed | Workflow processing rate | Pip multipliers are 0.60×, 0.80×, 1.00×, 1.10×, 1.20×, and 1.35×, multiplied by the role scalar and current state modifiers. Manager Speed above its two-pip baseline adds another multiplicative 5% per pip. |
+| Resilience | Positive stress gain and Manager support/team stakes | Resilience 1 takes 175% standard positive stress, 2 takes 135%, 3–5 take 100%, and 6 takes 50%. Manager Resilience also scales check-in healing and team-wide success/failure stress. |
 
-The next purchased pip costs `training base + (current stat × $6) + (all prior pips bought for that employee × $4)`. Purchases permanently modify that employee, spend Cash immediately, and stop at six pips.
+At an Employee Development Workshop, one Talent Point buys one pip on a current employee. The selected stat increases permanently for that run and stops at six. Employee development never spends Cash.
 
 ### Extreme-Stat Ability Pool
 
-Extreme abilities are derived automatically from stat values; they do not replace the employee's coping trait. The opening rarity below is calculated over the complete four-employee opening roster. Values unavailable at opening can still be reached through Staff training or Juiced Hire generation.
+Extreme abilities are derived automatically from stat values; they do not replace the employee's coping trait. The opening rarity below is calculated over the complete four-employee opening roster. Values unavailable at opening can still be reached through Workshop training.
 
 | Stat value | Displayed ability | Opening rarity | Current applied effect |
 |---|---|---|---|
-| Accuracy 6 | Perfectionist — Never Misses | Uncommon · 8.33% of opening employees; Accountant only | Forces worker-caused fields compliant on non-Manager-coverage output. |
+| Accuracy 6 | Perfectionist — Never Misses | Uncommon · 8.33% of opening employees; Accountant only | Forces worker-caused fields compliant on non-Manager-coverage output except during Bad Vibes, when its −10 Accuracy modifier reduces the result to 90%. |
 | Accuracy 2 | Careless — Needs Checking | Uncommon · 8.33%; Intern only | Applies the normal lower pip value plus an additional −8 accuracy points. |
 | Accuracy 1 | Compliance Hazard — A Walking Finding | Conditional · not naturally rolled at opening | Forces at least one worker-caused field noncompliant. |
-| Speed 6 | Inbox Zero — Frighteningly Efficient | Conditional · not naturally rolled at opening | Applies the 1.35× stat-speed multiplier. The displayed 15% specialist head start is not currently applied by job creation. |
-| Speed 2 | Methodical — Thoroughly Eventually | Common · 25% across the opening roster | Applies the 0.80× stat-speed multiplier. The displayed extra intervention stress is not separately applied. |
+| Speed 6 | Inbox Zero — Frighteningly Efficient | Conditional · not naturally rolled at opening | Applies the 1.35× stat-speed multiplier. |
+| Speed 2 | Methodical — Thoroughly Eventually | Common · 25% across the opening roster | Applies the 0.80× stat-speed multiplier. |
 | Speed 1 | Glacial — Schedules Meetings About Starting | Uncommon · 8.33%; Manager only | Applies the 0.60× stat-speed multiplier while deadlines retain their normal rate. |
-| Resilience 6 | Unflappable — Seen Worse | Conditional · not naturally rolled at opening | Halves positive stress gain. The displayed first-threshold-condition immunity is not currently applied. |
-| Resilience 2 | Thin-Skinned — Takes Notes Personally | Uncommon · 16.67%; Junior Analyst or Manager | Multiplies positive stress gain by 1.35×. The displayed −15% Backlog recovery is not separately applied. |
+| Resilience 6 | Unflappable — Seen Worse | Conditional · not naturally rolled at opening | Halves positive stress gain. |
+| Resilience 2 | Thin-Skinned — Takes Notes Personally | Uncommon · 16.67%; Junior Analyst or Manager | Multiplies positive stress gain by 1.35×. |
 | Resilience 1 | Brittle — One Email From Collapse | Uncommon · 8.33%; Manager only | Multiplies positive stress gain by 1.75× and lowers burnout from 100 to 90 stress. |
 
 ### Coping Trait Pool
@@ -487,7 +562,7 @@ Every non-Manager employee independently receives one of four coping traits at a
 |---|---|---|
 | Boundary Setter | 25% on non-Managers; guaranteed on Manager | Backlog stress recovery ×1.35. |
 | Pressure Performer | 25% on non-Managers | Processing speed ×1.10 while stress is 50–79; no bonus at 80+. |
-| Perfectionist | 25% on non-Managers | +3 forecast/output accuracy. The displayed correction-stress penalty is not separately applied. |
+| Perfectionist | 25% on non-Managers | +3 forecast/output accuracy. |
 | People Pleaser | 25% on non-Managers | Correct approval relieves 8 stress instead of 4; incorrectly approved work adds 12 instead of 8. |
 
 ### Stress-Condition Pool
@@ -496,20 +571,19 @@ Crossing into 80+ stress without an existing condition rolls one of four conditi
 
 | Condition | Current applied effect |
 |---|---|
-| Clutch Focus | Processing speed ×1.10. The displayed +3 accuracy is not currently applied. |
-| Tunnel Vision | Processing speed ×0.85. The displayed +4 accuracy is not currently applied. |
-| Reckless Urgency | Processing speed ×1.20. The displayed −10 accuracy is not currently applied. |
+| Clutch Focus | Processing speed ×1.10. |
+| Tunnel Vision | Processing speed ×0.85. |
+| Reckless Urgency | Processing speed ×1.20. |
 | Withdrawal | Processing speed ×0.70 and Backlog recovery ×2. |
 
-### Workload, Rhythm, Support, and Burnout
+### Workload, Support, and Burnout
 
 Each employee rolls a preferred-work target within eight percentage points of the role template: Intern 37–53%, Junior Analyst 54–70%, Accountant 70–86%, and Manager 5–18%. Work share is time spent working divided by total tracked working and idle time.
 
 - The Intern, Junior Analyst, and Accountant enter their sweet spot at 10–20% stress. The Manager has two separate sweet spots, 0–5% and 50–75%. Being inside any valid band grants +15% processing speed, +8 accuracy, and +10 morale contribution.
-- Rhythm starts at 72. Staying within 12 points of the preferred-work target raises it; larger mismatches lower it. Rhythm at 78+ grants +2 accuracy and, when the stronger sweet-spot speed bonus is not active, +5% speed. The rhythm and sweet-spot accuracy bonuses can stack. Rhythm below 45 applies −10% speed and −5 accuracy.
 - Stress 0–49 is Steady, 50–79 is Strained, and 80+ is Fractured and rolls a stress condition. Reaching the employee's burnout threshold cancels active work, applies morale −6 and Confidence −8, and resolves the conditional outcome pool below.
 - A taskless employee left in In Progress gets five seconds of grace, then accumulates continuously accelerating Resilience-scaled stress until assigned or moved.
-- A private Manager check-in requires both cards in Backlog, costs $20, adds 5 target rhythm, and heals `20 + 3 × Manager Resilience pips above 2`. The Manager takes a base +10 stress modified by their own Resilience. Each target can receive one check-in per day.
+- A private Manager check-in requires both cards in Backlog, costs $20, and heals `20 + 3 × Manager Resilience pips above 2`. The Manager takes a base +10 Stress modified by their own Resilience. Each target can receive one check-in per day.
 
 | Burnout outcome | Conditional rarity | Result |
 |---|---:|---|
@@ -529,25 +603,89 @@ Positive-revenue tasks and task-disguised junk roll a visible contract tier when
 | Premium | Uncommon · 8% | 2.00× base. |
 | Windfall | Rare · 5% | 5.00× base. |
 | Juiced scope | Uncommon · independent 8% of eligible task arrivals | Multiplies the rolled non-Low quote by 5×, requires the task-specific second resource, consumes both resources, and increases base duration by 35%. |
-| Juiced Hire | Guaranteed on every overnight recruit | At least +2 total stat pips over the opening same-role employee where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. |
 
-Because scope and payout tier are separate rolls, an eligible arrival is both Juiced and Windfall 0.40% of the time (**Very rare**), Juiced and Premium 0.64% (**Very rare**), and Juiced with a standard tier 6.96% (**Rare**). The guaranteed opening tutorial is standard scope. Audit-generated Regulatory Response tasks can roll Juiced scope but always pay $0.
-
-Training Budget gives each future Juiced Hire one additional seeded pip. Staff-shop purchases and hired-card bonuses belong to the individual employee instance rather than the role template.
+Because scope and payout tier are separate rolls, an eligible arrival is both Juiced and Windfall 0.40% of the time (**Very rare**), Juiced and Premium 0.64% (**Very rare**), and Juiced with a standard tier 6.96% (**Rare**). The guaranteed opening tutorial is standard scope. Regulatory Response is retained for legacy/save compatibility; the current audit system generates non-Juiced Compliance Checks instead.
 
 ### Distraction, Clue, and Phishing Systems
 
-- Each deterministic ten-card arrival bag contains three distinct junk templates: three draws from the 12-card junk pool, or 30% of ordinary pulls.
+- Each deterministic ten-card arrival bag normally contains three distinct junk templates: three draws from the 12-card junk pool, or 30% of ordinary pulls. Spam Intake Filter permanently changes the mix to two junk cards, four tasks, and four resources.
 - Junk is internally marked as a distraction but visually uses its task/resource disguise. Each template has registered textual clue IDs and one of two deterministic print-glitch families.
 - Correctly deleting junk records its clue IDs permanently and advances the daily phishing threshold. Deleting legitimate cards never advances it.
-- The base threshold is four correct deletions. Persistent Security Liaison lowers it to two; Security Awareness rank 1 lowers the active threshold by one more, never below one.
-- Reaching the threshold produces exactly one BUSYWORK-IT reward notice for that day in the slot freed by the triggering deletion. Deleting the notice awards $125 and one persistent Compliance Token; Security Awareness rank 2 raises the Cash award to $200.
-- Security Awareness rank 3 also lowers Audit Chance by 2 for each correctly deleted junk card.
+- The threshold is four correct deletions each day.
+- Reaching the threshold produces exactly one BUSYWORK-IT reward notice for that day in the slot freed by the triggering deletion. Deleting the notice awards $125 and one persistent Compliance Token.
+- A claimed notice also adds one persistent Compliance Token. Every held token subtracts 5 points from effective nightly Audit Chance without being consumed.
 - A reward notice displaced by Inbox overflow is forfeited. Partial junk progress resets the next morning.
 
 ### Policy Pool and Review Interaction
 
-The active policy pool contains 30 document rules. A seeded, conflict-aware sampler chooses 3 / 4 / 4 / 4 / 5 base policies on Days 1–5, plus two after a failed audit. It attempts to include reimbursement, billing, and routine families, respects minimum-day eligibility, and avoids mutually exclusive groups. Document correctness therefore depends on both generated fields and that day's sampled policies, not only on the document template.
+The active policy pool contains 34 controls. A seeded, conflict-aware sampler chooses 3 / 4 / 4 / 4 / 5 base policies on Days 1–5, plus the consequence-band penalty after an audit. It attempts to include reimbursement, billing, and routine families, respects minimum-day eligibility, and avoids mutually exclusive groups. The four purchase controls always apply to Approve Purchase Request output in addition to that day's sampled policies.
+
+The in-game **Policies** panel shows both today’s active controls and this complete library. “Day” is the first day the control may enter the seeded pool. Policies sharing a conflict group cannot be active together. Purchase controls are always applied to purchase-request output and do not consume a daily sampled slot.
+
+| Policy | Family | Day | Severity | Compliance requirement | Conflict group |
+|---|---|---:|---:|---|---|
+| Financial Authorization 4.2 | Reimbursement | 1 | 8 | Expenses over $300 require a Manager signature. | — |
+| Evidence Standard 2.1 | Reimbursement | 1 | 6 | A receipt must be attached. | — |
+| Client Suspension Notice | Client | 1 | 9 | Client C-882 may not be released. | — |
+| Billing Cap A | Billing | 1 | 6 | Invoice amount must be $2,500 or less. | `invoice-cap` |
+| Billing Cap B | Billing | 2 | 5 | Invoice amount must be $3,500 or less. | `invoice-cap` |
+| Standard Terms | Billing | 1 | 5 | Invoice terms must be Net 30. | `terms` |
+| Accelerated Terms | Billing | 3 | 5 | Invoice terms must be Net 15. | `terms` |
+| Release Authority | Billing | 1 | 7 | Invoice must be authorized. | — |
+| Source Registry | Routine | 1 | 6 | Source must be Operations Intake. | `data-source` |
+| Variance Control | Routine | 1 | 6 | Variance must be “No material variance.” | — |
+| Minimum Batch | Routine | 1 | 4 | Record count must be at least 60. | `records` |
+| Maximum Batch | Routine | 2 | 4 | Record count must be 110 or less. | `records` |
+| Control Parity | All documents | 3 | 3 | Control ID must end in an even digit. | — |
+| Expense Ceiling | Reimbursement | 1 | 5 | Reimbursement must be $450 or less. | `expense-cap` |
+| Tight Expense Ceiling | Reimbursement | 4 | 6 | Reimbursement must be $350 or less. | `expense-cap` |
+| Preferred Client Day | Client | 4 | 7 | Only client C-321 may be released. | `client-rule` |
+| Client Hold | Client | 2 | 7 | Client C-555 may not be released. | `client-rule` |
+| Fatigue Review | All documents | 3 | 5 | Producer Stress must be 75 or less. | `fatigue-limit` |
+| Role Boundary Review | All documents | 3 | 5 | Out-of-role coverage requires a Manager signature. | — |
+| Whole-Dollar Filing | Financial | 2 | 3 | Amount must be a whole-dollar value. | — |
+| Materiality Threshold | Reimbursement | 2 | 4 | Reimbursement must be at least $125. | — |
+| Spend Harmonization Grid | Reimbursement | 3 | 4 | Reimbursement must use $25 increments. | — |
+| Revenue Materiality Floor | Billing | 2 | 5 | Invoice must be at least $1,000. | — |
+| Commercial Packaging Standard | Billing | 3 | 4 | Invoice must use $100 increments. | — |
+| Strategic Liquidity Window | Billing | 4 | 6 | Invoice terms must be Net 45. | `terms` |
+| Enterprise Batch Floor | Routine | 3 | 5 | Record count must be at least 75. | `records` |
+| Five-Point Normalization | Routine | 2 | 4 | Record count must be divisible by five. | — |
+| Revenue Operations Mandate | Routine | 4 | 6 | Source must be Revenue Operations. | `data-source` |
+| Cognitive Load Ceiling | All documents | 4 | 6 | Producer Stress must be 60 or less. | `fatigue-limit` |
+| Core-Competency Utilization | All documents | 3 | 6 | Work completed through role coverage is noncompliant. | — |
+| Device Ecosystem Standard | Purchase | Always | 7 | Item description must identify an Apple device. | — |
+| Business Purpose Test | Purchase | Always | 8 | Reason must be “Client presentation replacement.” | — |
+| Embargoed Origin Control | Purchase | Always | 10 | Country of origin may not be North Korea or Iran. | — |
+| Procurement Filing Rule | Purchase | Always | 7 | Compliance paperwork must be filed. | — |
+
+### Review Decision Pool
+
+All task and resource inputs are consumed when a workflow finishes, before its document reaches Review.
+
+| Decision | Policy-aligned use | Mistake or tradeoff |
+|---|---|---|
+| Approve | Accurate output moves to Done, pays Confidence-scaled Cash, grants Confidence +2, reduces Audit Chance by 1, and relieves producer stress by 4 (8 for People Pleaser). | Inaccurate output still pays but creates +1 Liability, adds producer stress 8 (12 for People Pleaser), and applies Morale modifier −1. Audit Chance is unchanged. |
+| Request correction | Inaccurate, salvageable output returns to Backlog as its originating task with a 40% shorter deadline, requires fresh resources, and gives the producer a flat +10 Stress. | Correcting accurate output still returns it as rework and gives the producer the same flat +10 Stress. Audit Chance and Liability are unchanged. Some unsalvageable violations block correction. |
+| Reject | Inaccurate or unsalvageable output is finalized with no payout and gives the producer a flat +10 Stress. | Rejecting accurate output also creates +1 Liability and Board Confidence −2. Consumed inputs are not returned. |
+| Escalate | Always finalizes the document in Done without task revenue. It is treated as a deliberate handoff rather than a hit/miss ruling. | Board Confidence −5 and Audit Chance −5 points. It does not return consumed inputs. |
+
+### Audit Severity Consequences
+
+The nightly audit resolves in two steps:
+
+1. Roll effective Audit Chance: base Audit Chance minus 5 points per held Compliance Token.
+2. If an audit occurs, roll finding chance as `open Liability ÷ elapsed days`, capped at 100%.
+
+If oversight finds something, open Liability directly selects the consequence:
+
+| Liability | Consequence | Result |
+|---:|---|---|
+| 1 | Consent Decree | +2 Active Policies the next day |
+| 2 | Cash Fine | Cash −$50, Audit Chance +10 percentage points, Board Confidence −5 |
+| 3 | Compliance Check | Four unpaid Compliance Check cards are distributed through the next day; each missed or deleted card adds +1 Liability |
+| 4 | Bad Vibes | Next-day Accuracy −10 percentage points and speed ×0.9; Staff Morale −20; Board Confidence −5 |
+| 5+ | Termination | The run ends immediately |
 
 ### Task-Revenue Telemetry
 
@@ -557,38 +695,56 @@ The header projection is a task-performance view rather than a complete Cash led
 
 | Currency | Earned from | Card-system use |
 |---|---|---|
-| Cash | Starting funds, approved task payouts, phishing rewards | Hiring, per-employee stat pips, check-ins, operating choices, payroll, and penalties. |
-| Run Process Points | One after each successful daily close | Invest immediately in one of six three-rank run specializations: Inbox capacity, In Progress capacity, approved payouts, overnight recovery, nightly Audit Chance reduction, or Board Confidence restoration. Unspent points and purchased ranks expire when the run ends. |
-| Process XP | Once whenever a run ends, including an early failure: `5 + floor(correct rulings / 3) − incorrect rulings − floor(expired tasks / 2)`, minimum 0 | Persistent Inbox Shelf, Known Sender Registry, Training Budget, and Better Benefits upgrades. |
-| Compliance Tokens | One per claimed BUSYWORK-IT reward after deleting the daily junk threshold and then deleting the delivered reward notice | Buy Security Liaison or Employee Assistance for two tokens after prerequisites. A held token is also automatically consumed if a failed audit would newly cause Insolvency, Board Confidence Lost, or Critical Audit Failure; Cash/Confidence are stabilized at 1 where needed, but other audit penalties remain. |
+| Cash | Starting funds, approved task payouts, phishing rewards | Check-ins, roadmap costs, payroll, and penalties. |
+| Talent Points | +1 at each end of day reached | Spend 1 at an Employee Development Workshop route node for a permanent stat pip on one current employee. Unspent points expire with the run. |
+| Process XP | +1 banked immediately for each end of day reached | Buy permanent upgrades only after completing the Day 5 Quarterly Board Review. |
+| Compliance Tokens | Claimed BUSYWORK-IT rewards, Report Defect/Policy Sweep route rewards, and completed 10-minute days | Each held token automatically reduces effective Audit Chance by 5 points. Tokens persist and are not consumed by audits. |
 
-The six daily Run Process Point choices are fixed for the run:
-
-| Specialization | Rank 1 / 2 / 3 bonus |
-|---|---|
-| Elastic Intake | Inbox capacity +1 / +2 / +3 |
-| Parallel Processing | In Progress capacity +1 / +2 / +3 |
-| Revenue Assurance | Approved task payouts +5% / +10% / +15% |
-| Restorative Controls | Overnight employee recovery +3 / +6 / +9 |
-| Audit Dampening | Nightly Audit Chance −5 / −10 / −15 |
-| Grease the Wheels | Immediately restores Board Confidence +5 / +10 / +15 total, capped at 100 |
-
-The between-quarter persistent branches are:
+The permanent Day 5 upgrade office contains:
 
 | Upgrade | Cost and prerequisite | Persistent card-system bonus |
 |---|---|---|
-| Inbox Shelf | 4 Process XP | +1 Inbox capacity. |
-| Known Sender Registry | 5 Process XP; requires Inbox Shelf | Previously discovered junk patterns gain a faint source-line clue. |
-| Security Liaison | 2 Compliance Tokens; requires Known Sender Registry | Base phishing threshold becomes two instead of four. |
-| Training Budget | 5 Process XP | Every future Juiced Hire gains one additional seeded stat pip. |
-| Better Benefits | 5 Process XP; requires Training Budget | Backlog stress recovery +10%. |
-| Employee Assistance | 2 Compliance Tokens; requires Better Benefits | First private Manager check-in each day costs $0. |
+| Spam Scanner | 2 Process XP | Every junk card receives a full-card glitch, including its covered folder token. |
+| Process Lane Annex | 3 Process XP | +1 In Progress slot. |
+| Inbox Expansion | 3 Process XP; requires Spam Scanner | +2 Inbox slots. |
+| Spam Intake Filter | 4 Process XP; requires Spam Scanner | Junk falls from 30% to 20% of each ten-card intake bag. |
+| Review Annex | 5 Process XP; requires Process Lane Annex | +3 Review slots. |
+| Six-Tab Folders | 4 Process XP | Matching task/resource folders hold six cards instead of five. |
+| Manager Triage Protocol | 6 Process XP; requires Review Annex | Each morning, the Manager automatically relieves 8 stress from the most stressed available worker. |
 
-The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes the current run's Run Process Points from permanent Process XP and Compliance Tokens, shows the projected XP award if the run ended now, explains the current phishing threshold, and previews all permanent upgrades with their costs, prerequisites, and affordability. Permanent purchases remain restricted to run-end screens.
+The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes run-only Talent Points from permanent Process XP and Compliance Tokens, shows the tokens' exact base-to-effective Audit Chance reduction, and previews all permanent upgrades with costs and prerequisites. Permanent purchases are restricted to the successful Day 5 review.
 
-Run-end accounting separates the XP earned by that run from the updated permanent XP balance and the separately held Compliance Token balance. Failure postmortems keep the permanent upgrade board expanded instead of hiding it in a collapsed disclosure. After both token upgrades have been purchased for four tokens total, all remaining Compliance Tokens serve only as automatic failed-audit death shields.
+Run-end accounting separates the XP earned by that run from the permanent wallet and separately held Compliance Tokens. Failure postmortems show retained unlocks but do not permit new purchases. Browser storage persists the wallet and upgrade IDs on that device until **Reset all data** is confirmed in Settings.
 
-Persistent unlocks never auto-play cards: they add capacity, recognition clues, employee support, or improved recruits while preserving mail triage and Review decisions.
+Persistent unlocks never auto-play cards: they add capacity, spam recognition/filtering, folder space, or one bounded Manager stress intervention while preserving mail triage and Review decisions.
+
+### Corporate Roadmap
+
+The corporate org-chart/Gantt roadmap is the only normal between-day decision surface. A new quarter starts by choosing Margin Review, Team Calibration, or Policy Sweep. Later choices are limited to the same or an adjacent workstream row, and all routes converge on the Day 5 Quarterly Board Review.
+
+- Short, medium, and long nodes create real 3-, 5-, and 10-minute workdays. Completing a long day grants one Compliance Token.
+- The rendered route uses department swimlanes, dependency connectors, filing stamps, and variable-width initiative bars modeled on the corporate-roadmap prototype. Every location carries a named program and concise corporate flavor memo that explains its mechanical tradeoff.
+- Route inspectors separate setup applied when a route is filed from a single stacked column of payouts awarded after that workday. They cover targeted stress reset, Pizza Party, Report Defect, Grease the Wheels, Stage a Demo, two-Intern hiring, Whistleblower, Casual Friday, a one-day Temp, and Safety Seminar.
+- Vendor Exception creates an Accounting-focused day and a random non-Manager callout. Accounting intake emphasizes Approve Purchase Request, Expense Report, Invoice Request, and Governance Recalibration.
+- Employee Development Workshop is the only place Talent Points can be spent.
+- Choosing one route node replaces the old overnight activity, development, and multi-card hire menus.
+- `Rich Kid` / +1 extra life remains an unimplemented plan idea, not a cataloged current reward. The proposed generic single-resource day is likewise not implemented; Vendor Exception's Accounting-focused intake is the shipped strategic task-mix event.
+
+| Day | Location / program | Duration | Current setup or settled reward |
+|---:|---|---|---|
+| 1 | Margin Review / Pizza Party | Short · 3 min | Staff Morale +20; Cash −$100 at close. |
+| 1 | Team Calibration / Targeted Stress Reset | Medium · 5 min | Reset the most stressed available worker to 0 Stress at close. |
+| 1 | Policy Sweep / Report Defect | Long · 10 min | +2 Compliance Tokens; Board Confidence −5; completed-long-day bonus +1 token. |
+| 2 | Vendor Exception / Accounting Surge | Medium · 5 min | Accounting work dominates intake; one random non-Manager calls out sick. |
+| 2 | Development Workshop / Employee Development | Short · 3 min | Allow saved Talent Points to buy current-employee stat pips. |
+| 2 | Audit Readiness / Grease the Wheels | Long · 10 min | Remove 1 open Liability; Board Confidence −5; completed-long-day bonus +1 token. |
+| 3 | Budget Lock / Stage a Demo | Long · 10 min | Staff Morale +10; Board Confidence +15; +1 Liability; completed-long-day bonus +1 token. |
+| 3 | Talent Pipeline / Two New Interns | Medium · 5 min | Add two Interns without recruiting cost when Backlog has room; normal payroll applies. |
+| 3 | Whistleblower / Clean Disclosure | Short · 3 min | Clear all open Liability; Board Confidence −10. |
+| 4 | Casual Friday / Mandatory Relaxation | Short · 3 min | Staff Morale +10; Board Confidence −1. |
+| 4 | Temp Desk / One-Day Specialist | Medium · 5 min | Add a random Intern, Junior Analyst, or Accountant for one workday. |
+| 4 | Safety Seminar / Mandatory Caution | Long · 10 min | Audit Chance −10 points; Staff Morale −5; completed-long-day bonus +1 token. |
+| 5 | Quarterly Board Review / Final Boss | Boss · 10 min | Final workday; surviving unlocks permanent-upgrade spending and earns the completed-long-day +1 token. |
 
 ### Arrival and Opening Pools
 
@@ -621,16 +777,9 @@ The opening Data Entry Request is linked to the first-workflow guide. The task, 
 | 4 | Data Entry Request + Spreadsheet |
 | 5 | Expense Report + Receipt |
 
-Pulls use repeating deterministic ten-card bags. Every bag contains three distinct legitimate tasks, four resources (one of each plus one seeded duplicate), and three distinct junk templates.
+Pulls use repeating deterministic ten-card bags. Normally every bag contains three distinct legitimate tasks selected from the seven-card ordinary task pool, four resources (one of each plus one seeded duplicate), and three distinct junk templates. Spam Intake Filter changes that to four tasks, four resources, and two junk cards. Vendor Exception uses an Accounting task pool: Approve Purchase Request, Expense Report, Invoice Request, and Governance Recalibration. A level-3 audit inserts four Compliance Checks at seeded random positions in the following day's first bag.
 
-| Pull category | Named cards | Per-card probability | Category total |
-|---|---|---:|---:|
-| Legitimate task | Data Entry Request; Expense Report; Invoice Request; Stakeholder Alignment Memo; Revenue Enablement Packet; Governance Recalibration | 5% each | 30% |
-| Resource | Spreadsheet; Receipt; Client Data | 13.33% each on average | 40% |
-| Task-disguised junk | Six registered task disguises | 2.5% each | 15% |
-| Resource-disguised junk | Six registered resource disguises | 2.5% each | 15% |
-
-Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries and therefore have 0% random-pull probability.
+Regulatory Response, Compliance Check, and the BUSYWORK-IT reward notice are conditional deliveries and therefore have 0% ordinary random-pull probability.
 
 ---
 
@@ -641,32 +790,34 @@ Regulatory Response and the BUSYWORK-IT reward notice are conditional deliveries
 | Wait for an arrival | The next seeded card enters Inbox when the visible countdown reaches zero. | The automatic interval scales by day. If Inbox is full, the automatic arrival displaces the oldest stack and applies the documented overflow consequences. |
 | Select **Pull next item** | The next seeded card enters immediately and the automatic-arrival clock resets. | Disabled while Inbox is full. Each ten-card bag preserves the 30% task, 40% resource, and 30% junk composition above. |
 | Click a visible card | Opens that card or stack in the Inspector. | Review output arriving later does not replace this selection. |
-| Drop a card or stack into a visible gap in its current lane | Reorders that entire lane item at the chosen position. | Folder contents, active job state, employee rhythms, timers, and unrelated runtime workflows are unchanged. |
+| Drop a card or stack into a visible gap in its current lane | Reorders that entire lane item at the chosen position. | Folder contents, active job state, employee Stress state, timers, and unrelated runtime workflows are unchanged. |
 | Drag a visible top card to empty lane space | Extracts that card into a new stack in the destination lane. | Lane capacity and movement restrictions still apply. |
-| Drag one stack onto another | Merges the complete source stack atomically. | The result must contain no more than five cards. Matching resources or matching tasks may form homogeneous storage piles; otherwise a workflow stack accepts at most one employee, task-like card, document, and resource. The exact two-resource Juiced recipe is the only mixed-resource exception. Active and locked workflows reject merges. |
+| Drag one stack onto another | Merges the complete source stack atomically. | The result must contain no more than five cards, or six for a homogeneous matching-task/resource folder after Six-Tab Folders is unlocked. Otherwise a workflow stack accepts at most one employee, task-like card, document, and resource. The exact two-resource Juiced recipe is the only mixed-resource exception. Active and locked workflows reject merges. |
 | Click a folder token or covered-card token | Opens that represented card in the Inspector. | Homogeneous folders show only the covered cards, nearest to the top first, in a four-slot rail; the full-size folder face already represents the top card. Mixed stacks also show only genuinely covered cards. |
 | Drag a folder token or covered-card token | Pulls only that represented card into its own stack. | A covered card's paused deadline resumes only when it becomes a physical top card. Rectangular token shape, abbreviation, color, and decoration identify the referent and relevant timer, Juiced, low-value, glitch, or employee state. A two-card folder dissolves into one ordinary card when either card is removed. |
 | Drag an In Progress resource chip | Removes only that staged resource from the composite workflow. | In Progress does not show covered pips because the employee, task, and resources are represented directly. |
 | Drag an assigned employee header to Backlog | Cancels active work, dismantles the composite workflow, and releases every card into its own stack. | The stack under the pointer is ignored, so release can never combine the employee or task with it. Backlog must have room for the employee; each remaining card fills another Backlog slot, then an Inbox slot, or is deleted with its normal consequences when both lanes are full. |
 | Complete a workflow | Consumes every staged resource, sends the document to Review, and leaves the employee in In Progress. | No resource is retained. A matching disguised junk input is accepted as supplied but guarantees Source Integrity Failure. |
 
-Card faces pair a stable type color and shape with a specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt; generic `RS` and `WK` labels are not used. Employees use blue/avatar circles with executive brown reserved for the Manager, tasks amber/target circles, resources purple/diamonds, and documents green/folded pages. Secondary payout and scope attributes remain compact colored pips. Juiced tasks and Juiced Hires add a heavy double edge, layered surface, deeper shadow, and lightning pip while retaining the base card-type identity. Hovering or keyboard-focusing a Juiced, Juiced Hire, Windfall, Premium, or Low Fee token opens a compact explanation of its benefits and tradeoffs. Selecting a card does not visually accent other cards that could interact with it; drag targets still provide direct valid/invalid feedback during the drag itself. Task flavor text names the required resource in natural language without a separate “consumed” footer. Standalone employees show their Accuracy, Speed, and Resilience values and compact meters at all times.
+Card faces pair a stable type color and shape with a specific abbreviation such as `SP` for Spreadsheet or `RE` for Receipt; generic `RS` and `WK` labels are not used. Employees use blue/avatar circles with executive brown reserved for the Manager, tasks amber/target circles, resources purple/diamonds, and documents green/folded pages. Secondary payout and scope attributes remain compact colored pips. Juiced tasks add a heavy double edge, layered surface, deeper shadow, and lightning pip while retaining the base card-type identity. Hovering or keyboard-focusing a Juiced, Windfall, Premium, or Low Fee token opens a compact explanation of its benefits and tradeoffs. Selecting a card does not visually accent other cards that could interact with it; drag targets still provide direct valid/invalid feedback during the drag itself. Task flavor text names the required resource in natural language without a separate “consumed” footer. Standalone employees show their Accuracy, Speed, and Resilience values and compact meters at all times.
 
 ---
 
 ### Runtime Instance Notes
 
 - Every instance has a unique `card_*` ID, location, creation day, and optional deadline.
-- Employee instances add stress, workload preference, coping trait, condition, rhythm, daily work/idle time, 1–6 stats, derived abilities, per-stat purchased-pip counts, and total Cash invested.
+- Employee instances add Stress, workload preference, coping trait, condition, daily work/idle time, 1–6 stats, derived abilities, per-stat purchased-pip counts, and total Cash invested.
 - Employee instances also persist their continuous taskless In Progress wait. This timer drives the escalating idle-pressure rate and resets when work is assigned or the employee leaves In Progress.
 - Task instances may become rework tasks and retain revision metadata.
 - Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
-- Multiple hired employees may share one template but have different seeded stats, traits, workload preferences, and labels. Every recruit receives the underlying Juiced Hire bonuses—at least two total stat pips above the opening same-role worker where caps permit, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery—but its player-facing modifier token reads `NEW HIRE`. Training Budget adds one further pip.
-- The End of Shift Process Award page places the six directly actionable Run Systems beside an `&` divider and the Employee Development shop in two equally sized panels. It sells one permanent base-stat pip at a time to a selected employee. Each stat caps at six; the price depends on the stat, its current value, and the employee’s total prior purchases. The following Morning Brief replaces the duplicate opening dashboard with actual Cash, Staff Morale, Audit Chance, and Board Confidence changes since the prior close.
+- Multiple roadmap recruits may share one template but have independently seeded stats, traits, workload preferences, and labels. Recruits use the same role stat pool as every other newly created employee and receive no special modifier token or automatic stat/speed/recovery bonus.
+- Reaching each end of day immediately awards `+1 Process XP` to the persistent on-device wallet and `+1 Talent Point` to the current run. The progression receipt shows both balances and any long-shift Compliance Token before opening the route map.
+- The corporate roadmap replaces the old overnight choice catalog. The player selects one adjacent workstream for the next day; each node exposes its exact effect and real 3-, 5-, or 10-minute duration. A completed 10-minute shift awards one persistent Compliance Token.
+- Employee Development Workshop nodes are the only places where run Talent Points can buy worker stat pips. Permanent upgrade purchases are reserved for the successful Day 5 quarterly board, use Process XP, and remain on the device through browser storage until reset in Settings.
 - Standalone employee cards always display their current Accuracy, Speed, and Resilience values in a compact three-column strip; no hover is required.
-- Matching resource cards and matching task cards can share homogeneous storage piles. Other stacks allow at most one employee, task-like card, document, and resource card; resource-disguised junk occupies the resource slot, and a Juiced task may carry its exact two-resource recipe pair. Compatible stacks can be combined atomically up to five total cards. Active or locked stacks cannot be merged, and legacy incompatible stacks are split when loaded.
+- Matching resource cards and matching task cards can share homogeneous storage piles. Other stacks allow at most one employee, task-like card, document, and resource card; resource-disguised junk occupies the resource slot, and a Juiced task may carry its exact two-resource recipe pair. Compatible stacks can be combined atomically up to five total cards, or six for a homogeneous folder after Six-Tab Folders is unlocked. Active or locked stacks cannot be merged.
 - Only the physical top card advances its deadline. Homogeneous folders use a compact filing-folder face plus four rectangular slots for covered cards, nearest to the top first; the visible folder face represents the active top card and is never repeated as a mini token. Unused slots remain empty, and the folder appearance disappears when only one card remains. Mixed stacks use compact identity/status tokens only for genuinely covered cards while their timers pause. Every populated token can be clicked for inspection or dragged to pull that individual card out. Composite In Progress workflows omit the tokens because all participating cards are already represented directly.
 - The opening Data Entry Request and every legitimate card/action that can advance it are eligible for the first-workflow sparkle guide.
 - Work products entering Review do not replace the current card or panel selection.

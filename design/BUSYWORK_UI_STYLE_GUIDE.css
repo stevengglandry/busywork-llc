@@ -17,6 +17,7 @@
  * design/ui-concepts/02-card-stack-panel-system-v2.png
  * design/ui-concepts/03-end-of-shift-redesign-v2.png
  * design/ui-concepts/04-review-policies-run-end-v2.png
+ * design/corporate-roadmap-concept.html
  *
  * NON-NEGOTIABLE RULES
  * --------------------
@@ -38,6 +39,8 @@
  * 9. Use color to reinforce text, never to replace it.
  * 10. Corporate paper, folder tabs, stamps, and ledger rules add character;
  *     they may not reduce legibility or obscure interaction.
+ * 11. Route maps use day columns, department rows, dependency connectors, and
+ *     the standard Inspector. Avoid fantasy-map scenery or unlabeled icons.
  */
 
 @layer busywork.tokens, busywork.base, busywork.layout, busywork.components,
