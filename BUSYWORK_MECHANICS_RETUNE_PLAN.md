@@ -239,7 +239,7 @@ The roadmap replaces the old overnight activity, employee-development, and new-h
 - Margin Review inserts one Night Planning choice; Talent Pipeline inserts one paid Juiced recruit choice; Temp Desk provides one random specialist for one day.
 - Other route rewards include targeted stress reset, Pizza Party, Report Defect, Grease the Wheels, Stage a Demo, Whistleblower, Casual Friday, and Safety Seminar.
 - Permanent XP purchases are available only after reaching a successful Day 5 Quarterly Review. Early failure keeps earned XP, Compliance Tokens, and existing permanent upgrades, but loses Talent Points and Run Process ranks.
-- The permanent office offers Spam Scanner (2 XP), Process Lane Annex (3), Inbox Expansion (3; requires Spam Scanner), Spam Intake Filter (4; requires Spam Scanner), Review Annex (5; requires Process Lane Annex), Six-Tab Folders (4), and Manager Triage Protocol (6; requires Review Annex).
+- The permanent office uses 5-XP cost increments: Spam Scanner (5 XP), Process Lane Annex (10), Inbox Expansion (15; requires Spam Scanner), Spam Intake Filter (20; requires Spam Scanner), Review Annex (25; requires Process Lane Annex), Six-Tab Folders (30), and Manager Triage Protocol (35; requires Review Annex). A fresh five-day survivor reaches its first Quarterly Review with exactly 5 XP, making Spam Scanner the only affordable purchase.
 - Persistent progress is stored in browser `localStorage` on that device until **Settings → Reset all data** is confirmed.
 
 ### Card stacking and deletion

@@ -70,7 +70,7 @@ Specific completed roadmap locations can insert one additional reward after the 
 
 The run-only Talent Tree branches are Elastic Intake (+1/+2/+3 Inbox), Parallel Processing (+1/+2/+3 In Progress), Revenue Assurance (+5/+10/+15% approved payouts), Restorative Controls (+3/+6/+9 overnight Stress recovery), and Audit Dampening (−5/−10/−15 Audit Chance points).
 
-Permanent upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
+Permanent upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. Their costs are 5, 10, 15, 20, 25, 30, and 35 XP respectively, so a fresh five-day survivor can afford only Spam Scanner at the first Quarterly Review. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
 
 XP, Compliance Tokens, and purchased permanent upgrades use browser `localStorage` until **Settings → Reset all data** is confirmed. They are not HTTP cookies. `Rich Kid` / +1 extra life and a generic single-resource day remain unimplemented plan ideas, not current rewards.
 

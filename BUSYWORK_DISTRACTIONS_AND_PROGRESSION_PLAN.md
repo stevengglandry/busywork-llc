@@ -539,15 +539,15 @@ Cash, employee stat gains, Talent Points, and Run Process ranks are run resource
 
 | Upgrade | Cost and prerequisite | Permanent effect |
 |---|---|---|
-| Spam Scanner | 2 XP | Give every junk card a strong full-card visual glitch, including covered folder tokens. |
-| Process Lane Annex | 3 XP | +1 In Progress lane capacity. |
-| Inbox Expansion | 3 XP; requires Spam Scanner | +2 Inbox capacity. |
-| Spam Intake Filter | 4 XP; requires Spam Scanner | Reduce junk mail from 30% to 20% of each ten-card intake bag. |
-| Review Annex | 5 XP; requires Process Lane Annex | +3 Review slots. |
-| Six-Tab Folders | 4 XP | Increase matching task/resource folder capacity from 5 to 6. |
-| Manager Triage Protocol | 6 XP; requires Review Annex | Each morning, automatically relieve 8 stress from the most stressed available worker. |
+| Spam Scanner | 5 XP | Give every junk card a strong full-card visual glitch, including covered folder tokens. |
+| Process Lane Annex | 10 XP | +1 In Progress lane capacity. |
+| Inbox Expansion | 15 XP; requires Spam Scanner | +2 Inbox capacity. |
+| Spam Intake Filter | 20 XP; requires Spam Scanner | Reduce junk mail from 30% to 20% of each ten-card intake bag. |
+| Review Annex | 25 XP; requires Process Lane Annex | +3 Review slots. |
+| Six-Tab Folders | 30 XP | Increase matching task/resource folder capacity from 5 to 6. |
+| Manager Triage Protocol | 35 XP; requires Review Annex | Each morning, automatically relieve 8 stress from the most stressed available worker. |
 
-These upgrades make future quarters easier and more expressive without auto-playing the core triage, assignment, or Review decisions.
+These costs rise in 5-XP increments. A fresh save earns exactly 5 XP by surviving its first five-day quarter, so only Spam Scanner is affordable at that first Quarterly Review. The upgrades make future quarters easier and more expressive without auto-playing the core triage, assignment, or Review decisions.
 
 ### 12.4 Corporate roadmap and location rewards
 

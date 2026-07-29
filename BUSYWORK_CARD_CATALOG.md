@@ -728,17 +728,17 @@ The guaranteed nightly **Run Process Talent Tree** contains five three-pip branc
 | People Operations — Restorative Controls | Overnight Stress recovery +3 | Overnight Stress recovery +6 | Overnight Stress recovery +9 |
 | Compliance — Audit Dampening | Nightly Audit Chance −5 points | Nightly Audit Chance −10 points | Nightly Audit Chance −15 points |
 
-The **permanent upgrade office** is unlocked only at a successful Day 5 Quarterly Review:
+The **permanent upgrade office** is unlocked only at a successful Day 5 Quarterly Review. Costs rise in 5-XP increments; a fresh save that survives all five days arrives with 5 XP and can afford only Spam Scanner:
 
 | Upgrade | Cost and prerequisite | Persistent card-system bonus |
 |---|---|---|
-| Spam Scanner | 2 XP | Every junk card receives a full-card glitch, including its covered folder token. |
-| Process Lane Annex | 3 XP | +1 In Progress slot. |
-| Inbox Expansion | 3 XP; requires Spam Scanner | +2 Inbox slots. |
-| Spam Intake Filter | 4 XP; requires Spam Scanner | Junk falls from 30% to 20% of each ten-card intake bag. |
-| Review Annex | 5 XP; requires Process Lane Annex | +3 Review slots. |
-| Six-Tab Folders | 4 XP | Matching task/resource folders hold six cards instead of five. |
-| Manager Triage Protocol | 6 XP; requires Review Annex | Each morning, the Manager automatically relieves 8 stress from the most stressed available worker. |
+| Spam Scanner | 5 XP | Every junk card receives a full-card glitch, including its covered folder token. |
+| Process Lane Annex | 10 XP | +1 In Progress slot. |
+| Inbox Expansion | 15 XP; requires Spam Scanner | +2 Inbox slots. |
+| Spam Intake Filter | 20 XP; requires Spam Scanner | Junk falls from 30% to 20% of each ten-card intake bag. |
+| Review Annex | 25 XP; requires Process Lane Annex | +3 Review slots. |
+| Six-Tab Folders | 30 XP | Matching task/resource folders hold six cards instead of five. |
+| Manager Triage Protocol | 35 XP; requires Review Annex | Each morning, the Manager automatically relieves 8 stress from the most stressed available worker. |
 
 The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes persistent XP and Compliance Tokens from run-only Talent Points, the Cash-funded Workshop shop, and the three location reward gates. It shows the exact token and Audit Dampening reductions and previews permanent upgrade costs and prerequisites without allowing purchases before Quarterly Review. The run-only Talent Tree is guaranteed as phase 1 of every survived night's rewards, including the final close before Quarterly Review.
 
