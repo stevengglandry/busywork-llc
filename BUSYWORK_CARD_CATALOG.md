@@ -509,10 +509,13 @@ Systems quick index:
 | Cash | $450 | Cash on hand: opening funds + recognized task payouts and other income − payroll, upkeep, route costs, support costs, fines, and other expenses. Recognized task payout is `quoted payout × (0.8 + 0.4 × Confidence / 100)`, rounded. | Cash at or below $0 after operating close ends the run. Cash is run-only. |
 | Staff Morale | 70 displayed at opening | Recalculated as `clamp(100 − average employee stress + average sweet-spot contribution + event modifier, 0, 100)`. It multiplies processing speed by 1.10 at 80–100, 1.05 at 65–79, 1.00 at 40–64, 0.85 at 20–39, and 0.70 below 20. It also applies Accuracy −10 at 20–39 and −20 below 20; Accuracy 6 specialist output remains guaranteed except during Bad Vibes. | Does not directly end the run. |
 | Employee Stress | 0 per newly created employee | Individual 0–100 meter. Average workflow Stress multiplies task duration by 1.50× at 50–79 and 2.00× at 80+. Resilience scales positive Stress gain. Ordinary employee sweet spots are 10–20%; the Manager's are 0–5% and 50–75%. Any valid band grants speed +15%, Accuracy +8 points, and a +10 contribution to the averaged Morale formula. | Burnout occurs at 100, or 90 for Resilience 1, and rolls a burnout outcome. Stress is run-only. |
-| Audit Chance | 50% | Rolled nightly after subtracting 5 points per held Compliance Token. Accurate approval removes 1 point. If an audit occurs, finding chance is `effective Liability ÷ elapsed days`, capped at 100%, where `effective Liability = max(0, open Liability − held Compliance Tokens)`. A finding uses effective Liability to select Severity 1–5. | Severity 5 ends the run. Tokens persist and are not consumed. |
+| Audit Chance | 50% | Rolled nightly after subtracting 5 points per held Compliance Token and 5 points per run-only Audit Dampening pip. Accurate approval removes 1 point. If an audit occurs, finding chance is `effective Liability ÷ elapsed days`, capped at 100%, where `effective Liability = max(0, open Liability − held Compliance Tokens)`. A finding uses effective Liability to select Severity 1–5. | Severity 5 ends the run. Tokens persist and are not consumed; Audit Dampening expires with the run. |
 | Board Confidence | 75 | Trust of the Board. It scales recognized payouts from 80% at 0 to 120% at 100. Accurate approvals and clean audits raise it; failed audits, mistakes, staffing decisions, and route tradeoffs can reduce it. Sweet-spot time affects Morale rather than Confidence directly. | Confidence at or below 0 ends the run. Confidence is run-only. |
-| XP | Persistent wallet | +1 at every survived day close. The Talent Tree is guaranteed as phase 1 of that night's rewards, where banked XP can immediately buy permanent upgrades or be saved. | Persists in browser `localStorage` until Settings reset. |
+| XP | Persistent wallet | +1 at every survived day close. It buys permanent upgrades only after reaching the successful Day 5 Quarterly Review. | Persists across runs in browser `localStorage` until Settings reset. |
+| Talent Points | 0 at run start | +1 at every survived day close. The guaranteed phase-1 Talent Tree spends them on Run Process Upgrades. | Points and purchased ranks are run-only and expire at run end. |
 | Workshop access | Location reward | Completing an Employee Development Workshop workday inserts a separate Cash-funded employee stat shop after that night's Talent Tree. | Available only during that completed location's overnight sequence. Employee stat gains last for the run. |
+| Night Planning access | Location reward | Completing Margin Review inserts a choice among Pizza Party, Compliance Training, and Quiet Recovery after that night's Talent Tree. | Choose exactly one; available only for the completed Margin Review workday. |
+| Juiced Recruitment access | Location reward | Completing Talent Pipeline inserts a paid choice among one Intern, Junior Analyst, or Accountant after that night's Talent Tree. | Choose at most one; the hired employee and bonuses last for the run. |
 | Compliance Tokens | Persistent wallet | Earned from claimed five-junk phishing-test rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token subtracts 5 Audit Chance points and offsets one open Liability before finding chance and Severity are calculated. | Persists in browser `localStorage`; audits never consume tokens. |
 
 Stress sweet spots and preferred workload are separate systems. Preferred workload compares working time with idle time and affects Stress accumulation and Backlog recovery.
@@ -564,6 +567,18 @@ Every non-Manager employee independently receives one of four coping traits at a
 | Pressure Performer | 25% on non-Managers | Processing speed ×1.10 while stress is 50–79; no bonus at 80+. |
 | Perfectionist | 25% on non-Managers | +3 forecast/output accuracy. |
 | People Pleaser | 25% on non-Managers | Correct approval relieves 8 stress instead of 4; incorrectly approved work adds 12 instead of 8. |
+
+### Juiced Hire Bonus
+
+Juiced Hire is a **location-exclusive special bonus**, not a random opening attribute. It appears only in the New Hire reward after completing Talent Pipeline. The menu always offers the three eligible roles when Cash, the eight-employee roster limit, and Backlog capacity permit them; the player may hire exactly one or skip.
+
+| Candidate | Hiring cost | Daily payroll | Guaranteed bonus |
+|---|---:|---:|---|
+| Administrative Intern | $60 | $15 | At least +2 total stat pips versus this run's starting Intern, with no stat below the Intern baseline; processing speed ×1.10; Backlog recovery ×1.20. |
+| Junior Analyst | $110 | $24 | At least +2 total stat pips versus this run's starting Junior Analyst, with no stat below the role baseline; processing speed ×1.10; Backlog recovery ×1.20. |
+| Accountant | $145 | $28 | At least +2 total stat pips versus this run's starting Accountant, with no stat below the role baseline; processing speed ×1.10; Backlog recovery ×1.20. |
+
+The employee's rolled coping trait and any extreme-stat abilities still apply. Juiced Hire lasts only for the current run and is visually identified by a heavy purple border and lightning badge.
 
 ### Stress-Condition Pool
 
@@ -699,10 +714,21 @@ The header projection is a task-performance view rather than a complete Cash led
 | Currency | Earned from | Card-system use |
 |---|---|---|
 | Cash | Starting funds, approved task payouts, phishing rewards | Check-ins, roadmap costs, payroll, penalties, and employee stat pips during a completed Development Workshop's overnight shop. |
-| XP | +1 banked immediately at every survived day close | Buy permanent Talent Tree upgrades during phase 1 of that night or save for a later night. |
+| XP | +1 banked immediately at every survived day close | Buy permanent upgrades only at a successful Day 5 Quarterly Review; otherwise remains banked across runs. |
+| Talent Points | +1 at every survived day close | Buy one pip in a run-only process branch during the guaranteed nightly Talent Tree. Unspent points and ranks expire at run end. |
 | Compliance Tokens | Claimed five-junk BUSYWORK-IT rewards, Report Defect/Policy Sweep route rewards, and completed 10-minute days | Each held token subtracts 5 Audit Chance points and offsets one Liability for finding chance and Severity. Tokens persist and are not consumed by audits. |
 
-The permanent nightly Talent Tree contains:
+The guaranteed nightly **Run Process Talent Tree** contains five three-pip branches. Every pip costs one Talent Point:
+
+| Branch | Pip 1 | Pip 2 | Pip 3 |
+|---|---|---|---|
+| Mailroom — Elastic Intake | Inbox capacity +1 | Inbox capacity +2 | Inbox capacity +3 |
+| Workflow Design — Parallel Processing | In Progress capacity +1 | In Progress capacity +2 | In Progress capacity +3 |
+| Finance — Revenue Assurance | Approved payouts +5% | Approved payouts +10% | Approved payouts +15% |
+| People Operations — Restorative Controls | Overnight Stress recovery +3 | Overnight Stress recovery +6 | Overnight Stress recovery +9 |
+| Compliance — Audit Dampening | Nightly Audit Chance −5 points | Nightly Audit Chance −10 points | Nightly Audit Chance −15 points |
+
+The **permanent upgrade office** is unlocked only at a successful Day 5 Quarterly Review:
 
 | Upgrade | Cost and prerequisite | Persistent card-system bonus |
 |---|---|---|
@@ -714,7 +740,7 @@ The permanent nightly Talent Tree contains:
 | Six-Tab Folders | 4 XP | Matching task/resource folders hold six cards instead of five. |
 | Manager Triage Protocol | 6 XP; requires Review Annex | Each morning, the Manager automatically relieves 8 stress from the most stressed available worker. |
 
-The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes persistent XP and Compliance Tokens from the Cash-funded, run-specific Workshop shop, shows the tokens' exact Audit Chance and Liability offsets, and previews all permanent upgrades with costs and prerequisites. The interactive Talent Tree is guaranteed as phase 1 of every survived night's rewards, including the final close before Quarterly Review.
+The persistent wallet is visible in the header and at the top of the Progress panel. Progress distinguishes persistent XP and Compliance Tokens from run-only Talent Points, the Cash-funded Workshop shop, and the three location reward gates. It shows the exact token and Audit Dampening reductions and previews permanent upgrade costs and prerequisites without allowing purchases before Quarterly Review. The run-only Talent Tree is guaranteed as phase 1 of every survived night's rewards, including the final close before Quarterly Review.
 
 Run-end accounting separates the XP earned by that run from the permanent wallet and separately held Compliance Tokens. Failure postmortems show retained unlocks but do not permit new purchases. Browser storage persists the wallet and upgrade IDs on that device until **Reset all data** is confirmed in Settings.
 
@@ -726,22 +752,22 @@ The corporate org-chart/Gantt roadmap is the only normal between-day decision su
 
 - Short, medium, and long nodes create real 3-, 5-, and 10-minute workdays. Completing a long day grants one Compliance Token.
 - The rendered route uses department swimlanes, dependency connectors, filing stamps, and variable-width initiative bars modeled on the corporate-roadmap prototype. Every location carries a named program and concise corporate flavor memo that explains its mechanical tradeoff.
-- Route inspectors separate setup applied when a route is filed from a single stacked column of payouts awarded after that workday. They cover targeted stress reset, Pizza Party, Report Defect, Grease the Wheels, Stage a Demo, two-Intern hiring, Whistleblower, Casual Friday, a one-day Temp, and Safety Seminar.
+- Route inspectors separate setup applied when a route is filed from a single stacked column of payouts or reward menus awarded after that workday. They cover targeted stress reset, Night Planning, Report Defect, Grease the Wheels, Stage a Demo, Juiced Recruitment, Whistleblower, Casual Friday, a one-day Temp, and Safety Seminar.
 - Vendor Exception creates an Accounting-focused day and a random non-Manager callout. Accounting intake emphasizes Approve Purchase Request, Expense Report, Invoice Request, and Governance Recalibration.
 - Completing Employee Development Workshop is the only way to insert the Cash-funded employee stat shop into an overnight sequence.
-- Choosing one route node replaces the old overnight activity, development, and multi-card hire menus.
+- Night Planning and New Hire menus appear only after their matching completed locations; they do not form a general overnight catalog.
 - `Rich Kid` / +1 extra life remains an unimplemented plan idea, not a cataloged current reward. The proposed generic single-resource day is likewise not implemented; Vendor Exception's Accounting-focused intake is the shipped strategic task-mix event.
 
 | Day | Location / program | Duration | Current setup or settled reward |
 |---:|---|---|---|
-| 1 | Margin Review / Pizza Party | Short · 3 min | Staff Morale +20; Cash −$100 at close. |
+| 1 | Margin Review / Night Planning | Short · 3 min | Insert one choice after the Talent Tree: Pizza Party (Cash −$35, Morale +8, all employee Stress −5), Compliance Training (Cash −$25, Audit Chance −8), or Quiet Recovery (all employee Stress −8, Confidence −1). |
 | 1 | Team Calibration / Targeted Stress Reset | Medium · 5 min | Reset the most stressed available worker to 0 Stress at close. |
 | 1 | Policy Sweep / Report Defect | Long · 10 min | +2 Compliance Tokens; Board Confidence −5; completed-long-day bonus +1 token. |
 | 2 | Vendor Exception / Accounting Surge | Medium · 5 min | Accounting work dominates intake; one random non-Manager calls out sick. |
 | 2 | Development Workshop / Employee Development | Short · 3 min | Insert a Cash-funded current-employee stat shop after that night's Talent Tree. |
 | 2 | Audit Readiness / Grease the Wheels | Long · 10 min | Remove 1 open Liability; Board Confidence −5; completed-long-day bonus +1 token. |
 | 3 | Budget Lock / Stage a Demo | Long · 10 min | Staff Morale +10; Board Confidence +15; +1 Liability; completed-long-day bonus +1 token. |
-| 3 | Talent Pipeline / Two New Interns | Medium · 5 min | Add two Interns without recruiting cost when Backlog has room; normal payroll applies. |
+| 3 | Talent Pipeline / Recruit Overnight | Medium · 5 min | Insert one paid Juiced candidate choice after the Talent Tree: Intern $60, Junior Analyst $110, or Accountant $145. |
 | 3 | Whistleblower / Clean Disclosure | Short · 3 min | Clear all open Liability; Board Confidence −10. |
 | 4 | Casual Friday / Mandatory Relaxation | Short · 3 min | Staff Morale +10; Board Confidence −1. |
 | 4 | Temp Desk / One-Day Specialist | Medium · 5 min | Add a random Intern, Junior Analyst, or Accountant for one workday. |
@@ -814,10 +840,10 @@ Card faces pair a stable type color and shape with a specific abbreviation such 
 - Positive-revenue task instances retain their payout tier, multiplier, quoted contract amount, and standard/juiced scope through production and rework.
 - Document instances store generated fields, producer ID, recipe ID, originating task template, producer stress, coverage status, reward, and final ruling.
 - Distraction instances store their internal distraction type, visual disguise type, imitated template, and deterministic glitch variant.
-- Multiple roadmap recruits may share one template but have independently seeded stats, traits, workload preferences, and labels. Recruits use the same role stat pool as every other newly created employee and receive no special modifier token or automatic stat/speed/recovery bonus.
-- Reaching each survived day close immediately awards `+1 XP` to the persistent on-device wallet. The guaranteed Talent Tree opens as overnight phase 1 so XP can be spent immediately or saved; the receipt also shows any long-shift Compliance Token.
+- Multiple employees may share one template but have independently seeded stats, traits, workload preferences, and labels. Temp Desk specialists use the ordinary role pool. Talent Pipeline candidates receive the documented Juiced Hire stat floor, speed, recovery, border, and modifier token.
+- Reaching each survived day close immediately awards `+1 XP` to the persistent on-device wallet and `+1 Talent Point` to the current run. The guaranteed phase-1 Talent Tree spends Talent Points on Run Process Upgrades; permanent XP spending remains locked until a successful Day 5 Quarterly Review. The receipt also shows any long-shift Compliance Token.
 - The corporate roadmap replaces the old overnight choice catalog. The player selects one adjacent workstream for the next day; each node exposes its exact effect and real 3-, 5-, or 10-minute duration. A completed 10-minute shift awards one persistent Compliance Token.
-- Completing an Employee Development Workshop node inserts a separate Cash-funded worker stat shop after the Talent Tree for that night only. Talent Tree purchases use XP every survived night and remain on the device through browser storage until reset in Settings.
+- Completing Development Workshop, Margin Review, or Talent Pipeline inserts only its matching Cash stat shop, Night Planning choice, or Juiced Recruitment choice after the Talent Tree for that night. Permanent upgrades and XP remain on the device through browser storage until reset in Settings; Talent Points, Run Process ranks, employee training, and hired employees expire with the run.
 - Standalone employee cards always display their current Accuracy, Speed, and Resilience values in a compact three-column strip; no hover is required.
 - Matching resource cards and matching task cards can share homogeneous storage piles. Other stacks allow at most one employee, task-like card, document, and resource card; resource-disguised junk occupies the resource slot, and a Juiced task may carry its exact two-resource recipe pair. Compatible stacks can be combined atomically up to five total cards, or six for a homogeneous folder after Six-Tab Folders is unlocked. Active or locked stacks cannot be merged.
 - Only the physical top card advances its deadline. Homogeneous folders use a compact filing-folder face plus four rectangular slots for covered cards, nearest to the top first; the visible folder face represents the active top card and is never repeated as a mini token. Unused slots remain empty, and the folder appearance disappears when only one card remains. Mixed stacks use compact identity/status tokens only for genuinely covered cards while their timers pause. Every populated token can be clicked for inspection or dragged to pull that individual card out. Composite In Progress workflows omit the tokens because all participating cards are already represented directly.

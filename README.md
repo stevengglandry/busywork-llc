@@ -17,7 +17,7 @@ The current build contains 32 card templates, 52 standard and Juiced production 
 | Employee Stress | New employees start at 0 on a 0–100 meter. Stress affects task duration and Accuracy: strained workers take longer, fractured workers take substantially longer, and extreme Stress can cause burnout. Burnout may produce employee growth, company learning, resignation, or death. Exact bands, modifiers, and outcome probabilities are in the Card Catalog. |
 | Stress sweet spot | Any valid sweet-spot band grants task-speed and Accuracy bonuses and contributes to Staff Morale. |
 | Preferred workload | Separate from the sweet-spot system. Work share versus the employee's preferred target affects Stress accumulation and Backlog recovery. |
-| Audit Chance | Starts at 50%. Each held Compliance Token subtracts 5 points from the nightly roll. Accurate approval removes 1 point; other events may raise or lower Audit Chance independently of Severity. |
+| Audit Chance | Starts at 50%. Each held Compliance Token subtracts 5 points from the nightly roll, and each run-only Audit Dampening pip subtracts another 5. Accurate approval removes 1 point; other events may raise or lower Audit Chance independently of Severity. |
 | Liability and audit finding | Liability is the number of open policy violations. Each held Compliance Token offsets one Liability before finding chance and Severity are calculated: `effective Liability = max(0, open Liability − held tokens)`. If an audit occurs, finding chance is `effective Liability ÷ elapsed days`, capped at 100%; effective Liability directly selects Audit Severity. Tokens persist and are not consumed. |
 | Board Confidence | Starts at 75 and represents Trust of the Board. It scales recognized task payouts from 80% at 0 Confidence to 120% at 100. Accurate approvals and clean audits raise it; mistakes, failed audits, staffing decisions, and route tradeoffs can lower it. Confidence at or below 0 ends the run. Sweet-spot time affects Morale, not Confidence directly. |
 
@@ -55,17 +55,24 @@ Compliance Checks pay $0, use Intern + Spreadsheet for the specialist workflow, 
 
 New runs begin on the corporate roadmap: choose one of three starting workstreams, then move only to the same or an adjacent destination at each daily close. Short, medium, and long nodes create real 3-, 5-, and 10-minute shifts; completing a long day awards one Compliance Token.
 
-Every survived day opens overnight phase 1, the **Talent Tree**. The close awards +1 XP and the player may immediately spend banked XP on permanent upgrades or save it. Completing an Employee Development Workshop workday inserts a separate Cash-funded employee stat shop after the Talent Tree and before roadmap routing. Merely selecting or inspecting a future Workshop does not open that shop.
+Every survived day awards two different progression resources: +1 persistent XP is banked across runs, and +1 run-only Talent Point opens the guaranteed **Talent Tree** as overnight phase 1. Talent Points buy Run Process Upgrades that night. Persistent XP cannot be spent during ordinary overnight rewards; it buys permanent upgrades only after the player survives Day 5 and reaches Quarterly Review.
+
+Specific completed roadmap locations can insert one additional reward after the Talent Tree. Development Workshop opens the Cash-funded Employee Development stat shop, Margin Review opens a one-choice Night Planning menu, and Talent Pipeline opens a one-choice Juiced Recruitment menu. Inspecting or selecting a future location is not enough; its workday must be completed.
 
 | Resource | Earning and use | Persistence |
 |---|---|---|
-| XP | +1 at every survived day close. Spend during the phase-1 Talent Tree available after every survived day. | Persists on this browser/device. |
+| XP | +1 at every survived day close. Spend only at a successful Day 5 Quarterly Review on permanent upgrades. | Persists across runs on this browser/device. |
+| Talent Points | +1 at every survived day close. Spend during that night's Talent Tree on one of five Run Process Upgrade branches. | Unspent points and purchased ranks expire when the run ends. |
 | Employee development | Completing the Development Workshop location adds a one-night stat shop. Accuracy, Speed, and Resilience pips are purchased with Cash using the scaling prices detailed in the Card Catalog. | Employee stat gains last for the current run. |
+| Night Planning | Completing Margin Review adds one choice: Pizza Party, Compliance Training, or Quiet Recovery. | The selected effect applies once; no menu appears at other locations. |
+| Juiced Recruitment | Completing Talent Pipeline offers one paid Intern, Junior Analyst, or Accountant. Every hired candidate has at least +2 total stat pips versus that role's starter, no stat below the role baseline, +10% processing speed, and +20% Backlog recovery. | The employee and bonuses last for the current run; normal payroll applies. |
 | Compliance Tokens | Earned from claimed BUSYWORK-IT phishing rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token subtracts 5 Audit Chance points and offsets one Liability when calculating finding chance and Severity. Tokens are never consumed by audits. | Persists on this browser/device. |
 
-Talent Tree upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
+The run-only Talent Tree branches are Elastic Intake (+1/+2/+3 Inbox), Parallel Processing (+1/+2/+3 In Progress), Revenue Assurance (+5/+10/+15% approved payouts), Restorative Controls (+3/+6/+9 overnight Stress recovery), and Audit Dampening (−5/−10/−15 Audit Chance points).
 
-XP, Compliance Tokens, and purchased Talent Tree upgrades use browser `localStorage` until **Settings → Reset all data** is confirmed. They are not HTTP cookies. `Rich Kid` / +1 extra life and a generic single-resource day remain unimplemented plan ideas, not current rewards.
+Permanent upgrades are Spam Scanner, Process Lane Annex, Inbox Expansion, Spam Intake Filter, Review Annex, Six-Tab Folders, and Manager Triage Protocol. They provide stronger full-card spam glitches, +1 In Progress, +2 Inbox, junk intake reduced from 30% to 20%, +3 Review, matching folders increased from five to six cards, and automatic morning relief of 8 Stress for the most stressed available worker.
+
+XP, Compliance Tokens, and purchased permanent upgrades use browser `localStorage` until **Settings → Reset all data** is confirmed. They are not HTTP cookies. `Rich Kid` / +1 extra life and a generic single-resource day remain unimplemented plan ideas, not current rewards.
 
 ## Current card controls
 
@@ -96,6 +103,6 @@ The public playtest build is available at [stevengglandry.github.io/busywork-llc
 - Interactive org-chart/Gantt route concept: `design/corporate-roadmap-concept.html`
 - Logic checks: open the browser console and run `BusyworkTests.runAll()`
 
-Before publishing, run the embedded suite and playtest starting-location selection, adjacent roadmap routing, Workshop spending, the Approve Purchase Request workflow, permanent upgrades, stack merging, junk-contaminated Review output, audit rollover, regulatory rework, saved-run migration, keyboard focus, and desktop/narrow layouts through a local HTTP server.
+Before publishing, run the embedded suite and playtest starting-location selection, adjacent roadmap routing, all three location-gated reward menus, the run-only Talent Tree, Day 5 permanent XP spending, the Approve Purchase Request workflow, stack merging, junk-contaminated Review output, audit rollover, regulatory rework, saved-run migration, keyboard focus, and desktop/narrow layouts through a local HTTP server.
 
 No package installation or build command is required.

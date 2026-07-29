@@ -13,7 +13,8 @@ This expansion adds a mail-triage pressure loop, makes the Manager the source of
 - The corporate org-chart/Gantt roadmap is now the authoritative location surface. It provides a three-choice starting location, adjacent route movement, real 3/5/10-minute days, route-specific events, and a final Day 5 Board Review.
 - Roadmap inspectors separate route setup from one stacked end-of-day payout list. Payouts apply exactly once after the workday and before the nightly audit.
 - The five Liability bands are Consent Decree, Cash Fine, Compliance Check, Bad Vibes, and Termination. Level 3 distributes four unpaid Compliance Check tasks through the next day; missing or deleting one creates a Liability.
-- Every survived day close banks +1 persistent XP and opens the Talent Tree as overnight phase 1, where XP can be spent immediately on permanent upgrades. Completing an Employee Development Workshop location inserts a separate Cash-funded employee stat shop after the tree for that night. Long-day completion and claimed five-junk phishing rewards grant Compliance Tokens; every held token reduces Audit Chance by 5 points and offsets one Liability before finding chance and Severity are calculated, without being consumed.
+- Every survived day close banks +1 persistent XP and awards +1 run-only Talent Point. The guaranteed phase-1 Talent Tree spends Talent Points on Elastic Intake, Parallel Processing, Revenue Assurance, Restorative Controls, or Audit Dampening for the current run. Persistent XP is spendable on permanent upgrades only after reaching a successful Day 5 Quarterly Review.
+- Completed locations gate the remaining overnight menus: Development Workshop inserts the Cash-funded employee stat shop, Margin Review inserts one Night Planning choice, and Talent Pipeline inserts one paid Juiced recruit choice. Long-day completion and claimed five-junk phishing rewards grant Compliance Tokens; every held token reduces Audit Chance by 5 points and offsets one Liability before finding chance and Severity are calculated, without being consumed.
 - The permanent upgrade office has seven visible, testable effects: stronger spam glitches (including covered tokens), +1 In Progress, +2 Inbox, 20% junk intake, +3 Review, six-card folders, and automatic Manager stress targeting. Browser storage persists them on that device until Settings → Reset all data.
 - The active policy pool contains 34 controls, including four always-applicable purchase controls plus ten later corporate controls for payout floors/increments, Net 45 terms, record normalization, Revenue Operations sourcing, stress ceilings, and specialist-only output.
 - Ordinary arrivals now include Approve Purchase Request. Accountant + Receipt produces a Review document with Item Description, Reason, Country of Origin, and Compliance Paperwork Filed.
@@ -523,15 +524,16 @@ The shipped progression system is **Process Maturity**: the player converts dail
 
 1. **During a day:** cash projection, junk-deletion streak, employee Stress, preferred workload, and active work.
 2. **Between days:** a guaranteed phase-1 Talent Tree followed by any completed-location reward and one connected corporate-roadmap destination. Employee development, hiring, and special events appear only when the completed location provides them.
-3. **Between quarters:** persistent XP, Compliance Tokens, and purchased Talent Tree upgrades stored on that browser/device.
+3. **Between quarters:** persistent XP, Compliance Tokens, and purchased permanent upgrades stored on that browser/device.
 
 ### 12.2 Recommended currencies
 
 - `Cash`: run currency; pays costs, hiring, and current-employee stat pips in the one-night shop inserted after a completed Employee Development Workshop day.
-- `XP`: +1 banked at every survived day close; spend on permanent upgrades in that night's guaranteed Talent Tree or save for a later night.
+- `XP`: +1 banked at every survived day close; spend on permanent upgrades only after reaching a successful Day 5 Quarterly Review.
+- `Talent Points`: +1 awarded at every survived day close; spend in that night's guaranteed Talent Tree on run-only process ranks.
 - `Compliance Tokens`: earned from claimed five-junk phishing-test rewards, Report Defect/Policy Sweep, and completed 10-minute days. Each held token reduces Audit Chance by 5 points and offsets one Liability for finding chance and Severity; it is not consumed.
 
-Cash and employee stat gains are run resources. XP, Compliance Tokens, and purchased Talent Tree upgrades persist in device-local browser `localStorage` until **Reset all data** is confirmed in Settings.
+Cash, employee stat gains, Talent Points, and Run Process ranks are run resources. XP, Compliance Tokens, and purchased permanent upgrades persist in device-local browser `localStorage` until **Reset all data** is confirmed in Settings.
 
 ### 12.3 Permanent upgrade office
 
@@ -552,19 +554,19 @@ These upgrades make future quarters easier and more expressive without auto-play
 The Slay the Spire/Darkest Dungeon-style route is presented as a deliberately boring corporate org chart/Gantt chart. The player chooses one of three starting workstreams, then selects only the same or an adjacent destination at the final overnight phase. All paths converge on the Day 5 Quarterly Board Review.
 
 - Short, medium, and long bars create real 3-, 5-, and 10-minute days. Completing a long day grants +1 Compliance Token.
-- The +1 XP award and interactive Talent Tree are guaranteed as phase 1 of every survived night's rewards. Employee Development Workshop adds its Cash stat shop only after completing that location; new hires, temporary staff, and other events likewise appear only through their route locations.
+- The +1 XP and +1 Talent Point awards plus the run-only Talent Tree are guaranteed at every survived close. Employee Development Workshop, Margin Review, and Talent Pipeline add their Cash stat shop, Night Planning choice, or Juiced Recruitment choice only after completing that location; temporary staff and other events likewise appear only through their route locations.
 - Vendor Exception creates an Accounting-heavy intake day and one random non-Manager callout. Other nodes can create staffing or task-mix side effects.
 
 | Route program | Current location effect |
 |---|---|
-| Pizza Party | Staff Morale +20; Cash −$100. |
+| Night Planning | After Margin Review, choose Pizza Party (Cash −$35, Staff Morale +8, all employee Stress −5), Compliance Training (Cash −$25, Audit Chance −8), or Quiet Recovery (all employee Stress −8, Confidence −1). |
 | Targeted Stress Reset | Reset the most stressed available worker to 0 stress. |
 | Report Defect | +2 Compliance Tokens; Board Confidence −5, plus the long-day token. |
 | Accounting Surge | Accounting work dominates intake; one random non-Manager calls out sick. |
 | Employee Development | After completing the location, spend Cash on current-employee Accuracy, Speed, or Resilience pips in a one-night shop after the Talent Tree. |
 | Grease the Wheels | Remove one open Liability; Board Confidence −5, plus the long-day token. |
 | Stage a Demo | Staff Morale +10; Board Confidence +15; +1 Liability, plus the long-day token. |
-| Two New Interns | Add two Interns at no recruiting cost if Backlog has room; normal payroll still applies. |
+| Recruit Overnight | After Talent Pipeline, pay $60/$110/$145 for one Juiced Intern/Junior Analyst/Accountant. The hire has at least +2 total stat pips versus the starter, no stat below role baseline, +10% speed, and +20% Backlog recovery. |
 | Whistleblower | Clear all open Liability; Board Confidence −10. |
 | Casual Friday | Staff Morale +10; Board Confidence −1. |
 | One-Day Specialist | Add a random Intern, Junior Analyst, or Accountant for one day. |
@@ -698,12 +700,12 @@ Exit criteria: telemetry does not trigger board rerenders and remains bounded af
 
 ### Phase 7 — Progression vertical slice
 
-- Completed: add +1 persistent XP and the interactive Talent Tree at each survived day close.
+- Completed: add +1 persistent XP, +1 run-only Talent Point, and the Run Process Talent Tree at each survived day close.
 - Completed: add persistent Compliance Tokens with visible −5 Audit Chance and −1 effective Liability effects per held token.
 - Completed: replace the overnight catalog with a connected 3/5/10-minute corporate roadmap and location-gated rewards.
-- Completed: add seven permanent upgrades, nightly Talent Tree purchasing, device-local persistence, and Settings reset.
+- Completed: add seven permanent upgrades purchasable only after successful Day 5 Quarterly Review, device-local persistence, and Settings reset.
 
-Exit criteria: a survived day can purchase an upgrade that materially changes the current or next quarter without bypassing mail triage; early failure retains already-earned XP, tokens, and prior upgrades.
+Exit criteria: every survived day can purchase a Run Process pip that materially changes the current run; successful Day 5 review can purchase a permanent upgrade for future quarters; early failure retains already-earned XP, tokens, and prior permanent upgrades.
 
 ---
 

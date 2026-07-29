@@ -18,7 +18,7 @@ Implemented in `index.html`:
 - Cleaner Inspector copy and navigation, including the compact `Log` tab, assignment choices, review ruling heading, and active-workflow employee/stress band.
 - Updated phishing reward baseline of five correctly deleted JUNK SPAM cards.
 - The roadmap-based **Grease the Wheels** reward removes one open Liability and costs five Board Confidence.
-- The overnight progression flow now separates the guaranteed phase-1 Talent Tree from the location-gated Employee Development shop. The Talent Tree spends persistent XP every survived night; completing the Workshop inserts a Cash-funded stat shop as the following phase.
+- The overnight progression flow now separates persistent XP, run-only Talent Points, and location rewards. Every survived close banks +1 XP and awards +1 Talent Point; the guaranteed phase-1 Talent Tree spends Talent Points on Run Process Upgrades. Completing Development Workshop, Margin Review, or Talent Pipeline inserts its Cash stat shop, Night Planning choice, or Juiced Recruitment choice as the following phase. Permanent XP purchases unlock only at successful Day 5 Quarterly Review.
 - Operating Close retains its existing company, cash, action, and recruitment content in three equal panels; a circular `OR` divider now makes the action-versus-hire choice explicit.
 - The third page uses the fixed `Morning Brief` title and three equal read-only panels while retaining the existing day-specific briefing sentence and data. Its first panel is `Changes overnight`, showing signed Cash, Staff Morale, Audit Chance, and Board Confidence deltas from the prior close.
 - Capability-based mobile detection now uses coarse-pointer support and the short viewport dimension rather than a user-agent string. Portrait phones receive a landscape prompt that safely pauses and restores a running workday, with an explicit continue-in-portrait escape hatch.
@@ -92,11 +92,11 @@ The recommended direction is **“regional operations console”: readable 12–
 | Workday | Paused | Stop runtime while preserving context | board veil, pause card |
 | Workday | Settings | Adjust display and storage behavior | compact, motion, contrast, reset |
 | Workday | Toasts | Report feedback and incidents | ordinary, harmful, and security notices |
-| Night 1 | Talent Tree | Understand the guaranteed award and spend or save | +1 XP, permanent upgrades, long-day Compliance Token |
-| Night 2, when earned | Employee Development | Improve current employees | Cash-funded stat pips after completing the Workshop location |
+| Night 1 | Talent Tree | Spend or bank the run-only award | +1 Talent Point, five Run Process branches, banked +1 XP, long-day Compliance Token |
+| Night 2, when earned | Location reward | Use the completed location's special menu | Workshop Cash stat shop, Margin Review planning, or Talent Pipeline Juiced recruit |
 | Next phase | Corporate roadmap | Choose one connected next-day location | duration, setup, payout, development/hire/event access |
 | Final phase | Morning briefing | Understand the opening state | company position, operating brief, active policies |
-| Run end | Quarterly review | Summarize a successful run | company position, charts, retained permanent upgrades |
+| Run end | Quarterly review | Summarize a successful run and spend XP | company position, charts, interactive permanent upgrade office |
 | Run end | Terminated run | Explain failure and retained progress | terminal cause, factors, incidents, carryover |
 
 ## Cross-system findings
@@ -499,27 +499,36 @@ The current progress pips should remain. Add short future labels on desktop and 
 
 ### Current strengths
 
-- XP and Compliance Tokens are clearly distinguished.
-- The receipt states the exact +1 XP award and any long-day token.
-- The permanent Talent Tree is directly actionable after every survived day.
-- It explains that Employee Development is a separate Cash shop earned only by completing its roadmap location.
+- XP, Talent Points, and Compliance Tokens are clearly distinguished.
+- The receipt states the exact +1 XP, +1 Talent Point, and any long-day token.
+- The run-only Talent Tree is directly actionable after every survived day.
+- It explains that permanent XP spending waits for successful Day 5 Quarterly Review and that other overnight menus are location rewards.
 
 ### Implemented structure
 
-Use a guaranteed Talent Tree page, then insert the Workshop page only when earned:
+Use a guaranteed Run Process Talent Tree page, then insert only the completed location's reward:
 
 ```text
-OVERNIGHT REWARDS · PHASE 1                  +1 XP FILED
-TALENT TREE                                  4 XP banked
-Permanent upgrades                        [Buy with XP]
+OVERNIGHT REWARDS · PHASE 1             +1 TALENT POINT
+TALENT TREE                         1 point · 4 XP banked
+Run Process Upgrades                 [Invest 1 point]
 
 IF DEVELOPMENT WORKSHOP WAS COMPLETED:
 EMPLOYEE DEVELOPMENT                         $450 cash
 Intern · Accuracy 3                        [Buy +1 · $36]
 Junior Analyst · Speed 4                   [Buy +1 · $40]
+
+IF MARGIN REVIEW WAS COMPLETED:
+NIGHT PLANNING                 [Pizza] [Training] [Recovery]
+
+IF TALENT PIPELINE WAS COMPLETED:
+NEW HIRE                       [Intern] [Analyst] [Accountant]
+
+AFTER SURVIVING DAY 5:
+QUARTERLY REVIEW                 Permanent upgrades [Spend XP]
 ```
 
-This separation prevents the two progression systems from appearing to share a currency or availability rule. The Workshop price scales by stat and prior investment, and its shop appears only after the player actually completes that location.
+This separation prevents the progression systems from appearing to share a currency or availability rule. Talent Points and Run Process ranks expire with the run. XP and permanent upgrades persist. The Workshop price scales by stat and prior investment; planning and recruitment appear only after their matching completed locations.
 
 ## Night 2: Operating close and planning
 
